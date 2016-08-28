@@ -10,6 +10,10 @@ class User extends AppModel {
             'required' => array(
                 'rule' => 'email',
                 'message' => 'A vaild email is required'
+            ),
+            'unique' => array(
+                'rule'    => 'isUnique',
+                'message' => 'This email is already in use.'
             )
         ),
         'password' => array(
