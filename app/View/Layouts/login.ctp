@@ -40,16 +40,8 @@
 </head>
 <body>
 	<div id="container">       
-            <?php echo $this->element('topBar', array('username' => $username)); ?>               
-            <?php echo $this->element('leftMenu'); ?>
-            <div id="content" style="padding: 50px 0px 35px 200px; margin-left: 0px;">
-                    <?php echo $this->Session->flash(); ?>
-                    <?php echo $this->fetch('content'); ?>
-                    <?php echo $this->element('sql_dump'); ?>
-            </div>
-            <div id="footer">
-
-            </div>
+            <?php echo $this->Session->flash(); ?>
+            <?php echo $this->fetch('content'); ?>
 	</div>	
 </body>
 </html>

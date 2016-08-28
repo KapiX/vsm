@@ -1,0 +1,20 @@
+#topBar {
+    position: fixed;
+    color: white;
+    height: 50px;
+}
+
+#leftMenu nav{
+    margin-left: -200px;
+    left: 200px;
+    padding-left: 15px;
+    width: 175px;
+    position: fixed;
+    top: 50px;
+    height: 100%;
+    border-radius: 0;
+    border: none;
+    background-color: #eee;
+    overflow-y: auto;
+    border-right: 1px solid #DCDADB;
+}
