@@ -51,8 +51,11 @@ class AppController extends Controller {
             )
         )
     );
+    public $uses = array('Project');
 
     public function beforeFilter() {
+        parent::beforeFilter();
         $this->set('username', $this->Auth->user('short_name'));
+        $this->set('projects', $this->Project->find('all'));
     }
 }

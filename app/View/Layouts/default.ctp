@@ -40,7 +40,7 @@
 </head>
 <body>
 	<div id="container">       
-            <?php echo $this->element('topBar', array('username' => $username)); ?>               
+            <?php echo $this->element('topBar'); ?>               
             <?php echo $this->element('leftMenu'); ?>
             <div id="content" style="padding: 50px 0px 35px 200px; margin-left: 0px;">
                     <?php echo $this->Session->flash(); ?>

@@ -6,10 +6,29 @@
 <div id ="leftMenu">
     <nav role="navigation">
         <div class="list-group">
-            <a data-toggle="collapse" data-target="#projectsBox"><span class="glyphicon glyphicon-list"></span> Projects<br></a>
+            <a data-toggle="collapse" data-target="#projectsBox"><span class="glyphicon glyphicon-list"></span> Projects</a>
+            <?php echo 
+                $this->Html->link( '+',
+                                array(
+                                    'controller' => 'Projects',
+                                    'action' => 'add',
+                                )); 
+            ?> <br>
             <div id="projectsBox" class="collapse">
-                <p>xxx</p>
-                <p>aaa</p>
+                <ul>
+                    <?php
+                        foreach ($projects as $project) {
+                                echo '<li>' .                 
+                                    $this->Html->link( $project['Project']['short_name'],
+                                    array(
+                                        'controller' => 'ScrumReports',
+                                        'action' => 'index',
+                                        $project['Project']['id']
+                                    ))  
+                                . '</li>'; 
+                        } 
+                    ?>
+                </ul>
             </div>
             
             <a><span class="glyphicon glyphicon-wrench"></span> Settings<br></a>
