@@ -8,3 +8,24 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `short_name` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
 );
+
+DROP TABLE IF EXISTS `scrum_reports`;
+CREATE TABLE IF NOT EXISTS `scrum_reports` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL,
+  `deadline_date` datetime,
+  PRIMARY KEY (`id`)
+);
+
+DROP TABLE IF EXISTS `user_scrum_reports`;
+CREATE TABLE IF NOT EXISTS `user_scrum_reports` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `scrum_report_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created` datetime,
+  `modified` datetime,
+  `q1_ans` TEXT NOT NULL,
+  `q2_ans` TEXT NOT NULL,
+  `q3_ans` TEXT NOT NULL,
+  PRIMARY KEY (`id`)
+);
