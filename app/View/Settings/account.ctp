@@ -7,7 +7,7 @@
         <legend><?php echo __('Change password'); ?></legend>
         <?php
             echo $this->Form->input('new_password', array('type' => 'password'));
-            echo $this->Form->input('new_password_again', array('type' => 'password'));
+            echo $this->Form->input('confirm_new_password', array('type' => 'password'));
         ?>
     </fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>
