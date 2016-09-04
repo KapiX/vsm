@@ -9,6 +9,14 @@ CREATE TABLE IF NOT EXISTS `projects` (
   PRIMARY KEY (`id`)
 );
 
+DROP TABLE IF EXISTS `projects_users`;
+CREATE TABLE IF NOT EXISTS `projects_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
 DROP TABLE IF EXISTS `scrum_reports`;
 CREATE TABLE IF NOT EXISTS `scrum_reports` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -27,5 +35,24 @@ CREATE TABLE IF NOT EXISTS `user_scrum_reports` (
   `q1_ans` TEXT NOT NULL,
   `q2_ans` TEXT NOT NULL,
   `q3_ans` TEXT NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
+DROP TABLE IF EXISTS `project_vsm_settings`;
+CREATE TABLE IF NOT EXISTS `project_vsm_settings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL,
+  `vsm_start_date` datetime,
+  `vsm_end_date` datetime,
+  `report_weekdays` varchar(255) NOT NULL DEFAULT 'MON, TUE, WED, THU, FRI',
+  PRIMARY KEY (`id`)
+);
+
+DROP TABLE IF EXISTS `user_vsm_settings`;
+CREATE TABLE IF NOT EXISTS `user_vsm_settings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `report_overdue_notification_text` TEXT NOT NULL,
+  `report_overdue_frequency_hours` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 );
