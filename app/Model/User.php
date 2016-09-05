@@ -4,6 +4,16 @@ App::uses('AppModel', 'Model');
 App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
 
 class User extends AppModel {
+    
+    public $hasAndBelongsToMany = array (
+        'Project' => array (
+            'className'             => 'Project',
+            'joinTable'             => 'projects_users',
+            'foreignKey'            => 'user_id',
+            'associationForeignKey' => 'project_id',
+            'unique'                => false
+        )
+    );
 
     public $validate = array(
         'email' => array(

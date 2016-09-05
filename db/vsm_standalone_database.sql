@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `project_vsm_settings` (
   `project_id` int(11) NOT NULL,
   `vsm_start_date` datetime,
   `vsm_end_date` datetime,
-  `report_weekdays` varchar(255) NOT NULL DEFAULT 'MON, TUE, WED, THU, FRI',
+  `report_weekdays` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 );
 

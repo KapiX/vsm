@@ -36,8 +36,25 @@ class SettingsController extends AppController {
       }
     }
 
-    public function edit() {
-
-      
+    public function edit($projectID) {
+        Configure::load('misc');
+        
+        $availableUsers = $this->User->find('all', array( 
+            'fields' => 'user.id, user.short_name', 
+            //'conditions' => array('NOT' => array('ProjectsUser.project_id' => $projectID)),
+        ));
+        $userIds = array_column(array_column($availableUsers, 'User'), 'id');
+        $userNicknames = array_column(array_column($availableUsers, 'User'), 'short_name');
+        $usersNameID = array_combine ( $userIds, $userNicknames);
+        $this->set('availableUsers', $usersNameID);  
+        
+        $projectUsers = $this->User->find( 'all', array(
+            'fields' => 'user.id, user.short_name',
+            //'conditions' => array('ProjectsUser.project_id' => $projectID)
+        ));
+        $projectUserIds = array_column(array_column($availableUsers, 'User'), 'id');
+        $projectUserNicknames = array_column(array_column($availableUsers, 'User'), 'short_name');
+        $projectUsersNameID = array_combine ( $projectUserIds, $projectUserNicknames);
+        $this->set('projectUsers', $projectUsersNameID); 
     }
 }

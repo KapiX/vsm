@@ -56,6 +56,6 @@ class AppController extends Controller {
     public function beforeFilter() {
         parent::beforeFilter();
         $this->set('username', $this->Auth->user('short_name'));
-        $this->set('projects', $this->Project->find('all'));
+        $this->set('projects', $this->Project->find('all', array('fields' => 'project.id, project.short_name')));
     }
 }
