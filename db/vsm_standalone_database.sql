@@ -46,6 +46,8 @@ CREATE TABLE IF NOT EXISTS `project_vsm_settings` (
   `vsm_start_date` datetime,
   `vsm_end_date` datetime,
   `report_weekdays` varchar(255) NOT NULL,
+  `report_overdue_notification_text` TEXT NOT NULL,
+  `report_overdue_frequency_hours` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -53,7 +55,5 @@ DROP TABLE IF EXISTS `user_vsm_settings`;
 CREATE TABLE IF NOT EXISTS `user_vsm_settings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `report_overdue_notification_text` TEXT NOT NULL,
-  `report_overdue_frequency_hours` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 );
