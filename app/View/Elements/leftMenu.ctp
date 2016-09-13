@@ -17,13 +17,13 @@
             <div id="projectsBox" class="collapse">
                 <ul>
                     <?php
-                        foreach ($projects as $project) {
+                        foreach ($myProjects as $project) {
                                 echo '<li>' .
-                                    $this->Html->link( $project['Project']['short_name'],
+                                    $this->Html->link( $project['short_name'],
                                         array(
                                             'controller' => 'ScrumReports',
                                             'action' => 'index',
-                                            $project['Project']['id']
+                                            $project['id']
                                         ))
                                 . '</li>';
                         }

@@ -51,11 +51,14 @@ class AppController extends Controller {
             )
         )
     );
-    public $uses = array('Project');
+    public $uses = array('Project', 'User');
 
     public function beforeFilter() {
         parent::beforeFilter();
-        $this->set('username', $this->Auth->user('short_name'));
-        $this->set('projects', $this->Project->find('all', array('fields' => 'project.id, project.short_name')));
+        if (!empty($this->Auth->user('id'))) {
+            $this->set('username', $this->Auth->user('short_name'));
+            $this->set('projects', $this->Project->find('all', array('recursive' => -1, 'fields' => 'project.id, project.short_name')));
+            $this->set( 'myProjects', $this->User->find('first', array('contain' => 'Project', 'conditions' => array('User.id' => $this->Auth->user('id'))))['Project'] );
+        }
     }
 }

@@ -12,7 +12,7 @@ echo $this->Html->link( 'Add new project',
 <div>
 <h3>Edit my projects</h3>
 <?php
-    foreach ($projects as $project) {
+    foreach ($editableProjects as $project) {
             echo '<li>' .
                 $this->Html->link( $project['Project']['short_name'],
                     array(

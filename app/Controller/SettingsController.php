@@ -5,14 +5,16 @@ App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
 
 class SettingsController extends AppController {
 
-    var $uses = array('User');
+    var $uses = array('User', 'Project');
 
     public function account() {
 
     }
 
     public function projects() {
-
+        $projects = $this->Project->find('all', array('recursive' => -1, 'fields' => 'project.id, project.short_name'));
+        $editableProjects = array_filter($projects, function($project) { return $this->Project->userCanEdit($project['Project']['id'], $this->Auth->user('id')); });
+        $this->set('editableProjects', $editableProjects);
     }
 
     public function changePassword() {
@@ -37,6 +39,10 @@ class SettingsController extends AppController {
     }
 
     public function edit($projectID) {
+        if (!$this->Project->userCanEdit($projectID, $this->Auth->user('id'))) {
+            return $this->redirect($this->referer());
+        }
+        
         Configure::load('misc');
         
         $availableUsers = $this->User->find('all', array( 

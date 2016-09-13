@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `short_name` varchar(10) NOT NULL,
-  'owner_id' int(11) NOT NULL,
+  `owner_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 );
 

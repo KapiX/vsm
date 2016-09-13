@@ -12,4 +12,10 @@ class Project extends AppModel {
             'unique'                => false
         )
     );
+    
+    public function userCanEdit($projectId, $userId) {
+        $thisProject = $this->find('first', 
+                array('recursive' => -1, 'fields' => 'Project.owner_id', 'conditions' => array('Project.id' => $projectId)));
+        return $userId === $thisProject['Project']['owner_id'];
+    }
 }

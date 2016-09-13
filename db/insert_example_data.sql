@@ -41,17 +41,17 @@ INSERT INTO user_scrum_reports (id, scrum_report_id, user_id, created, modified,
     VALUES (2,1,2,'2016-09-04 17:25:29','2016-09-04 18:25:29', '...', '...', '...');
 
 -- INSERT PROJECT_VSM_SETTINGS
-INSERT INTO project_vsm_settings (id, project_id, vsm_start_date, vsm_end_date, report_weekdays)
-    VALUES (1,1,'2016-09-01 19:25:29', '2016-11-01 19:25:29', 'TUE');
-INSERT INTO project_vsm_settings (id, project_id, vsm_start_date, vsm_end_date, report_weekdays)
-    VALUES (2,2,'2016-09-01 19:25:29', '2016-11-01 19:25:29', 'MON');
-INSERT INTO project_vsm_settings (id, project_id, vsm_start_date, vsm_end_date, report_weekdays)
-    VALUES (3,3,'2016-09-01 19:25:29', '2016-11-01 19:25:29', 'WED');
+INSERT INTO project_vsm_settings (id, project_id, vsm_start_date, vsm_end_date, report_weekdays, report_overdue_notification_text, report_overdue_frequency_hours)
+    VALUES (1,1,'2016-09-01 19:25:29', '2016-11-01 19:25:29', '1','???',5);
+INSERT INTO project_vsm_settings (id, project_id, vsm_start_date, vsm_end_date, report_weekdays, report_overdue_notification_text, report_overdue_frequency_hours)
+    VALUES (2,2,'2016-09-01 19:25:29', '2016-11-01 19:25:29', '0','???',5);
+INSERT INTO project_vsm_settings (id, project_id, vsm_start_date, vsm_end_date, report_weekdays, report_overdue_notification_text, report_overdue_frequency_hours)
+    VALUES (3,3,'2016-09-01 19:25:29', '2016-11-01 19:25:29', '2','???',5);
 
 -- INSERT USER_VSM_SETTINGS
-INSERT INTO user_vsm_settings (id, user_id, report_overdue_notification_text, report_overdue_frequency_hours)
-    VALUES (1,1,'???',5);
-INSERT INTO user_vsm_settings (id, user_id, report_overdue_notification_text, report_overdue_frequency_hours)
-    VALUES (2,2,'???',5);
-INSERT INTO user_vsm_settings (id, user_id, report_overdue_notification_text, report_overdue_frequency_hours)
-    VALUES (3,3,'???',5);
+INSERT INTO user_vsm_settings (id, user_id)
+    VALUES (1,1);
+INSERT INTO user_vsm_settings (id, user_id)
+    VALUES (2,2);
+INSERT INTO user_vsm_settings (id, user_id)
+    VALUES (3,3);
