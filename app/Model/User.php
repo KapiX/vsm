@@ -4,7 +4,7 @@ App::uses('AppModel', 'Model');
 App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
 
 class User extends AppModel {
-    
+
     public $hasAndBelongsToMany = array (
         'Project' => array (
             'className'             => 'Project',
@@ -49,4 +49,5 @@ class User extends AppModel {
         }
         return true;
     }
+
 }
