@@ -3,10 +3,16 @@
 App::uses('AppController', 'Controller');
 
 class ScrumReportsController extends AppController {
+    
+    public $uses = array('ScrumReport', 'Project');
 
     public function index($projectID = null) {
-        
+       
         if (!empty($projectID)) {
+            if (!$this->Project->userIsMember($projectID, $this->Auth->user('id'))) {
+                return $this->redirect($this->referer());
+            }
+            
             $lastReport = $this->ScrumReport->find('first', array(
                 'fields' => ('ScrumReport.id'),
                 'conditions' => array('ScrumReport.project_id' => $projectID),
@@ -19,6 +25,12 @@ class ScrumReportsController extends AppController {
     }
     
     public function view($projectID, $reportID) {
+        if (!$this->Project->userIsMember($projectID, $this->Auth->user('id'))) {
+            return $this->redirect($this->referer());
+        }
+    }
+    
+    public function overview() {
         
     }
 
