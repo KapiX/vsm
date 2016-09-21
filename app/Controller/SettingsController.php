@@ -5,7 +5,7 @@ App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
 
 class SettingsController extends AppController {
 
-    var $uses = array('User', 'Project', 'ProjectsUsers');
+    var $uses = array('User', 'Project', 'ProjectsUsers', 'ProjectVsmSettings');
 
     public function account() {
 
@@ -58,7 +58,12 @@ class SettingsController extends AppController {
         $projectUserNicknames = array_column(array_column($projectUsers, 'User'), 'short_name');
         $projectUsersNameID = array_combine ( $projectUserIds, $projectUserNicknames);
         $this->set('projectUsers', $projectUsersNameID);
-    }
+        
+        $vsm_settings = $this->ProjectVsmSettings->find('first', array('recursive' => -1, 'conditions' => array('ProjectVsmSettings.project_id' => $projectID)));
+        if (!empty($vsm_settings)) {
+            $this->request->data['ProjectVsmSettings'] = $this->ProjectVsmSettings->read(null, $vsm_settings['ProjectVsmSettings']['id'])['ProjectVsmSettings'];
+        }
+    }   
 
     public function remove_user_from_project() {
         if(!array_key_exists('Settings', $this->request->data) ||

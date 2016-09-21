@@ -4,12 +4,13 @@ App::uses('AppController', 'Controller');
 
 class ScrumReportsController extends AppController {
     
-    public $uses = array('ScrumReport', 'Project');
+    public $uses = array('ScrumReport', 'Project', 'ProjectsUsers');
 
     public function index($projectID = null) {
        
         if (!empty($projectID)) {
-            if (!$this->Project->userIsMember($projectID, $this->Auth->user('id'))) {
+            
+            if (!$this->ProjectsUsers->userInProject($this->Auth->user('id'), $projectID)) {
                 return $this->redirect($this->referer());
             }
             
@@ -25,7 +26,7 @@ class ScrumReportsController extends AppController {
     }
     
     public function view($projectID, $reportID) {
-        if (!$this->Project->userIsMember($projectID, $this->Auth->user('id'))) {
+        if (!$this->ProjectsUsers->userInProject($this->Auth->user('id'), $projectID)) {
             return $this->redirect($this->referer());
         }
     }

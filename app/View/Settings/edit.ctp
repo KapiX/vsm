@@ -22,10 +22,13 @@
         }
     ?>
     </li>
-    <?php echo $this->Form->create('settings', array('action' => 'project_vsm_settings_edit', 'class' => 'form-horizontal')); ?>
+    <?php echo $this->Form->create('ProjectVsmSettings', array('action' => 'edit', 'class' => 'form-horizontal')); ?>
+    <?php echo $this->Form->input('vsm_start_date', array('type' => 'date')); ?>
+    <?php echo $this->Form->input('vsm_end_date', array('type' => 'date')); ?>
     <?php echo $this->Form->input('report_weekdays', array('empty' => '', 'options' => Configure::read('misc.weekdays'),
                         'label' => 'Report weekdays<br /><small>(hold Ctrl to select multiple)', 'multiple' => true, 'style' => 'width: 100px; height: 120px;')); ?>
     <?php echo $this->Form->input('report_overdue_notification_text', array('type' => 'textbox')); ?>
     <?php echo $this->Form->input('report_overdue_frequency_hours', array('type' => 'number', 'min' => '1', 'max' => '48')); ?>
+    <?php echo $this->Form->hidden('project_id',array('value'=> $projectID)); ?>
     <?php echo $this->Form->end(__('Submit')); ?>
 </div>
