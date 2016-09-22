@@ -39,6 +39,15 @@ CREATE TABLE IF NOT EXISTS `user_scrum_reports` (
   PRIMARY KEY (`id`)
 );
 
+DROP TABLE IF EXISTS `user_user_scrum_reports`;
+CREATE TABLE IF NOT EXISTS `user_user_scrum_reports` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_scrum_report_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `report_seen_date` datetime,
+  PRIMARY KEY (`id`)
+);
+
 DROP TABLE IF EXISTS `project_vsm_settings`;
 CREATE TABLE IF NOT EXISTS `project_vsm_settings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
