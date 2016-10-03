@@ -4,7 +4,7 @@ App::uses('AppController', 'Controller');
 
 class ScrumReportsController extends AppController {
     
-    public $uses = array('ScrumReport', 'Project', 'ProjectsUsers');
+    public $uses = array('ScrumReport', 'Project', 'ProjectsUsers', 'UserScrumReport');
 
     public function index($projectID = null) {
        
@@ -29,6 +29,12 @@ class ScrumReportsController extends AppController {
         if (!$this->ProjectsUsers->userInProject($this->Auth->user('id'), $projectID)) {
             return $this->redirect($this->referer());
         }
+        
+        $report = $this->ScrumReport->find('first', array(
+                'recursive' => 2,
+                'conditions' => array('ScrumReport.id' => $reportID),
+        ));  
+        $this->set('userReports', $report['UserScrumReport']);
     }
     
     public function overview() {
