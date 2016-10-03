@@ -3,6 +3,8 @@
 App::uses('AppModel', 'Model');
 
 class ProjectVsmSettings extends AppModel {
+    public $belongsTo = 'Project';
+    
     function beforeSave($options = array()) {
         if ( is_array( $this->data['ProjectVsmSettings']['report_weekdays']) && count($this->data['ProjectVsmSettings']['report_weekdays']) > 0 ) {
                 $this->data['ProjectVsmSettings']['report_weekdays'] = ( implode(",", $this->data['ProjectVsmSettings']['report_weekdays']) );

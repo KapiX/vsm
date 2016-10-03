@@ -12,6 +12,8 @@ class Project extends AppModel {
             'unique'                => false
         )
     );
+    public $hasOne = 'ProjectVsmSettings';
+    public $hasMany = 'ScrumReport';
     
     public function userCanEdit($projectId, $userId) {
         $thisProject = $this->find('first', 

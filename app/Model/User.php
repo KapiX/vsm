@@ -14,6 +14,7 @@ class User extends AppModel {
             'unique'                => false
         )
     );
+    public $hasMany = array('UserScrumReport', 'UserUserScrumReport');  
 
     public $validate = array(
         'email' => array(
