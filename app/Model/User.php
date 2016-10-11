@@ -33,6 +33,20 @@ class User extends AppModel {
                 'message' => 'Min. 8 characters long password is required'
             )
         ),
+        'new_password' => array(
+            'required' => array(
+                'rule' => array('minLength', '1'),
+                'message' => 'No new password',
+            )  
+        ),
+        'confirm_new_password' => array(
+            'rule' => 'passwordsMatch',
+            'message' => 'Passwords must match',
+        ),
+        'current_password' => array(
+            'rule' => 'checkCurrentPassword',
+            'message' => 'Invalid current password',
+        ),
         'short_name' => array(
             'required' => array(
                 'rule' => array('minLength', '1'),
@@ -49,6 +63,18 @@ class User extends AppModel {
             );
         }
         return true;
+    }
+    
+    public function passwordsMatch($confirm_new_password) {
+        return $confirm_new_password['confirm_new_password'] === $this->data[$this->alias]['password'];
+    }
+    
+    public function checkCurrentPassword($current_password) {
+        $this->id = AuthComponent::user('id');
+        $passwordHasher = new BlowfishPasswordHasher();
+        $password = $this->field('password');
+
+        return $passwordHasher->check($current_password['current_password'], $password);
     }
 
 }

@@ -5,6 +5,7 @@
         <?php 
             echo $this->Form->input('email');
             echo $this->Form->input('password');
+            echo $this->Form->input('confirm_new_password', array('type' => 'password'));
             echo $this->Form->input('name');
             echo $this->Form->input('last_name');
             echo $this->Form->input('short_name');

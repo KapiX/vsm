@@ -7,35 +7,30 @@ class SettingsController extends AppController {
 
     var $uses = array('User', 'Project', 'ProjectsUsers', 'ProjectVsmSettings');
 
-    public function account() {
-
+    public function account() {       
+        if ($this->request->is('post')) {
+            $response = '';
+            $user_id = $this->Auth->user('id');
+            $new_password = $this->request->data['User']['new_password'];
+            $confirm_new_password = $this->request->data['User']['confirm_new_password'];
+            $current_password = $this->request->data['User']['current_password'];
+            $data = array('id' => $user_id, 'password' => $new_password, 'current_password' => $current_password, 'new_password' => $new_password, 'confirm_new_password' => $confirm_new_password);
+            
+            if($this->User->save($data)) {
+                $response = 'Your password has been changed';
+            } else {
+                foreach ($this->User->validationErrors as $validationError) {
+                    $response = $response . $validationError[0] . '<br>';
+                } 
+            }
+            $this->Session->setFlash(__($response));
+        }
     }
 
     public function projects() {
         $projects = $this->Project->find('all', array('recursive' => -1, 'fields' => 'project.id, project.short_name'));
         $editableProjects = array_filter($projects, function($project) { return $this->Project->userCanEdit($project['Project']['id'], $this->Auth->user('id')); });
         $this->set('editableProjects', $editableProjects);
-    }
-
-    public function changePassword() {
-      if ($this->request->is('post')) {
-          $user_id = $this->Auth->user('id');
-          $reponse = '';
-          $new_password = $this->request->data['new_password'];
-          $confirm_new_password = $this->request->data['confirm_new_password'];
-          if ($new_password != $confirm_new_password) {
-              $response = 'The new password and confirmation password must be the same.';
-          } else {
-              $data = array('id' =>$user_id, 'password' => $new_password);
-              if ($this->User->save($data)) {
-                  $response = 'Your password has been changed.';
-              } else {
-                $response = 'The password could not be changed. Please, try again.';
-              }
-          }
-          $this->Session->setFlash(__($response));
-          return $this->redirect($this->referer());
-      }
     }
 
     public function edit($projectID) {
