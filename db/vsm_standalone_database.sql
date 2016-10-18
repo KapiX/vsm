@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `sprints` (
 );
 
 DROP TABLE IF EXISTS `sprint_vsm_settings`;
-CREATE TABLE IF NOT EXISTS `user_vsm_settings` (
+CREATE TABLE IF NOT EXISTS `sprint_vsm_settings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `sprint_id` int(11) NOT NULL,
   `report_weekdays` varchar(255) NOT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `user_vsm_settings` (
 );
 
 DROP TABLE IF EXISTS `sprints_users`;
-CREATE TABLE IF NOT EXISTS `projects_users` (
+CREATE TABLE IF NOT EXISTS `sprints_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `sprint_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
