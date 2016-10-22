@@ -28,7 +28,7 @@ class SettingsController extends AppController {
     }
 
     public function projects() {
-        $projects = $this->Project->find('all', array('recursive' => -1, 'fields' => 'project.id, project.short_name'));
+        $projects = $this->Project->find('all', array('recursive' => -1, 'fields' => 'id, short_name'));
         $editableProjects = array_filter($projects, function($project) { return $this->Project->userCanEdit($project['Project']['id'], $this->Auth->user('id')); });
         $this->set('editableProjects', $editableProjects);
     }
@@ -40,7 +40,7 @@ class SettingsController extends AppController {
         $this->set('projectID', $projectID);
         Configure::load('misc');
         $users = $this->User->find( 'all', array(
-            'fields' => 'user.id, user.short_name'
+            'fields' => 'User.id, User.short_name'
         ));
         $availableUsers =  array_filter($users, function($user) use ($projectID){ return !$this->ProjectsUsers->userInProject($user['User']['id'], $projectID); });
         $userIds = array_column(array_column($availableUsers, 'User'), 'id');
