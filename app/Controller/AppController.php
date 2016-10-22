@@ -30,7 +30,6 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
-    
     public $components = array(
         'Session',
         'Auth' => array(
@@ -51,12 +50,17 @@ class AppController extends Controller {
             )
         )
     );
+    public $helpers = array(
+        'Form' => array(
+            'className' => 'MaterializeForm'
+        )
+    );
     public $uses = array('Project', 'User');
 
     public function beforeFilter() {
         parent::beforeFilter();
         if (!empty($this->Auth->user('id'))) {
-            $this->set('username', $this->Auth->user('short_name'));
+            $this->set('user', $this->Auth->user());
             $this->set('projects', $this->Project->find('all', array('recursive' => -1, 'fields' => 'id, short_name')));
             $this->set('myProjects', $this->User->find('first', array('contain' => 'Project', 'conditions' => array('User.id' => $this->Auth->user('id'))))['Project'] );
         }

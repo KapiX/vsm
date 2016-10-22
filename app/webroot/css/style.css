@@ -33,3 +33,7 @@ h3#month-year {
 #calendar tbody tr:first-child td {
     border-top-width: 1px;
 }
+
+.width-100 {
+    width:100%;
+}
