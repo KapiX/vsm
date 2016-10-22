@@ -12,7 +12,7 @@ $activeProjects = ($this->name == 'Projects') ? ' class="active"' : '';
         <a href="<?php echo $urlHomepage ?>" class="brand-logo">Virtual Scrum Meetings</a> 
         <ul id="nav-mobile" class="right hide-on-med-and-down">
         <?php if(isset($user)): ?>
-            <li><a href="#"><?php echo $user['short_name'] ?></a></li>
+            <li><a href="#"><?php echo $username ?></a></li>
             <li<?php echo $activeProjects ?>><?php echo $linkProjects ?></li>
             <li><?php echo $linkLogout ?></li>
         <?php endif ?>

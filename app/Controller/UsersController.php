@@ -7,7 +7,7 @@ class UsersController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
         // Allow users to register and logout.
-        $this->Auth->allow('add', 'logout');
+        $this->Auth->allow('register');
     }
 
     public function login() {
@@ -23,7 +23,10 @@ class UsersController extends AppController {
         return $this->redirect($this->Auth->logout());
     }
     
-    public function add() {
+    public function register() {
+        if($this->Auth->loggedIn()) {
+            $this->redirect('/');
+        }
         if ($this->request->is('post')) {
             $this->User->create();
             if ($this->User->save($this->request->data)) {

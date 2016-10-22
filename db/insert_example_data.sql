@@ -1,9 +1,9 @@
 -- INSERT USERS -- password: testtest
-INSERT INTO users (id, email, password, name, last_name, short_name, created, modified)
+INSERT INTO users (id, email, password, first_name, last_name, initials, created, modified)
     VALUES (1, 'john_a@test.pl', '$2a$10$XJKTqybnWoF6.A5oR.UK6egP37m2yADkIslAk3wCmwZYyhM4XXVIa', 'John', 'A', 'JA', '2016-09-06 19:25:29', '2016-09-06 19:25:29');
-INSERT INTO users (id, email, password, name, last_name, short_name, created, modified)
+INSERT INTO users (id, email, password, first_name, last_name, initials, created, modified)
     VALUES (2, 'bob_b@test.pl', '$2a$10$XJKTqybnWoF6.A5oR.UK6egP37m2yADkIslAk3wCmwZYyhM4XXVIa', 'Bob', 'B', 'BB', '2016-09-06 19:25:29', '2016-09-06 19:25:29');
-INSERT INTO users (id, email, password, name, last_name, short_name, created, modified)
+INSERT INTO users (id, email, password, first_name, last_name, initials, created, modified)
     VALUES (3, 'thomas_c@test.pl', '$2a$10$XJKTqybnWoF6.A5oR.UK6egP37m2yADkIslAk3wCmwZYyhM4XXVIa', 'Thomas', 'C', 'TC', '2016-09-06 19:25:29', '2016-09-06 19:25:29');
 
 -- INSERT PROJECTS

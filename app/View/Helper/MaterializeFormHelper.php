@@ -16,6 +16,6 @@ class MaterializeFormHelper extends FormHelper {
         $labelText = isset($options['label']) ? $options['label'] : null; 
         $after = parent::label($fieldName, $labelText);
         $defaults = array_merge($options, array('label' => false, 'after' => $after));
-        echo '<div class="row">' . parent::input($fieldName, $defaults) . '</div>';
+        echo parent::input($fieldName, $defaults);
     }
 }

@@ -33,14 +33,14 @@ class AppController extends Controller {
     public $components = array(
         'Session',
         'Auth' => array(
-            'loginRedirect' => array(
-                'controller' => 'ScrumReports',
-                'action' => 'index'
-            ),
+            'loginRedirect' => '/',
             'logoutRedirect' => array(
-                'controller' => 'Users',
-                'action' => 'login',
-                'home'
+                'controller' => 'users',
+                'action' => 'login'
+            ),
+            'unauthorizedRedirect' => array(
+                'controller' => 'users',
+                'action' => 'login'
             ),
             'authenticate' => array(
                 'Form' => array(
@@ -61,6 +61,7 @@ class AppController extends Controller {
         parent::beforeFilter();
         if (!empty($this->Auth->user('id'))) {
             $this->set('user', $this->Auth->user());
+            $this->set('username', $this->Auth->user('initials'));
             $this->set('projects', $this->Project->find('all', array('recursive' => -1, 'fields' => 'id, short_name')));
             $this->set('myProjects', $this->User->find('first', array('contain' => 'Project', 'conditions' => array('User.id' => $this->Auth->user('id'))))['Project'] );
         }
