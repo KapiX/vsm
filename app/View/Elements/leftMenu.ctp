@@ -1,8 +1,3 @@
-<?php
-    $css = array('menu');
-    echo $this->Html->css($css);
-?>
-
 <div id ="leftMenu">
     <nav role="navigation">
         <div class="list-group">

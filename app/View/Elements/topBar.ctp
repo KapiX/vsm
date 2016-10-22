@@ -1,33 +1,17 @@
-<?php 
-    $css = array('menu');         
-    echo $this->Html->css($css);   
+<?php
+$linkProjects = $this->html->link(__('Projects'), ['controller' => 'projects', 'action' => 'index']);
+$linkLogout = $this->Html->link(__('Logout'), ['controller' => 'users', 'action' => 'logout']);
+
+$activeProjects = ($this->name == 'Projects') ? ' class="active"' : '';
 ?>
 
-<div id =" topBar">
-    <nav class="navbar navbar-fixed-top navbar-inverse" id ="topBar" role="navigation">
-            <div >
-                <h>VIRTUAL SCRUM MEETINGS</h>
-            </div> 
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <p><?php echo $username ?></p>
-                </li>
-                <li>                  
-                    <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><span class="caret"></span></button>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><?php 
-                                echo $this->Html->link( 'Logout',
-                                array(
-                                    'controller' => 'users',
-                                    'action' => 'logout',
-                                )); ?>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>	  
-    </nav>
-</div>
+<nav>
+    <div class="nav-wrapper">
+        <a href="#" class="brand-logo">Virtual Scrum Meetings</a> 
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="#"><?php echo $username ?></a></li>
+            <li<?php echo $activeProjects ?>><a href="#"><?php echo $linkProjects ?></a></li>
+            <li><?php echo $linkLogout ?></li>
+        </ul>
+    </div>
+</nav>

@@ -21,35 +21,22 @@
 <html>
 <head>
 	<?php echo $this->Html->charset(); ?>
-	<title>
-		<?php echo $title_for_layout; ?>
-	</title>
-        <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+	<title><?php echo $title_for_layout; ?></title>
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css"  media="screen,projection"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<?php
 		echo $this->Html->meta('icon');
-
-                $css = array( 'cake.generic', 'bootstrap.min');         
-		echo $this->Html->css($css);              
-                $js = array('1.7.2_jquery.min', 'bootstrap.min.js');
-                echo $this->Html->script($js);
-
 		echo $this->fetch('meta');
-		echo $this->fetch('css');
-		echo $this->fetch('script');
 	?>
 </head>
 <body>
-	<div id="container">       
-            <?php echo $this->element('topBar'); ?>               
-            <?php echo $this->element('leftMenu'); ?>
-            <div id="content" style="padding: 50px 0px 35px 200px; margin-left: 0px;">
-                    <?php echo $this->Session->flash(); ?>
-                    <?php echo $this->fetch('content'); ?>
-                    <?php echo $this->element('sql_dump'); ?>
-            </div>
-            <div id="footer">
-
-            </div>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+        <?php echo $this->element('topBar'); ?>
+	<div class="container">
+                <?php echo $this->Session->flash(); ?>
+                <?php echo $this->fetch('content'); ?>
 	</div>	
 </body>
 </html>

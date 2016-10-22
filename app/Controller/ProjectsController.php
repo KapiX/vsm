@@ -4,7 +4,7 @@ App::uses('AppController', 'Controller');
 
 class ProjectsController extends AppController {
 
-    public function index($id) {
+    public function index() {
         
     }
     

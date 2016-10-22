@@ -58,7 +58,7 @@ class AppController extends Controller {
         if (!empty($this->Auth->user('id'))) {
             $this->set('username', $this->Auth->user('short_name'));
             $this->set('projects', $this->Project->find('all', array('recursive' => -1, 'fields' => 'id, short_name')));
-            $this->set( 'myProjects', $this->User->find('first', array('contain' => 'Project', 'conditions' => array('User.id' => $this->Auth->user('id'))))['Project'] );
+            $this->set('myProjects', $this->User->find('first', array('contain' => 'Project', 'conditions' => array('User.id' => $this->Auth->user('id'))))['Project'] );
         }
     }
 }
