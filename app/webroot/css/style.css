@@ -1,0 +1,35 @@
+h3#month-year {
+    width:100%;
+} 
+
+#calendar {
+    border-collapse: collapse;
+}
+
+#calendar thead {
+    border: 0;
+}
+
+#calendar th {
+    display: inline-block;
+    width: calc(100% / 7);
+}
+
+#calendar td {
+    padding: 15px;
+    border-style: solid;
+    border-color: #d0d0d0;
+    border-width: 0 1px 1px 0;
+    border-radius:0px;
+    display: inline-block;
+    height: 80px;
+    width: calc(100% / 7);
+}
+
+#calendar tbody td:first-child {
+    border-left-width: 1px;
+}
+
+#calendar tbody tr:first-child td {
+    border-top-width: 1px;
+}

@@ -24,7 +24,16 @@
  * its action called 'display', and we pass a param to select the view file
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
-	Router::connect('/', array('controller' => 'Index', 'action' => 'index'));
+	Router::connect('/',
+		array('controller' => 'Index', 'action' => 'index')
+	);
+	Router::connect('/calendar/:year/:month',
+		array('controller' => 'Index', 'action' => 'index'),
+		array(
+			'year' => '[12][0-9]{3}',
+			'month' => '0[1-9]|1[012]'
+		)
+	);
 
 /**
  * Load all plugin routes. See the CakePlugin documentation on
