@@ -37,3 +37,13 @@ h3#month-year {
 .width-100 {
     width:100%;
 }
+
+.collapsible-body pre {
+    font-size:8pt;
+    margin:0;
+    padding: 2rem;
+}
+
+.collapsible-body pre .code-highlight {
+    background-color: #d0d0d0;
+}
