@@ -18,7 +18,7 @@ class UsersController extends AppController {
             if ($this->Auth->login()) {
                 return $this->redirect($this->Auth->redirectUrl());
             }
-            $this->Session->setFlash(__('Invalid username or password, try again'));
+            $this->Session->setFlash(__('Invalid username or password, try again.'), 'error');
         }
     }
 
@@ -33,11 +33,11 @@ class UsersController extends AppController {
         if ($this->request->is('post')) {
             $this->User->create();
             if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(__('The user has been saved'));
+                $this->Session->setFlash(__('Account has been successfully created. You can log in now.'), 'success');
                 return $this->redirect(array('action' => 'login'));
             }
             $this->Session->setFlash(
-                __('The user could not be saved. Please, try again.')
+                __('Account could not be created. Please, try again.'), 'error'
             );
         }
     }
