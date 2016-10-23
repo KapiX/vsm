@@ -7,7 +7,7 @@ class SettingsController extends AppController {
 
     var $uses = array('User', 'Project', 'ProjectsUsers', 'ProjectVsmSettings');
 
-    public function account() {       
+    public function account() {
         if ($this->request->is('post')) {
             $response = '';
             $user_id = $this->Auth->user('id');
@@ -15,13 +15,13 @@ class SettingsController extends AppController {
             $confirm_new_password = $this->request->data['User']['confirm_new_password'];
             $current_password = $this->request->data['User']['current_password'];
             $data = array('id' => $user_id, 'password' => $new_password, 'current_password' => $current_password, 'new_password' => $new_password, 'confirm_new_password' => $confirm_new_password);
-            
+
             if($this->User->save($data)) {
                 $response = 'Your password has been changed';
             } else {
                 foreach ($this->User->validationErrors as $validationError) {
                     $response = $response . $validationError[0] . '<br>';
-                } 
+                }
             }
             $this->Session->setFlash(__($response));
         }
@@ -40,25 +40,25 @@ class SettingsController extends AppController {
         $this->set('projectID', $projectID);
         Configure::load('misc');
         $users = $this->User->find( 'all', array(
-            'fields' => 'User.id, User.short_name'
+            'fields' => 'User.id, User.email'
         ));
         $availableUsers =  array_filter($users, function($user) use ($projectID){ return !$this->ProjectsUsers->userInProject($user['User']['id'], $projectID); });
         $userIds = array_column(array_column($availableUsers, 'User'), 'id');
-        $userNicknames = array_column(array_column($availableUsers, 'User'), 'short_name');
+        $userNicknames = array_column(array_column($availableUsers, 'User'), 'email');
         $usersNameID = array_combine ( $userIds, $userNicknames);
         $this->set('availableUsers', $usersNameID);
 
         $projectUsers = array_filter($users, function($user) use ($projectID){ return $this->ProjectsUsers->userInProject($user['User']['id'], $projectID); });
         $projectUserIds = array_column(array_column($projectUsers, 'User'), 'id');
-        $projectUserNicknames = array_column(array_column($projectUsers, 'User'), 'short_name');
+        $projectUserNicknames = array_column(array_column($projectUsers, 'User'), 'email');
         $projectUsersNameID = array_combine ( $projectUserIds, $projectUserNicknames);
         $this->set('projectUsers', $projectUsersNameID);
-        
+
         $vsm_settings = $this->ProjectVsmSettings->find('first', array('recursive' => -1, 'conditions' => array('ProjectVsmSettings.project_id' => $projectID)));
         if (!empty($vsm_settings)) {
             $this->request->data['ProjectVsmSettings'] = $this->ProjectVsmSettings->read(null, $vsm_settings['ProjectVsmSettings']['id'])['ProjectVsmSettings'];
         }
-    }   
+    }
 
     public function remove_user_from_project() {
         if(!array_key_exists('Settings', $this->request->data) ||

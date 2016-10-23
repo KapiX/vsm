@@ -11,7 +11,7 @@
             <?php echo $this->Form->input('q1_answer', array('label' => 'What did I accomplish yesterday?')); ?>
             <?php echo $this->Form->input('q2_answer', array('label' => 'What will I do today?')); ?>
             <?php echo $this->Form->input('q3_answer', array('label' => 'What obstacles are impending my progress?')); ?>
-            <?php echo $this->Form->end(__('Save')); ?> 
+            <?php echo $this->Form->end(__('Save')); ?>
         </div>
     </div>
   </div>
@@ -32,7 +32,7 @@
                           <h4 class="panel-title">
                             <?php
                                 $collapseId = 'collapse' . $userReport['id'];
-                                echo '<a data-toggle="collapse" href="#' . $collapseId . '"> ' . $userReport['User']['short_name'] . ' </a>'; 
+                                echo '<a data-toggle="collapse" href="#' . $collapseId . '"> ' . $userReport['User']['email'] . ' </a>'; 
                             ?>
                           </h4>
                         </div>
@@ -49,12 +49,12 @@
                               <p>
                                 <h3>What obstacles are impending my progress?</h3>
                                 <?php echo $userReport['q3_ans']; ?>
-                              </p>                       
+                              </p>
                           </div>
                         </div>
-                    </div>             
+                    </div>
                 <?php endforeach; ?>
-            </div>   
+            </div>
       </div>
     </div>
   </div>
