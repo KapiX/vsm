@@ -13,9 +13,11 @@
 </div>
 <div class="row">
 <?php
-echo $this->Html->link(__('Register'),
+if ($allow_registration){
+    echo $this->Html->link(__('Register'),
     array('controller' => 'users', 'action' => 'register'),
     array('class' => 'btn col s12'));
+}
 ?>
 </div>
 </div>

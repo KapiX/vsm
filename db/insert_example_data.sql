@@ -55,7 +55,7 @@ INSERT INTO user_vsm_settings (id, user_id)
     VALUES (2,2);
 INSERT INTO user_vsm_settings (id, user_id)
     VALUES (3,3);
-	
+
 -- INSERT SPRINTS
 INSERT INTO sprints (id, project_id, name, start_date, end_date)
     VALUES (1,1, 'sprint 1', '2016-09-01 19:25:29', '2016-09-15 19:25:29');
@@ -63,7 +63,7 @@ INSERT INTO sprints (id, project_id, name, start_date, end_date)
     VALUES (2,2, 'sprint 1', '2016-09-01 19:25:29', '2016-09-15 19:25:29');
 INSERT INTO sprints (id, project_id, name, start_date, end_date)
     VALUES (3,3, 'sprint 1', '2016-09-01 19:25:29', '2016-09-15 19:25:29');
-	
+
 -- INSERT SPRINT_VSM_SETTINGS
 INSERT INTO sprint_vsm_settings (id, sprint_id, report_weekdays)
     VALUES (1,1,'1,3,5');
@@ -71,7 +71,7 @@ INSERT INTO sprint_vsm_settings (id, sprint_id, report_weekdays)
     VALUES (2,2,'1,4');
 INSERT INTO sprint_vsm_settings (id, sprint_id, report_weekdays)
     VALUES (3,3,'1,3,5');
-	
+
 -- INSERT SPRINTS_USERS
 INSERT INTO sprints_users (id, sprint_id, user_id)
     VALUES (1,1,1);
@@ -81,3 +81,7 @@ INSERT INTO sprints_users (id, sprint_id, user_id)
     VALUES (3,2,2);
 INSERT INTO sprints_users (id, sprint_id, user_id)
     VALUES (4,3,3);
+
+-- INSERT INTO app_settings
+INSERT INTO app_settings (id, allow_registration)
+    VALUES (1, true);

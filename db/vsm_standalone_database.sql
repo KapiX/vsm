@@ -98,3 +98,10 @@ CREATE TABLE IF NOT EXISTS `sprints_users` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 );
+
+DROP TABLE IF EXISTS `app_settings`;
+CREATE TABLE IF NOT EXISTS `app_settings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `allow_registration` boolean NOT NULL,
+  PRIMARY KEY (`id`)
+);

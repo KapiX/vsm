@@ -4,6 +4,8 @@ App::uses('AppController', 'Controller');
 
 class UsersController extends AppController {
 
+    var $uses = array('AppSettings');
+
     public function beforeFilter() {
         parent::beforeFilter();
         // Allow users to register and logout.
@@ -14,6 +16,8 @@ class UsersController extends AppController {
         if($this->Auth->loggedIn()) {
             $this->redirect('/');
         }
+        $app_settings = $this->AppSettings->find('first', array('recursive' => -1));
+        $this->set('allow_registration', $app_settings['AppSettings']['allow_registration']);
         if ($this->request->is('post')) {
             if ($this->Auth->login()) {
                 $this->Session->setFlash(
@@ -30,10 +34,17 @@ class UsersController extends AppController {
     public function logout() {
         return $this->redirect($this->Auth->logout());
     }
-    
+
     public function register() {
         if($this->Auth->loggedIn()) {
             $this->redirect('/');
+        }
+        $app_settings = $this->AppSettings->find('first', array('recursive' => -1));
+        if (!$app_settings['AppSettings']['allow_registration']) {
+            $this->Session->setFlash(
+                __('Registration is currently disabled. Please contact administrator')
+            );
+            return $this->redirect(array('action' => 'login'));
         }
         if ($this->request->is('post')) {
             $this->User->create();
