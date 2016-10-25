@@ -98,3 +98,11 @@ CREATE TABLE IF NOT EXISTS `sprints_users` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 );
+
+DROP TABLE IF EXISTS `password_tokens`;
+CREATE TABLE IF NOT EXISTS `password_tokens` (
+  `token` char(64) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `expires` datetime NOT NULL,
+  PRIMARY KEY(`token`)
+);
