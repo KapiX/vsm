@@ -5,7 +5,11 @@ App::uses('AppController', 'Controller');
 class ProjectsController extends AppController {
 
     public function index() {
-        
+        $projects = $this->User->find('first', array(
+            'contain' => 'Project',
+            'conditions' => ['User.id' => $this->Auth->user('id')],
+            'recursive' => 1))['Project'];
+        $this->set('projects', $projects);
     }
     
     public function add() {
@@ -34,4 +38,6 @@ class ProjectsController extends AppController {
         }
     }
 
+    public function settings() {
+    }
 }
