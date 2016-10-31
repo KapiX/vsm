@@ -57,11 +57,17 @@ class AppController extends Controller {
     );
     public $uses = array('Project', 'User');
 
+    function random_password( $length = 8 ) {
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        $password = substr( str_shuffle( $chars ), 0, $length );
+        return $password;
+    }
+
     public function beforeFilter() {
         parent::beforeFilter();
         if (!empty($this->Auth->user('id'))) {
             $this->set('user', $this->Auth->user());
-            $this->set('username', $this->Auth->user('initials'));
+            $this->set('username', $this->Auth->user('first_name'));
             $this->set('projects', $this->Project->find('all', array('recursive' => -1, 'fields' => 'id, short_name')));
             $this->set('myProjects', $this->User->find('first', array('contain' => 'Project', 'conditions' => array('User.id' => $this->Auth->user('id'))))['Project'] );
         }

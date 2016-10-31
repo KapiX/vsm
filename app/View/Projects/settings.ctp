@@ -45,13 +45,16 @@
         <h4><?php echo __('Add user') ?></h4>
         <div class="row">
             <div class="col s12">
+                <?php echo $this->Form->create(false, array('action' => 'invite_to_project')); ?>
+                <?php echo $this->Form->hidden('project_id', array('value'=> 1)); ?>
                 <div class="row">
                     <?php /*echo $this->Form->input('search', ['div' => 'col s6', 'before' => '<i class="material-icons prefix">search</i>'])*/ ?>
                     <?php echo $this->Form->input('email', ['div' => 'col s6', 'before' => '<i class="material-icons prefix">mail</i>']) ?>
                 </div>
                 <div class="row">
                     <!--input type="submit" value="send" class="col s6 btn large"-->
-                    <input type="submit" value="invite" class="col s6 btn large">
+                    <!--<input type="submit" value="invite" class="col s6 btn large">-->
+                    <?php echo $this->Form->end(array('label' => 'invite', 'class' => 'col s6 btn large')); ?>
                 </div>
             </div>
         </div>
