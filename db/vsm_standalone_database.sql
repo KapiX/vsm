@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `password_tokens` (
 
 DROP TABLE IF EXISTS `app_settings`;
 CREATE TABLE IF NOT EXISTS `app_settings` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `allow_registration` boolean NOT NULL,
-  PRIMARY KEY (`id`)
+  `name` varchar(50) NOT NULL,
+  `value` varchar(50) NOT NULL,
+  PRIMARY KEY (`name`)
 );

@@ -16,8 +16,8 @@ class UsersController extends AppController {
         if($this->Auth->loggedIn()) {
             $this->redirect('/');
         }
-        $app_settings = $this->AppSettings->find('first', array('recursive' => -1));
-        $this->set('allow_registration', $app_settings['AppSettings']['allow_registration']);
+        $app_settings = $this->AppSettings->find('first', array('recursive' => -1, 'conditions' => array('name' => 'allow_registration')));
+        $this->set('allow_registration', $app_settings['AppSettings']['value'] == 'True');
         if ($this->request->is('post')) {
             if ($this->Auth->login()) {
                 $this->Session->setFlash(
@@ -39,8 +39,8 @@ class UsersController extends AppController {
         if($this->Auth->loggedIn()) {
             $this->redirect('/');
         }
-        $app_settings = $this->AppSettings->find('first', array('recursive' => -1));
-        if (!$app_settings['AppSettings']['allow_registration']) {
+        $app_settings = $this->AppSettings->find('first', array('recursive' => -1, 'conditions' => array('name' => 'allow_registration')));
+        if ($app_settings['AppSettings']['value'] != 'True') {
             $this->Session->setFlash(
                 __('Registration is currently disabled. Please contact administrator')
             );

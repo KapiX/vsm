@@ -83,5 +83,5 @@ INSERT INTO sprints_users (id, sprint_id, user_id)
     VALUES (4,3,3);
 
 -- INSERT INTO app_settings
-INSERT INTO app_settings (id, allow_registration)
-    VALUES (1, true);
+INSERT INTO app_settings (name, value)
+    VALUES ('allow_registration', 'True');
