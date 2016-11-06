@@ -34,6 +34,10 @@
 			'month' => '0[1-9]|1[012]'
 		)
 	);
+	Router::connect('/users/reset/:token',
+		array('controller' => 'Users', 'action' => 'reset'),
+		array('token' => '[0-9a-z]{64}')
+	);
 
 /**
  * Load all plugin routes. See the CakePlugin documentation on

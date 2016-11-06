@@ -60,6 +60,7 @@ class ProjectsController extends AppController {
                     'password' => $new_user_password
                 );
                 if ($this->User->save($user_data)) {
+                    Configure::load('misc');
                     $userId = $this->User->id;
                     $this->ProjectsUsers->create();
                     $data = array(
@@ -73,11 +74,11 @@ class ProjectsController extends AppController {
                     $emailValues = array('new_user_email' => $new_user_email,
                                          'inviter_email' => $this->Auth->user('email'),
                                          'password' => $new_user_password);
-                    $Email->config('gmail')
+                    $Email->config(Configure::read('mail.transport'))
                        ->template('invitation')
                        ->emailFormat('html')
                        ->to($new_user_email)
-                       ->from('app@domain.com')
+                       ->from(Configure::read('mail.from'))
                        ->viewVars($emailValues)
                        ->send();
                     $this->Session->setFlash(__('Invitation has been sent.'), 'success');

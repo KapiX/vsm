@@ -13,8 +13,15 @@
 </div>
 <div class="row">
 <?php
-if ($allow_registration){
-    echo $this->Html->link(__('Register'),
+echo $this->Html->link(__('Forgot password'),
+    array('controller' => 'users', 'action' => 'forgot_password'),
+    array('class' => 'btn col s12'));
+?>
+</div>
+<div class="row">
+<?php
+if ($allow_registration) {
+echo $this->Html->link(__('Register'),
     array('controller' => 'users', 'action' => 'register'),
     array('class' => 'btn col s12'));
 }
