@@ -2,6 +2,7 @@
 
 App::uses('AppController', 'Controller');
 App::uses('CakeEmail', 'Network/Email');
+App::uses('CakeTime', 'Utility');
 
 class ProjectsController extends AppController {
 
@@ -11,6 +12,32 @@ class ProjectsController extends AppController {
             'conditions' => ['User.id' => $this->Auth->user('id')],
             'recursive' => 1))['Project'];
         $this->set('projects', $projects);
+    }
+
+    public function view() {
+        $id = $this->request->params['id'];
+        if(empty($id))
+            $this->redirect($this->referer());
+        $month = $this->request->params['month'];
+        $year = $this->request->params['year'];
+        if(empty($month)) $month = CakeTime::format('now', '%m');
+        if(empty($year)) $year = CakeTime::format('now', '%Y');
+
+        $localizedWeekdays = array();
+        for($i = 0; $i < 7; $i++) {
+            $localizedWeekdays[] = CakeTime::format("next Monday + $i days", '%A');
+        }
+        $date = "01.$month.$year";
+        $firstWeekDayOfMonth = CakeTime::format("first day of $date", '%u') - 1;
+        $lastDayOfMonth = CakeTime::format("last day of $date", '%d');
+        $monthHeader = CakeTime::format($date, '%B %Y');
+
+        $this->set('weekdays', $localizedWeekdays);
+        $this->set('firstWeekDay', $firstWeekDayOfMonth);
+        $this->set('lastDay', $lastDayOfMonth);
+        $this->set('header', $monthHeader);
+        $this->set('current', $date);
+        $this->set('id', $id);
     }
 
     public function add() {

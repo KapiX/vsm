@@ -39,8 +39,16 @@
 		array('token' => '[0-9a-z]{64}')
 	);
 	Router::connect('/project/:id',
-		array('controller' => 'projects', 'action' => 'index'),
+		array('controller' => 'projects', 'action' => 'view'),
 		array('id' => '[0-9]+')
+	);
+	Router::connect('/project/:id/:year/:month',
+		array('controller' => 'projects', 'action' => 'view'),
+		array(
+			'id' => '[0-9]+',
+			'year' => '[12][0-9]{3}',
+			'month' => '0[1-9]|1[012]'
+		)
 	);
 	Router::connect('/project/:id/settings',
 		array('controller' => 'projects', 'action' => 'settings'),
