@@ -59,41 +59,4 @@ class SettingsController extends AppController {
             $this->request->data['ProjectVsmSettings'] = $this->ProjectVsmSettings->read(null, $vsm_settings['ProjectVsmSettings']['id'])['ProjectVsmSettings'];
         }
     }
-
-    public function remove_user_from_project() {
-        if(!array_key_exists('Settings', $this->request->data) ||
-           !array_key_exists('projectId', $this->request->data['Settings']) ||
-           !array_key_exists('userId', $this->request->data['Settings'])) {
-            return $this->redirect($this->referer());
-        }
-        $projectId = $this->request->data['Settings']['projectId'];
-        $userId = $this->request->data['Settings']['userId'];
-        if (!$this->Project->userCanEdit($projectId, $this->Auth->user('id'))) {
-            return $this->redirect($this->referer());
-        }
-        $this->ProjectsUsers->deleteAll(array('ProjectsUsers.user_id' => $userId, 'ProjectsUsers.project_id' => $projectId), false);
-        return $this->redirect($this->referer());
-    }
-
-    public function add_user_from_project() {
-        if(!array_key_exists('Settings', $this->request->data) ||
-           !array_key_exists('projectId', $this->request->data['Settings']) ||
-           !array_key_exists('userId', $this->request->data['Settings'])) {
-            return $this->redirect($this->referer());
-        }
-        $projectId = $this->request->data['Settings']['projectId'];
-        $userId = $this->request->data['Settings']['userId'];
-        if (!$this->Project->userCanEdit($projectId, $this->Auth->user('id'))) {
-            return $this->redirect($this->referer());
-        }
-        $this->ProjectsUsers->create();
-        $data = array(
-                'ProjectsUsers' => array(
-                    'project_id'=>$projectId,
-                    'user_id'=>$userId
-                )
-        );
-        $this->ProjectsUsers->save($data);
-        return $this->redirect($this->referer());
-    }
 }

@@ -114,4 +114,18 @@ class UsersController extends AppController {
         }
         $this->PasswordToken->deleteExpiredTokens();
     }
+
+    public function get_users() {
+        if($this->RequestHandler->isAjax()) {
+            $users = $this->User->find('list', array(
+                'fields' => array('id', 'email'),
+                'recursive' => 0,
+            ));
+            $users = array_fill_keys($users, null);
+            $this->set('users', $users);
+            $this->render('get_users', 'ajax');
+        } else {
+            $this->redirect($this->referer());
+        }
+    }
 }

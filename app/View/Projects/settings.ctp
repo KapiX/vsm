@@ -2,10 +2,22 @@
  $(document).ready(function(){
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
     $('.modal-trigger').leanModal();
+
+    $.ajax({
+        url: "<?php echo $this->Html->url(array('controller' => 'users', 'action' => 'get_users')) ?>",
+        cache: false,
+        type: 'GET',
+        dataType: 'json',
+        success: function (usersData) {
+            $('input#search').autocomplete({
+                data: usersData
+            });
+        }
+    });
   });
 </script>
-
-<h3 class="header"><i class="material-icons" style="font-size:2rem;">directions_run</i><?php echo __('Sprints') ?></h3>
+<h3>[<?php echo $project['short_name'] ?>] <?php echo $project['name'] ?> settings</h3>
+<h4 class="header"><i class="material-icons" style="font-size:1.5rem;">directions_run</i><?php echo __('Sprints') ?></h4>
 
 <ul class="collapsible" data-collapsible="accordion">
 <li>
@@ -22,12 +34,18 @@
 </li>
 </ul>
 
-<h3 class="header"><i class="material-icons" style="font-size:2rem;">person</i><?php echo __('Users') ?></h3>
+<h4 class="header"><i class="material-icons" style="font-size:1.5rem;">person</i><?php echo __('Users') ?></h4>
 <ul class="collection">
-    <li class="collection-item"><div>Alvin<a href="#!" class="red-text secondary-content"><i class="material-icons">remove_circle_outline</i></a></div></li>
-    <li class="collection-item"><div>Alvin<a href="#!" class="red-text secondary-content"><i class="material-icons">remove_circle_outline</i></a></div></li>
-    <li class="collection-item"><div>Alvin<a href="#!" class="red-text secondary-content"><i class="material-icons">remove_circle_outline</i></a></div></li>
-    <li class="collection-item"><div>Alvin<a href="#!" class="red-text secondary-content"><i class="material-icons">remove_circle_outline</i></a></div></li>
+<?php foreach($users as $user): ?>
+    <li class="collection-item"><div><?php echo $user['first_name'] . ' ' . $user['last_name'] ?>
+    <?php if($user['id'] != $project['owner_id']): ?>
+        <?php $url = $this->Html->url(array('controller' => 'projects', 'action' => 'remove_user', 'id' => $project['id'], 'user_id' => $user['id'])); ?>
+        <a href="<?php echo $url ?>" class="red-text secondary-content"><i class="material-icons">remove_circle_outline</i></a>
+    <?php else: ?>
+        <a href="#!" class="yellow-text secondary-content text-darken-2" title="<?php echo __('Owner') ?>"><i class="material-icons">grade</i></a>
+    <?php endif ?>
+    </div></li>
+<?php endforeach ?>
 </ul>
 
 <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
@@ -40,21 +58,29 @@
 </ul>
 </div>
 
-<div id="add-user" class="modal bottom-sheet">
+<div id="add-user" class="modal modal-fixed-footer">
     <div class="modal-content">
         <h4><?php echo __('Add user') ?></h4>
+        <div class="row">
+            <div class="col s12">
+                <?php echo $this->Form->create(false, array('url' => array('action' => 'add_user', 'id' => $project['id']))); ?>
+                <div class="row">
+                    <?php echo $this->Form->input('search', ['div' => 'col s12', 'before' => '<i class="material-icons prefix">search</i>']) ?>
+                </div>
+                <div class="row">
+                    <?php echo $this->Form->end(array('label' => 'add', 'class' => 'col s12 btn large')); ?>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col s12">
                 <?php echo $this->Form->create(false, array('action' => 'invite_to_project')); ?>
                 <?php echo $this->Form->hidden('project_id', array('value'=> 1)); ?>
                 <div class="row">
-                    <?php /*echo $this->Form->input('search', ['div' => 'col s6', 'before' => '<i class="material-icons prefix">search</i>'])*/ ?>
-                    <?php echo $this->Form->input('email', ['div' => 'col s6', 'before' => '<i class="material-icons prefix">mail</i>']) ?>
+                    <?php echo $this->Form->input('email', ['div' => 'col s12', 'before' => '<i class="material-icons prefix">mail</i>']) ?>
                 </div>
                 <div class="row">
-                    <!--input type="submit" value="send" class="col s6 btn large"-->
-                    <!--<input type="submit" value="invite" class="col s6 btn large">-->
-                    <?php echo $this->Form->end(array('label' => 'invite', 'class' => 'col s6 btn large')); ?>
+                    <?php echo $this->Form->end(array('label' => 'invite', 'class' => 'col s12 btn large')); ?>
                 </div>
             </div>
         </div>

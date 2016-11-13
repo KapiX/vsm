@@ -48,7 +48,8 @@ class AppController extends Controller {
                     'fields' => array('username' => 'email')
                 )
             )
-        )
+        ),
+        'RequestHandler'
     );
     public $helpers = array(
         'Form' => array(

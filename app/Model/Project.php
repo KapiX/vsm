@@ -15,9 +15,15 @@ class Project extends AppModel {
     public $hasOne = 'ProjectVsmSettings';
     
     public function userCanEdit($projectId, $userId) {
-        $thisProject = $this->find('first', 
+        $thisProject = $this->find('first',
                 array('recursive' => -1, 'fields' => 'Project.owner_id', 'conditions' => array('Project.id' => $projectId)));
         return $userId === $thisProject['Project']['owner_id'];
+    }
+
+    public function userCanBeRemoved($projectId, $userId) {
+        $thisProject = $this->find('first',
+                array('recursive' => -1, 'fields' => 'Project.owner_id', 'conditions' => array('Project.id' => $projectId)));
+        return $userId !== $thisProject['Project']['owner_id'];
     }
     
 }

@@ -38,7 +38,24 @@
 		array('controller' => 'Users', 'action' => 'reset'),
 		array('token' => '[0-9a-z]{64}')
 	);
-
+	Router::connect('/project/:id',
+		array('controller' => 'projects', 'action' => 'index'),
+		array('id' => '[0-9]+')
+	);
+	Router::connect('/project/:id/settings',
+		array('controller' => 'projects', 'action' => 'settings'),
+		array('id' => '[0-9]+')
+	);
+	Router::connect('/project/:id/add_user',
+		array('controller' => 'projects', 'action' => 'add_user'),
+		array('id' => '[0-9]+',
+			  'user_id' => '[0-9]+')
+	);
+	Router::connect('/project/:id/remove_user/:user_id',
+		array('controller' => 'projects', 'action' => 'remove_user'),
+		array('id' => '[0-9]+',
+			  'user_id' => '[0-9]+')
+	);
 /**
  * Load all plugin routes. See the CakePlugin documentation on
  * how to customize the loading of plugin routes.

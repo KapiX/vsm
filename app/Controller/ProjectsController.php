@@ -40,6 +40,74 @@ class ProjectsController extends AppController {
     }
 
     public function settings() {
+        $id = $this->request->params['id'];
+        if(empty($id)) {
+            $this->redirect(array('action' => 'index'));
+        }
+        $row = $this->Project->find('first', array(
+            'contain' => 'User',
+            'recursive' => 1,
+            'conditions' => array('Project.id' => $id),
+        ));
+        $this->set('project', $row['Project']);
+        $this->set('users', $row['User']);
+    }
+
+    public function add_user() {
+        $project_id = $this->request->params['id'];
+        if($this->request->is('post') && !empty($project_id)) {
+            $email = $this->request->data['search'];
+            $this->loadModel('User');
+            $this->loadModel('ProjectsUsers');
+            if($this->Project->userCanEdit($project_id, $this->Auth->user('id'))) {
+                $user = $this->User->find('first', array(
+                    'conditions' => array('email' => $email),
+                    'recursive' => -1
+                ))['User'];
+                if($user) {
+                    $this->ProjectsUsers->create();
+                    $data = array(
+                        'project_id' => $project_id,
+                        'user_id' => $user['id']
+                    );
+                    if($this->ProjectsUsers->save($data)) {
+                        $this->Session->setFlash(__('User added to project.'), 'success');
+                    } else {
+                        $this->Session->setFlash(__('Could not save.'), 'error');
+                    }
+                } else {
+                    $this->Session->setFlash(__('User not found.'), 'error');
+                }
+            } else {
+                $this->Session->setFlash(__('Insufficient permissions.'), 'error');
+            }
+            $this->redirect(array('action' => 'settings', 'id' => $project_id));
+        }
+        $this->redirect($this->referer());
+    }
+
+    public function remove_user() {
+        $project_id = $this->request->params['id'];
+        $user_id = $this->request->params['user_id'];
+        if(!(empty($project_id) && empty($user_id))) {
+            if($this->Project->userCanEdit($project_id, $this->Auth->user('id'))) {
+                if($this->Project->userCanBeRemoved($project_id, $user_id)) {
+                    $this->loadModel('ProjectsUsers');
+                    $data = array(
+                        'project_id' => $project_id,
+                        'user_id' => $user_id
+                    );
+                    $this->ProjectsUsers->deleteAll($data);
+                    $this->Session->setFlash(__('User removed from the project.'), 'success');
+                } else {
+                    $this->Session->setFlash(__('Project owner cannot be removed.'), 'error');
+                }
+            } else {
+                $this->Session->setFlash(__('Insufficient permissions.'), 'error');
+            }
+            $this->redirect(array('action' => 'settings', 'id' => $project_id));
+        }
+        $this->redirect($this->referer());
     }
 
     public function invite_to_project()
