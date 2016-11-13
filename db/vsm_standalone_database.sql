@@ -78,8 +78,8 @@ CREATE TABLE IF NOT EXISTS `sprints` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `project_id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `start_date` datetime,
-  `end_date` datetime,
+  `start_date` date,
+  `end_date` date,
   PRIMARY KEY (`id`)
 );
 

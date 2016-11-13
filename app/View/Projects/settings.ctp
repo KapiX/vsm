@@ -14,6 +14,11 @@
             });
         }
     });
+
+    $('.datepicker').pickadate({
+        selectMonths: true,
+        selectYears: 15
+    })
   });
 </script>
 <h3>[<?php echo $project['short_name'] ?>] <?php echo $project['name'] ?> settings</h3>
@@ -53,7 +58,7 @@
     <i class="large material-icons">add</i>
 </a>
 <ul>
-    <li><a class="btn-floating btn modal-trigger" href="#add-sprint"><i class="material-icons">directions_run</i></a></li>
+    <li><a class="btn-floating modal-trigger" href="#add-sprint"><i class="material-icons">directions_run</i></a></li>
     <li><a class="btn-floating modal-trigger" href="#add-user"><i class="material-icons">person</i></a></li>
 </ul>
 </div>
@@ -83,6 +88,28 @@
                     <?php echo $this->Form->end(array('label' => 'invite', 'class' => 'col s12 btn large')); ?>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+</div>
+
+<div id="add-sprint" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h4><?php echo __('Add sprint') ?></h4>
+        <?php echo $this->Form->create('Sprint', array('url' => array('controller' => 'projects', 'action' => 'add_sprint', 'id' => $project['id']))); ?>
+        <div class="row">
+            <?php echo $this->Form->input('name', ['div' => 'col s12']) ?>
+        </div>
+        <div class="row">
+            <?php echo $this->Form->input('start_date', ['type' => 'date', 'class' => 'datepicker', 'div' => 'col s12']) ?>
+        </div>
+        <div class="row">
+            <?php echo $this->Form->input('end_date', ['type' => 'date', 'class' => 'datepicker', 'div' => 'col s12']) ?>
+        </div>
+        <div class="row">
+            <?php echo $this->Form->end(array('label' => 'add', 'class' => 'col s12 btn large')); ?>
         </div>
     </div>
     <div class="modal-footer">

@@ -186,4 +186,30 @@ class ProjectsController extends AppController {
         }
         return $this->redirect($this->referer());
     }
+
+    public function add_sprint() {
+        $project_id = $this->request->params['id'];
+        if($this->request->is('post') && !empty($project_id)) {
+            $email = $this->request->data['search'];
+            $this->loadModel('Sprints');
+            if($this->Project->userCanEdit($project_id, $this->Auth->user('id'))) {
+                $this->Sprints->create();
+                $data = array(
+                    'project_id' => $project_id,
+                    'name' => $this->request->data['Sprint']['name'],
+                    'start_date' => CakeTime::format($this->request->data['Sprint']['start_date'], '%Y-%m-%d'),
+                    'end_date' => CakeTime::format($this->request->data['Sprint']['end_date'], '%Y-%m-%d')
+                );
+                if($this->Sprints->save($data)) {
+                    $this->Session->setFlash(__('Sprint added to project.'), 'success');
+                } else {
+                    $this->Session->setFlash(__('Could not save.'), 'error');
+                }
+            } else {
+                $this->Session->setFlash(__('Insufficient permissions.'), 'error');
+            }
+            $this->redirect(array('action' => 'settings', 'id' => $project_id));
+        }
+        $this->redirect($this->referer());
+    }
 }
