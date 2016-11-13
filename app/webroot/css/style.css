@@ -47,3 +47,8 @@ h3#month-year {
 .collapsible-body pre .code-highlight {
     background-color: #d0d0d0;
 }
+
+.collapsible-header .secondary-content i {
+    margin: 0 0 0 1rem;
+}
+

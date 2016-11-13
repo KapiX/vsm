@@ -72,12 +72,13 @@ class ProjectsController extends AppController {
             $this->redirect(array('action' => 'index'));
         }
         $row = $this->Project->find('first', array(
-            'contain' => 'User',
+            'contain' => array('User', 'Sprint'),
             'recursive' => 1,
             'conditions' => array('Project.id' => $id),
         ));
         $this->set('project', $row['Project']);
         $this->set('users', $row['User']);
+        $this->set('sprints', $row['Sprint']);
     }
 
     public function add_user() {

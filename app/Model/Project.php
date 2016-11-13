@@ -12,6 +12,15 @@ class Project extends AppModel {
             'unique'                => false
         )
     );
+    public $hasMany = array(
+        'Sprint' => array(
+            'className'             => 'Sprint',
+            'foreignKey'            => 'project_id',
+            'associationForeignKey' => 'id',
+            'order'                 => array('start_date ASC, end_date ASC'),
+            'unique'                => false
+        )
+    );
     public $hasOne = 'ProjectVsmSettings';
     
     public function userCanEdit($projectId, $userId) {

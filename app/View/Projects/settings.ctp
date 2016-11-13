@@ -25,18 +25,16 @@
 <h4 class="header"><i class="material-icons" style="font-size:1.5rem;">directions_run</i><?php echo __('Sprints') ?></h4>
 
 <ul class="collapsible" data-collapsible="accordion">
+<?php foreach($sprints as $sprint): ?>
 <li>
-    <div class="collapsible-header">Second<a href="#!" class="red-text secondary-content"><i class="material-icons">delete</i></a></div>
+    <?php $past = $this->Time->isPast($sprint['end_date']) ?>
+    <div class="collapsible-header <?php echo ($isPast ? 'grey lighten-2' : '') ?>"><?php echo $sprint['name'] ?>
+        <a href="#!" class="red-text secondary-content"><i class="material-icons">delete</i></a>
+        <a href="#!" class="grey-text secondary-content text-darken-1"><?php echo $this->Time->format($sprint['start_date'], '%d %b') ?>-<?php echo $this->Time->format($sprint['end_date'], '%d %b') ?></a>
+    </div>
     <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
 </li>
-<li>
-    <div class="collapsible-header">Second<a href="#!" class="red-text secondary-content"><i class="material-icons">delete</i></a></div>
-    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-</li>
-<li>
-    <div class="collapsible-header">Second<a href="#!" class="red-text secondary-content"><i class="material-icons">delete</i></a></div>
-    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-</li>
+<?php endforeach ?>
 </ul>
 
 <h4 class="header"><i class="material-icons" style="font-size:1.5rem;">person</i><?php echo __('Users') ?></h4>
