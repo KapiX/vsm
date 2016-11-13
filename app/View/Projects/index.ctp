@@ -8,7 +8,7 @@
                 <p></p>
             </div>
             <div class="card-action">
-                <a href="#"><?php echo __('Open') ?></a>
+                <?php echo $this->Html->link(__('Open'), array('controller' => 'projects', 'action' => 'view', 'id' => $project['id'])); ?>
                 <?php echo $this->Html->link(__('Settings'), array('controller' => 'projects', 'action' => 'settings', 'id' => $project['id'])); ?>
             </div>
         </div>
