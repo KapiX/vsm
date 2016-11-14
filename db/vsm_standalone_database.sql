@@ -80,13 +80,6 @@ CREATE TABLE IF NOT EXISTS `sprints` (
   `name` varchar(100) NOT NULL,
   `start_date` date,
   `end_date` date,
-  PRIMARY KEY (`id`)
-);
-
-DROP TABLE IF EXISTS `sprint_vsm_settings`;
-CREATE TABLE IF NOT EXISTS `sprint_vsm_settings` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `sprint_id` int(11) NOT NULL,
   `report_weekdays` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 );

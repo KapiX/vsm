@@ -199,7 +199,8 @@ class ProjectsController extends AppController {
                     'project_id' => $project_id,
                     'name' => $this->request->data['Sprint']['name'],
                     'start_date' => CakeTime::format($this->request->data['Sprint']['start_date'], '%Y-%m-%d'),
-                    'end_date' => CakeTime::format($this->request->data['Sprint']['end_date'], '%Y-%m-%d')
+                    'end_date' => CakeTime::format($this->request->data['Sprint']['end_date'], '%Y-%m-%d'),
+                    'report_weekdays' => ''
                 );
                 if($this->Sprints->save($data)) {
                     $this->Session->setFlash(__('Sprint added to project.'), 'success');
