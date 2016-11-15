@@ -93,15 +93,19 @@ class ProjectsController extends AppController {
                     'recursive' => -1
                 ))['User'];
                 if($user) {
-                    $this->ProjectsUsers->create();
-                    $data = array(
-                        'project_id' => $project_id,
-                        'user_id' => $user['id']
-                    );
-                    if($this->ProjectsUsers->save($data)) {
-                        $this->Session->setFlash(__('User added to project.'), 'success');
+                    if(!$this->ProjectsUsers->userInProject($user['id'], $project_id)) {
+                        $this->ProjectsUsers->create();
+                        $data = array(
+                            'project_id' => $project_id,
+                            'user_id' => $user['id']
+                        );
+                        if($this->ProjectsUsers->save($data)) {
+                            $this->Session->setFlash(__('User added to project.'), 'success');
+                        } else {
+                            $this->Session->setFlash(__('Could not save.'), 'error');
+                        }
                     } else {
-                        $this->Session->setFlash(__('Could not save.'), 'error');
+                        $this->Session->setFlash(__('User is already assigned to project.'), 'error');
                     }
                 } else {
                     $this->Session->setFlash(__('User not found.'), 'error');
