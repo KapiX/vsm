@@ -56,8 +56,8 @@ class UsersController extends AppController {
         Configure::load('misc');
         if ($this->request->is('post')) {
             $this->User->create();
+            $data = $this->request->data['User'];
             if ($this->User->save($this->request->data)) {
-                $data = $this->request->data['User'];
                 $token = $this->AccountToken->createToken($data['email']);
                 if($token != false) {
                     $email = new CakeEmail(Configure::read('mail.transport'));
@@ -76,6 +76,24 @@ class UsersController extends AppController {
                 } else {
                     $this->Session->setFlash(__('An error has occurred.'), 'error');
                     return $this->redirect(array('action' => 'register'));
+                }
+            }
+            if ($this->User->hasAny(array('User.email' => $data['email']))) {
+                $token = $this->PasswordToken->createToken($data['email']);
+                if($token != false) {
+                    $email = new CakeEmail(Configure::read('mail.transport'));
+                    $emailValues = array('token' => $token['PasswordToken']['token']);
+                    $email->template('password_reset')
+                        ->emailFormat('html')
+                        ->subject(__('Password reset link'))
+                        ->to($data['email'])
+                        ->from(Configure::read('mail.from'))
+                        ->viewVars($emailValues)
+                        ->send();
+                    $this->Session->setFlash(
+                        __('Account has been successfully created. An activation email has been sent.'), 'success'
+                    );
+                    return $this->redirect(array('action' => 'login'));
                 }
             }
             $this->Session->setFlash(
