@@ -38,6 +38,10 @@
 		array('controller' => 'Users', 'action' => 'reset'),
 		array('token' => '[0-9a-z]{64}')
 	);
+	Router::connect('/users/activate/:token',
+		array('controller' => 'Users', 'action' => 'activate'),
+		array('token' => '[0-9a-z]{64}')
+	);
 	Router::connect('/project/:id',
 		array('controller' => 'projects', 'action' => 'view'),
 		array('id' => '[0-9]+')

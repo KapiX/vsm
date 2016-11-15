@@ -23,10 +23,11 @@
 			<br />Email: <?php echo $new_user_email ?>
 			<br />Password: <?php echo $password ?>
 		</p>
-		<p>Please click the button below to start using VSM.</p>
-		<?php echo $this->Html->link('log in to VSM', array(
+		<p>Click the link below to activate your account.</p>
+		<?php echo $this->Html->link('Activate account', array(
 					    'controller' => 'users',
-					    'action' => 'login',
+					    'action' => 'activate',
+													$token,
 					    'full_base' => true
 					));
 		?>

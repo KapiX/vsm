@@ -144,6 +144,7 @@ class ProjectsController extends AppController {
             array_key_exists('project_id', $this->request->data)) {
             $this->loadModel('User');
             $this->loadModel('ProjectsUsers');
+            $this->loadModel('AccountToken');
             $projectId = $this->request->data['project_id'];
             if ($this->Project->userCanEdit($projectId, $this->Auth->user('id'))) {
                 $new_user_password = $this->random_password();
@@ -157,27 +158,33 @@ class ProjectsController extends AppController {
                 );
                 if ($this->User->save($user_data)) {
                     Configure::load('misc');
-                    $userId = $this->User->id;
-                    $this->ProjectsUsers->create();
-                    $data = array(
-                            'ProjectsUsers' => array(
-                                'project_id' => $projectId,
-                                'user_id' => $userId
-                            )
-                    );
-                    $this->ProjectsUsers->save($data);
-                    $Email = new CakeEmail();
-                    $emailValues = array('new_user_email' => $new_user_email,
-                                         'inviter_email' => $this->Auth->user('email'),
-                                         'password' => $new_user_password);
-                    $Email->config(Configure::read('mail.transport'))
-                       ->template('invitation')
-                       ->emailFormat('html')
-                       ->to($new_user_email)
-                       ->from(Configure::read('mail.from'))
-                       ->viewVars($emailValues)
-                       ->send();
-                    $this->Session->setFlash(__('Invitation has been sent.'), 'success');
+                    $token = $this->AccountToken->createToken($new_user_email);
+                    if ($token != false) {
+                        $userId = $this->User->id;
+                        $this->ProjectsUsers->create();
+                        $data = array(
+                                'ProjectsUsers' => array(
+                                    'project_id' => $projectId,
+                                    'user_id' => $userId
+                                )
+                        );
+                        $this->ProjectsUsers->save($data);
+                        $Email = new CakeEmail();
+                        $emailValues = array('new_user_email' => $new_user_email,
+                                             'inviter_email' => $this->Auth->user('email'),
+                                             'password' => $new_user_password,
+                                             'token' => $token['AccountToken']['token']);
+                        $Email->config(Configure::read('mail.transport'))
+                           ->template('invitation')
+                           ->emailFormat('html')
+                           ->to($new_user_email)
+                           ->from(Configure::read('mail.from'))
+                           ->viewVars($emailValues)
+                           ->send();
+                        $this->Session->setFlash(__('Invitation has been sent.'), 'success');
+                    } else {
+                        $this->Session->setFlash(__('An error has occurred.'), 'error');
+                    }
                 } else {
                     $this->Session->setFlash(__('Account could not be created. Please, try again.'), 'error');
                 }

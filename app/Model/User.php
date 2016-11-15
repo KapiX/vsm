@@ -14,7 +14,7 @@ class User extends AppModel {
             'unique'                => false
         )
     );
-    public $hasMany = array('UserScrumReport', 'UserUserScrumReport');  
+    public $hasMany = array('UserScrumReport', 'UserUserScrumReport');
 
     public $validate = array(
         'email' => array(
@@ -37,7 +37,7 @@ class User extends AppModel {
             'required' => array(
                 'rule' => array('minLength', '1'),
                 'message' => 'No new password',
-            )  
+            )
         ),
         'confirm_new_password' => array(
             'rule' => 'passwordsMatch',
@@ -64,11 +64,11 @@ class User extends AppModel {
         }
         return true;
     }
-    
+
     public function passwordsMatch($confirm_new_password) {
         return $confirm_new_password['confirm_new_password'] === $this->data[$this->alias]['password'];
     }
-    
+
     public function checkCurrentPassword($current_password) {
         $this->id = AuthComponent::user('id');
         $passwordHasher = new BlowfishPasswordHasher();

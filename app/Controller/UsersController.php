@@ -4,11 +4,11 @@ App::uses('AppController', 'Controller');
 App::uses('CakeEmail', 'Network/Email');
 
 class UsersController extends AppController {
-    var $uses = array('AppSettings', 'PasswordToken');
+    var $uses = array('AppSettings', 'PasswordToken', 'AccountToken');
 
     public function beforeFilter() {
         parent::beforeFilter();
-        $this->Auth->allow('register', 'forgot_password', 'reset');
+        $this->Auth->allow('register', 'forgot_password', 'reset', 'activate');
     }
 
     public function login() {
@@ -19,10 +19,18 @@ class UsersController extends AppController {
         $this->set('allow_registration', $app_settings['AppSettings']['value'] == 'True');
         if ($this->request->is('post')) {
             if ($this->Auth->login()) {
-                $this->Session->setFlash(
-                    __('Logged in successfully.'), 'success'
-                );
-                return $this->redirect($this->Auth->redirectUrl());
+                if ($this->Auth->user('is_active') == 1) {
+                    $this->Session->setFlash(
+                        __('Logged in successfully.'), 'success'
+                    );
+                    return $this->redirect($this->Auth->redirectUrl());
+                } else {
+                    $this->Auth->logout();
+                    $this->Session->setFlash(
+                        __('Your account is inactive. Please check your email.'), 'error'
+                    );
+                    return $this->redirect(array('action' => 'login'));
+                }
             }
             $this->Session->setFlash(
                 __('Invalid username or password, try again.'), 'error'
@@ -45,13 +53,30 @@ class UsersController extends AppController {
             );
             return $this->redirect(array('action' => 'login'));
         }
+        Configure::load('misc');
         if ($this->request->is('post')) {
             $this->User->create();
             if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(
-                    __('Account has been successfully created. You can log in now.'), 'success'
-                );
-                return $this->redirect(array('action' => 'login'));
+                $data = $this->request->data['User'];
+                $token = $this->AccountToken->createToken($data['email']);
+                if($token != false) {
+                    $email = new CakeEmail(Configure::read('mail.transport'));
+                    $emailValues = array('token' => $token['AccountToken']['token']);
+                    $email->template('activate_account')
+                        ->emailFormat('html')
+                        ->subject(__('Account activation'))
+                        ->to($data['email'])
+                        ->from(Configure::read('mail.from'))
+                        ->viewVars($emailValues)
+                        ->send();
+                    $this->Session->setFlash(
+                        __('Account has been successfully created. An activation email has been sent.'), 'success'
+                    );
+                    return $this->redirect(array('action' => 'login'));
+                } else {
+                    $this->Session->setFlash(__('An error has occurred.'), 'error');
+                    return $this->redirect(array('action' => 'register'));
+                }
             }
             $this->Session->setFlash(
                 __('Account could not be created. Please, try again.'), 'error'
@@ -113,6 +138,37 @@ class UsersController extends AppController {
             $this->redirect(array('action' => 'login'));
         }
         $this->PasswordToken->deleteExpiredTokens();
+    }
+
+    public function activate() {
+        if($this->Auth->loggedIn()) {
+            $this->redirect('/');
+        }
+        $token = $this->AccountToken->read(array(), $this->request->params['token'])['AccountToken'];
+        if(strtotime($token['expires']) >= time()) {
+            $id = $token['user_id'];
+            $data = array(
+                    'User' => array(
+                        'id' => $id,
+                        'is_active' => 1
+                    )
+            );
+            if($this->User->save($data)) {
+                $this->AccountToken->delete($token['token']);
+                $this->Session->setFlash(__('Your account has been activated. You can login now'), 'success');
+                $this->redirect(array('action' => 'login'));
+            } else {
+                $errors = '';
+                foreach($this->User->validationErrors as $validationError) {
+                    $errors .= '<p>' . $validationError[0] . '</p>';
+                }
+                $this->set('errors', $errors);
+            }
+        } else {
+            $this->Session->setFlash(__('This token has expired.'), 'error');
+            $this->redirect(array('action' => 'login'));
+        }
+        $this->AccountToken->deleteExpiredTokens();
     }
 
     public function get_users() {

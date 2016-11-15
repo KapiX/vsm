@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS `users`(
   `initials` varchar(8) DEFAULT NULL,
   `created` datetime,
   `modified` datetime,
+  `is_active` boolean DEFAULT 0,
   PRIMARY KEY (`id`));
 
 DROP TABLE IF EXISTS `projects`;
@@ -94,6 +95,14 @@ CREATE TABLE IF NOT EXISTS `sprints_users` (
 
 DROP TABLE IF EXISTS `password_tokens`;
 CREATE TABLE IF NOT EXISTS `password_tokens` (
+  `token` char(64) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `expires` datetime NOT NULL,
+  PRIMARY KEY(`token`)
+);
+
+DROP TABLE IF EXISTS `account_tokens`;
+CREATE TABLE IF NOT EXISTS `account_tokens` (
   `token` char(64) NOT NULL,
   `user_id` int(11) NOT NULL,
   `expires` datetime NOT NULL,
