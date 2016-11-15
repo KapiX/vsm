@@ -1,6 +1,6 @@
 h3#month-year {
     width:100%;
-} 
+}
 
 #calendar {
     border-collapse: collapse;
@@ -52,3 +52,47 @@ h3#month-year {
     margin: 0 0 0 1rem;
 }
 
+.dropdown-content {
+  background-color: #FFFFFF;
+  margin: 0;
+  display: none;
+  color: black;
+	margin-left: -1px; /* Add this to keep dropdown in line with edge of navbar */
+  overflow-y: auto; /* Changed this from overflow-y:auto; to overflow:hidden; */
+  opacity: 0;
+  position: absolute;
+  white-space: nowrap;
+  z-index: 1;
+  will-change: width, height;
+}
+
+.dropdown-list {
+  overflow-y: auto;
+  min-width: 400px; /* Changed this to accomodate content width */
+  max-height: 300px;
+  margin: 0;
+}
+
+.dropdown-content h5 {
+  padding: 10px 15px;
+}
+
+.nav-badge {
+    font-weight: 300;
+    font-size: 0.8rem;
+    color: #fff;
+    background-color: #26a69a;
+    border-radius: 2px;
+    min-width: 3rem;
+    padding: 4px 6px;
+    margin-left: 5px;
+}
+
+.time-text {
+    color: #7e838c;
+    font-size: 0.9;
+}
+
+.collection .dropdown-element-new {
+    background: #fff9db;
+}
