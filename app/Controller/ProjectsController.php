@@ -225,4 +225,23 @@ class ProjectsController extends AppController {
         }
         $this->redirect($this->referer());
     }
+
+    public function change_owner() {
+        $project_id = $this->request->params['id'];
+        if($this->request->is('post') && !empty($project_id)) {
+            $new_owner_id = $this->request->data['new_owner'];
+            $this->loadModel('Project');
+            if($this->Project->userCanEdit($project_id, $this->Auth->user('id'))) {
+                $data = array('id' => $project_id, 'owner_id' => $new_owner_id);
+                if($this->Project->save($data)) {
+                    $this->Session->setFlash(__('The owner has been changed.'), 'success');
+                } else {
+                    $this->Session->setFlash(__('Could not change.'), 'error');
+                }
+            } else {
+                $this->Session->setFlash(__('Insufficient permissions.'), 'error');
+            }
+        }
+        $this->redirect($this->referer());
+    }
 }

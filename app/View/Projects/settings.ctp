@@ -2,6 +2,7 @@
  $(document).ready(function(){
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
     $('.modal-trigger').leanModal();
+    $('select').material_select();
 
     $.ajax({
         url: "<?php echo $this->Html->url(array('controller' => 'users', 'action' => 'get_users')) ?>",
@@ -45,7 +46,7 @@
         <?php $url = $this->Html->url(array('controller' => 'projects', 'action' => 'remove_user', 'id' => $project['id'], 'user_id' => $user['id'])); ?>
         <a href="<?php echo $url ?>" class="red-text secondary-content"><i class="material-icons">remove_circle_outline</i></a>
     <?php else: ?>
-        <a href="#!" class="yellow-text secondary-content text-darken-2" title="<?php echo __('Owner') ?>"><i class="material-icons">grade</i></a>
+        <a href="#change-owner" class="modal-trigger yellow-text secondary-content text-darken-2" title="<?php echo __('Change Project Owner') ?>"><i class="material-icons">grade</i></a>
     <?php endif ?>
     </div></li>
 <?php endforeach ?>
@@ -78,7 +79,7 @@
         <div class="row">
             <div class="col s12">
                 <?php echo $this->Form->create(false, array('action' => 'invite_to_project')); ?>
-                <?php echo $this->Form->hidden('project_id', array('value'=> 1)); ?>
+                <?php echo $this->Form->hidden('project_id', array('value' => $project['id'])); ?>
                 <div class="row">
                     <?php echo $this->Form->input('email', ['div' => 'col s12', 'before' => '<i class="material-icons prefix">mail</i>']) ?>
                 </div>
@@ -108,6 +109,32 @@
         </div>
         <div class="row">
             <?php echo $this->Form->end(array('label' => 'add', 'class' => 'col s12 btn large')); ?>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+</div>
+
+<div id="change-owner" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h4><?php echo __('Change owner') ?></h4>
+        <?php echo $this->Form->create(false, array('url' => array('controller' => 'projects', 'action' => 'change_owner', 'id' => $project['id']))); ?>
+        <div class="row">
+            <div class="input-field col s12">
+                <select name="new_owner">
+                    <option value="" disabled selected>Choose user</option>
+                    <?php foreach($users as $user): ?>
+                        <?php if($user['id'] != $project['owner_id']): ?>
+                            <option value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></option>
+                        <?php endif ?>
+                    <?php endforeach ?>
+                </select>
+                <label>Materialize Select</label>
+            </div>
+        </div>
+        <div class="row">
+            <?php echo $this->Form->end(array('label' => 'Save', 'class' => 'col s12 btn large')); ?>
         </div>
     </div>
     <div class="modal-footer">
