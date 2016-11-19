@@ -1,6 +1,7 @@
 <?php
 $linkProjects = $this->html->link(__('Projects'), ['controller' => 'projects', 'action' => 'index']);
 $linkLogout = $this->Html->link(__('Logout'), ['controller' => 'users', 'action' => 'logout']);
+if(isset($user)) $linkUserProfile = $this->Html->link(__($username), ['controller' => 'users', 'action' => 'profile']);
 
 $urlHomepage = $this->Html->url('/');
 
@@ -18,7 +19,7 @@ $activeProjects = ($this->name == 'Projects') ? ' class="active"' : '';
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
         <?php if(isset($user)): ?>
-            <li><a href="#"><?php echo $username ?></a></li>
+            <li><?php echo $linkUserProfile ?></li>
             <li><a class='dropdown-button' href='#' data-activates='notification-dropdown' data-alignment="right" data-beloworigin="true" data-constrainwidth="false">Notifications<span class="nav-badge">2</span></a></li>
             <li<?php echo $activeProjects ?>><?php echo $linkProjects ?></li>
             <li><?php echo $linkLogout ?></li>
@@ -26,7 +27,7 @@ $activeProjects = ($this->name == 'Projects') ? ' class="active"' : '';
         </ul>
         <ul id="mobile-demo" class="side-nav">
         <?php if(isset($user)): ?>
-            <li><a href="#"><?php echo $username ?></a></li>
+            <li><?php echo $linkUserProfile ?></li>
             <li<?php echo $activeProjects ?>><?php echo $linkProjects ?></li>
             <li><?php echo $linkLogout ?></li>
         <?php endif ?>

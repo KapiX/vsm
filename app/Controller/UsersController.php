@@ -202,4 +202,53 @@ class UsersController extends AppController {
             $this->redirect($this->referer());
         }
     }
+
+    public function change_password() {
+        if ($this->request->is('post')) {
+            $response = '';
+            $user_id = $this->Auth->user('id');
+            $new_password = $this->request->data['User']['new_password'];
+            $confirm_new_password = $this->request->data['User']['confirm_new_password'];
+            $current_password = $this->request->data['User']['current_password'];
+            $data = array('id' => $user_id, 'password' => $new_password, 'current_password' => $current_password, 'new_password' => $new_password, 'confirm_new_password' => $confirm_new_password);
+
+            if($this->User->save($data)) {
+                $this->Session->setFlash(__('Password has been changed.'), 'success');
+            } else {
+                $errors = '';
+                foreach($this->User->validationErrors as $validationError) {
+                    $errors .= '<p>' . $validationError[0] . '</p>';
+                }
+                $this->set('errors', $errors);
+            }
+        }
+    }
+
+    public function profile() {
+      if ($this->request->is('post')) {
+          $response = '';
+          $user_id = $this->Auth->user('id');
+          $first_name = $this->request->data['User']['first_name'];
+          $last_name = $this->request->data['User']['last_name'];
+          $email = $this->request->data['User']['email'];
+          $initials = $this->request->data['User']['initials'];
+          $data = array('id' => $user_id, 'first_name' => $first_name, 'last_name' => $last_name, 'email' => $email, 'initials' => $initials);
+
+          if($this->User->save($data)) {
+              $this->Session->write('Auth', $this->User->read(null, $this->Auth->User('id')));
+              $this->Session->setFlash(__('User profile has been updated.'), 'success');
+          } else {
+              $errors = '';
+              foreach($this->User->validationErrors as $validationError) {
+                  $errors .= '<p>' . $validationError[0] . '</p>';
+              }
+              $this->set('errors', $errors);
+          }
+      }
+      $this->set('email', $this->Auth->user('email'));
+      $this->set('first_name', $this->Auth->user('first_name'));
+      $this->set('last_name', $this->Auth->user('last_name'));
+      $this->set('initials', $this->Auth->user('initials'));
+
+    }
 }
