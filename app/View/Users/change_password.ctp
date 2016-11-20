@@ -9,8 +9,8 @@ $(document).ready(function(){
   <div class="col s12 m12">
     <div class="card">
       <ul class="tabs">
-        <li class="tab col s6"><a target="_self" href="profile">My Profile</a></li>
-        <li class="tab col s6"><a class="active" href="#">Change Password</a></li>
+        <li class="tab col s6"><a target="_self" href="profile"><i class="material-icons" style="font-size:1.5rem;">contacts</i><?php echo __(' My Profile') ?></a></li>
+        <li class="tab col s6"><a class="active" href="#"><i class="material-icons" style="font-size:1.5rem;">lock</i><?php echo __(' Change Password') ?></a></li>
       </ul>
       <div class="col s12">
         <?php echo $this->Form->create('User', array('action' => "change_password")); ?>

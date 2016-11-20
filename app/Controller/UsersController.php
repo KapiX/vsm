@@ -237,6 +237,7 @@ class UsersController extends AppController {
           if($this->User->save($data)) {
               $this->Session->write('Auth', $this->User->read(null, $this->Auth->User('id')));
               $this->Session->setFlash(__('User profile has been updated.'), 'success');
+              $this->redirect($this->referer());
           } else {
               $errors = '';
               foreach($this->User->validationErrors as $validationError) {
