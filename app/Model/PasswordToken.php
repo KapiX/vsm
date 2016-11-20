@@ -17,7 +17,7 @@ class PasswordToken extends AppModel {
             $format = 'Y-m-d H:i:s';
             $this->User->id = $user_id;
             $password = $this->User->field('password'); // TODO: use salt instead?
-            $token = hash('sha256', date($format) . $password);
+            $token = Security::hash(date($format) . $password, 'sha256', true);
             // delete all existing tokens for this user
             $this->deleteAll(array('user_id' => $user_id));
             $this->create();

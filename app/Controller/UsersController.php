@@ -214,6 +214,7 @@ class UsersController extends AppController {
 
             if($this->User->save($data)) {
                 $this->Session->setFlash(__('Password has been changed.'), 'success');
+                $this->redirect($this->referer());
             } else {
                 $errors = '';
                 foreach($this->User->validationErrors as $validationError) {
