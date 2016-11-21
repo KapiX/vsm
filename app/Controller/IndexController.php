@@ -5,8 +5,8 @@ App::uses('CakeTime', 'Utility');
 
 class IndexController extends AppController {
     public function index() {
-        $month = $this->request->params['month'];
-        $year = $this->request->params['year'];
+        //$month = $this->request->params['month']; TO DO
+        //$year = $this->request->params['year']; TO DO
         if(empty($month)) $month = CakeTime::format('now', '%m');
         if(empty($year)) $year = CakeTime::format('now', '%Y');
 

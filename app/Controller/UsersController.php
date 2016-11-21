@@ -107,8 +107,8 @@ class UsersController extends AppController {
             $this->redirect('/');
         }
         Configure::load('misc');
-        $data = $this->request->data['User'];
         if($this->request->is('post') && array_key_exists('email', $data)) {
+            $data = $this->request->data['User'];
             $token = $this->PasswordToken->createToken($data['email']);
             if($token != false) {
                 $email = new CakeEmail(Configure::read('mail.transport'));
