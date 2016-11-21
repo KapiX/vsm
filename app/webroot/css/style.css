@@ -96,3 +96,7 @@ h3#month-year {
 .collection .dropdown-element-new {
     background: #fff9db;
 }
+
+nav i.material-icons {
+    height: inherit;
+}

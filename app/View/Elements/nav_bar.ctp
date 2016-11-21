@@ -1,9 +1,9 @@
 <?php
-$linkProjects = $this->html->link(__('Projects'), ['controller' => 'projects', 'action' => 'index']);
-$linkLogout = $this->Html->link(__('Logout'), ['controller' => 'users', 'action' => 'logout']);
+$linkProjects = $this->html->link(__('<i class="hide-on-large-only material-icons">toc</i>Projects'), ['controller' => 'projects', 'action' => 'index'], array('escape' => false));
+$linkLogout = $this->Html->link(__('<i class="hide-on-large-only material-icons">power_settings_new</i>Logout'), ['controller' => 'users', 'action' => 'logout'], array('escape' => false));
 if(isset($user)) $linkUser = $this->Html->link(__($username), ['controller' => 'users', 'action' => 'profile']);
-$linkProfile = $this->Html->link(__('Update Profile'), ['controller' => 'users', 'action' => 'profile']);
-$linkChangePassword = $this->Html->link(__('Change Password'), ['controller' => 'users', 'action' => 'change_password']);
+$linkProfile = $this->Html->link(__('<i class="hide-on-large-only material-icons">supervisor_account</i>Update Profile'), ['controller' => 'users', 'action' => 'profile'], array('escape' => false));
+$linkChangePassword = $this->Html->link(__('<i class="hide-on-large-only material-icons">vpn_key</i>Change Password'), ['controller' => 'users', 'action' => 'change_password'], array('escape' => false));
 
 $urlHomepage = $this->Html->url('/');
 
