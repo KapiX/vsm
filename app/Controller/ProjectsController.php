@@ -11,6 +11,10 @@ class ProjectsController extends AppController {
             'contain' => 'Project',
             'conditions' => ['User.id' => $this->Auth->user('id')],
             'recursive' => 1))['Project'];
+
+        foreach ($projects as $key => $project) {
+            $projects[$key]['userCanEdit'] = $this->Project->userCanEdit($project['id'], $this->Auth->user('id'));
+        }
         $this->set('projects', $projects);
     }
 
@@ -71,14 +75,18 @@ class ProjectsController extends AppController {
         if(empty($id)) {
             $this->redirect(array('action' => 'index'));
         }
-        $row = $this->Project->find('first', array(
-            'contain' => array('User', 'Sprint'),
-            'recursive' => 1,
-            'conditions' => array('Project.id' => $id),
-        ));
-        $this->set('project', $row['Project']);
-        $this->set('users', $row['User']);
-        $this->set('sprints', $row['Sprint']);
+        if($this->Project->userCanEdit($id, $this->Auth->user('id'))) {
+            $row = $this->Project->find('first', array(
+                'contain' => array('User', 'Sprint'),
+                'recursive' => 1,
+                'conditions' => array('Project.id' => $id),
+            ));
+            $this->set('project', $row['Project']);
+            $this->set('users', $row['User']);
+            $this->set('sprints', $row['Sprint']);
+        } else {
+            $this->redirect($this->referer());
+        }
     }
 
     public function add_user() {

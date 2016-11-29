@@ -9,7 +9,7 @@
             </div>
             <div class="card-action">
                 <?php echo $this->Html->link(__('Open'), array('controller' => 'projects', 'action' => 'view', 'id' => $project['id'])); ?>
-                <?php echo $this->Html->link(__('Settings'), array('controller' => 'projects', 'action' => 'settings', 'id' => $project['id'])); ?>
+                <?php if($project['userCanEdit']) echo $this->Html->link(__('Settings'), array('controller' => 'projects', 'action' => 'settings', 'id' => $project['id'])) ?>
             </div>
         </div>
     </div>
