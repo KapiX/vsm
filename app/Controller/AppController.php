@@ -56,7 +56,7 @@ class AppController extends Controller {
             'className' => 'MaterializeForm'
         )
     );
-    public $uses = array('Project', 'User');
+    public $uses = array('Project', 'User', 'Notification');
 
     function random_password( $length = 8 ) {
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -71,6 +71,8 @@ class AppController extends Controller {
             $this->set('username', $this->Auth->user('first_name'));
             $this->set('projects', $this->Project->find('all', array('recursive' => -1, 'fields' => 'id, short_name')));
             $this->set('myProjects', $this->User->find('first', array('contain' => 'Project', 'conditions' => array('User.id' => $this->Auth->user('id'))))['Project'] );
+            $this->set('myNotifications', $this->Notification->find('all', array('conditions' => array('Notification.user_id' => $this->Auth->user('id')))));
+            $this->set('newNotificationsCount', count($this->Notification->find('all', array('conditions' => array('Notification.user_id' => $this->Auth->user('id'), 'Notification.read' => 0)))));
         }
     }
 }

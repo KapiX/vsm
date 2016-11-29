@@ -18,8 +18,8 @@ class ProjectsController extends AppController {
         $id = $this->request->params['id'];
         if(empty($id))
             $this->redirect($this->referer());
-        $month = $this->request->params['month'];
-        $year = $this->request->params['year'];
+        if(array_key_exists('month', $this->request->params)) $month = $this->request->params['month'];
+        if(array_key_exists('year', $this->request->params)) $year = $this->request->params['year'];
         if(empty($month)) $month = CakeTime::format('now', '%m');
         if(empty($year)) $year = CakeTime::format('now', '%Y');
 
@@ -100,6 +100,7 @@ class ProjectsController extends AppController {
                             'user_id' => $user['id']
                         );
                         if($this->ProjectsUsers->save($data)) {
+                            $this->addUserToProjectNotification($project_id, $user['id']);
                             $this->Session->setFlash(__('User added to project.'), 'success');
                         } else {
                             $this->Session->setFlash(__('Could not save.'), 'error');
@@ -214,6 +215,7 @@ class ProjectsController extends AppController {
                     'report_weekdays' => ''
                 );
                 if($this->Sprints->save($data)) {
+                    $this->addNewSprintNotification($project_id, $this->Sprints->id);
                     $this->Session->setFlash(__('Sprint added to project.'), 'success');
                 } else {
                     $this->Session->setFlash(__('Could not save.'), 'error');
@@ -243,5 +245,24 @@ class ProjectsController extends AppController {
             }
         }
         $this->redirect($this->referer());
+    }
+
+    private function addNewSprintNotification($project_id, $sprint_id) {
+        $this->loadModel('SprintsUser');
+        $this->loadModel('Notification');
+        $sprint_users = $this->SprintsUser->find('all', array(
+            'conditions' => array('SprintsUser.id' => $sprint_id)
+        ));
+        $username = $this->Auth->user('first_name');
+        $this->Session->setFlash(__(serialize($sprint_users)), 'success');
+        foreach ($sprint_users as $sprint_user) {
+            $this->Notification->addNotification("project/$project_id/settings", "$username added new sprint.", $sprint_user['id'], "New Sprint");
+        }
+    }
+
+    private function addUserToProjectNotification($project_id, $user_id) {
+        $this->loadModel('Notification');
+        $username = $this->Auth->user('first_name');
+        $this->Notification->addNotification("project/$project_id", "$username added you to project.", $user_id, "Project");
     }
 }

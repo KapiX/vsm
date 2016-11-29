@@ -100,3 +100,26 @@ h3#month-year {
 nav i.material-icons {
     height: inherit;
 }
+
+#notification-dropdown > h5 {
+    display: inline;
+}
+
+
+
+#notification-dropdown > a {
+    display: inline;
+    color: #26a69a;
+    float: right;
+}
+
+#notification-dropdown > a:hover {
+    background: transparent;
+    text-decoration: underline;
+}
+
+#notification-dropdown > h5 span.nav-badge {
+    display: inline;
+    padding: 6px;
+    margin-left: 4px;
+}

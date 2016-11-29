@@ -115,3 +115,15 @@ CREATE TABLE IF NOT EXISTS `app_settings` (
   `value` varchar(50) NOT NULL,
   PRIMARY KEY (`name`)
 );
+
+DROP TABLE IF EXISTS `notifications`;
+CREATE TABLE IF NOT EXISTS `notifications` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `href` varchar(100) NOT NULL,
+  `created_time` datetime NOT NULL,
+  `read` boolean DEFAULT 0,
+  `text` varchar(300) NOT NULL,
+  `title` varchar(30) NOT NULL,  
+  PRIMARY KEY (`id`)
+);

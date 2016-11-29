@@ -24,7 +24,7 @@ $activeProjects = ($this->name == 'Projects') ? ' class="active"' : '';
         <ul class="right hide-on-med-and-down">
         <?php if(isset($user)): ?>
             <li><?php echo $linkUser ?></li>
-            <li><a class='dropdown-button' href='#' data-activates='notification-dropdown' data-alignment="right" data-beloworigin="true" data-constrainwidth="false">Notifications<span class="nav-badge">2</span></a></li>
+            <li><a class='dropdown-button' href='#' data-activates='notification-dropdown' data-alignment="right" data-beloworigin="true" data-constrainwidth="false">Notifications<span class="nav-badge"><?php echo $newNotificationsCount ? $newNotificationsCount : 0 ?></span></a></li>
             <li<?php echo $activeProjects ?>><?php echo $linkProjects ?></li>
             <li><?php echo $linkLogout ?></li>
         <?php endif ?>
@@ -40,37 +40,16 @@ $activeProjects = ($this->name == 'Projects') ? ' class="active"' : '';
     </div>
 </nav>
 <div id="notification-dropdown" class="dropdown-content">
-    <h5>Notifications<span class="new badge gray">2</span></h5>
+    <h5>Notifications</h5><a href="#" >View all reports</a>
     <ul class="dropdown-list collection">
-        <a href="#" class="collection-item avatar dropdown-element-new">
-            <i class="material-icons circle">add_alert</i>
-            <span class="title">New report</span>
-            <p>John added new report to Project 2</p>
-            <p class="time-text">10 minutes ago</p>
-        </a>
-        <a href="#" class="collection-item avatar">
-            <i class="material-icons circle">add_alert</i>
-            <span class="title">New report</span>
-            <p>John added new report to Project 2</p>
-            <p class="time-text">10 minutes ago</p>
-        </a>
-        <a href="#" class="collection-item avatar dropdown-element-new">
-            <i class="material-icons circle">add_alert</i>
-            <span class="title">New report</span>
-            <p>John added new report to Project 2</p>
-            <p class="time-text">10 minutes ago</p>
-        </a>
-        <a href="#" class="collection-item avatar">
-            <i class="material-icons circle">add_alert</i>
-            <span class="title">New report</span>
-            <p>John added new report to Project 2</p>
-            <p class="time-text">10 minutes ago</p>
-        </a>
-        <a href="#" class="collection-item avatar">
-            <i class="material-icons circle">add_alert</i>
-            <span class="title">New report</span>
-            <p>John added new report to Project 2</p>
-            <p class="time-text">10 minutes ago</p>
-        </a>
+        <?php foreach($myNotifications as $notification): ?>
+          <?php $link = "/vsm/notification/".$notification['Notification']['id'] ?>
+          <a href="<?php echo $link ?>" class="collection-item avatar <?php if(!$notification['Notification']['read']) echo "dropdown-element-new" ?>">
+              <i class="material-icons circle">add_alert</i>
+              <span class="title"><?php echo $notification['Notification']['title'] ?></span>
+              <p><?php echo $notification['Notification']['text'] ?></p>
+              <p class="time-text"><?php echo CakeTime::timeAgoInWords($notification['Notification']['created_time']) ?></p>
+          </a>
+        <?php endforeach ?>
     </ul>
 </div>

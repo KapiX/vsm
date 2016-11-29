@@ -75,6 +75,10 @@
 		array('controller' => 'projects', 'action' => 'change_owner'),
 		array('id' => '[0-9]+')
 	);
+	Router::connect('/notification/:id',
+		array('controller' => 'notifications', 'action' => 'read'),
+		array('id' => '[0-9]+')
+	);
 /**
  * Load all plugin routes. See the CakePlugin documentation on
  * how to customize the loading of plugin routes.
