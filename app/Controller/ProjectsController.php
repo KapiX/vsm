@@ -214,27 +214,39 @@ class ProjectsController extends AppController {
             $this->loadModel('Sprints');
             if($this->Project->userCanEdit($project_id, $this->Auth->user('id'))) {
                 $this->Sprints->create();
-                $data = array(
-                    'project_id' => $project_id,
-                    'name' => $this->request->data['Sprint']['name'],
-                    'start_date' => CakeTime::format($this->request->data['Sprint']['start_date'], '%Y-%m-%d'),
-                    'end_date' => CakeTime::format($this->request->data['Sprint']['end_date'], '%Y-%m-%d'),
-                    'report_weekdays' => ''
-                );
-                if($this->Sprints->save($data)) {
-                    $this->loadModel('ProjectsUsers');
-                    $this->loadModel('SprintsUser');
-                    $projects_users = $this->ProjectsUsers->find('all', array(
-                        'conditions' => array('ProjectsUsers.project_id' => $project_id)
-                    ));
-                    foreach ($projects_users as $project_user) {
-                        $this->SprintsUser->create();
-                        $this->SprintsUser->save(array('sprint_id' => $this->Sprints->id, 'user_id' => $project_user['ProjectsUsers']['user_id']));
+                $start_date = CakeTime::format($this->request->data['Sprint']['start_date'], '%Y-%m-%d');
+                $end_date = CakeTime::format($this->request->data['Sprint']['end_date'], '%Y-%m-%d');
+                if($start_date < $end_date) {
+                    $data = array(
+                        'project_id' => $project_id,
+                        'name' => $this->request->data['Sprint']['name'],
+                        'start_date' => $start_date,
+                        'end_date' => $end_date,
+                        'report_weekdays' => ''
+                    );
+                    if($this->Sprints->save($data)) {
+                        $this->loadModel('ProjectsUsers');
+                        $this->loadModel('SprintsUser');
+                        $projects_users = $this->ProjectsUsers->find('all', array(
+                            'conditions' => array('ProjectsUsers.project_id' => $project_id)
+                        ));
+                        foreach ($projects_users as $project_user) {
+                            $this->SprintsUser->create();
+                            $this->SprintsUser->save(array('sprint_id' => $this->Sprints->id, 'user_id' => $project_user['ProjectsUsers']['user_id']));
+                        }
+                        $this->loadModel('ScrumReport');
+                        while($start_date <= $end_date) {
+                            $this->ScrumReport->create();
+                            $this->ScrumReport->save(array('sprint_id' => $this->Sprints->id, 'deadline_date' => $start_date));
+                            $start_date = date('Y-m-d', strtotime($start_date . ' +1 day'));
+                        }
+                        $this->addNewSprintNotification($project_id, $this->Sprints->id);
+                        $this->Session->setFlash(__('Sprint added to project.'), 'success');
+                    } else {
+                        $this->Session->setFlash(__('Could not save.'), 'error');
                     }
-                    $this->addNewSprintNotification($project_id, $this->Sprints->id);
-                    $this->Session->setFlash(__('Sprint added to project.'), 'success');
                 } else {
-                    $this->Session->setFlash(__('Could not save.'), 'error');
+                    $this->Session->setFlash(__('Invalid sprint date.'), 'error');
                 }
             } else {
                 $this->Session->setFlash(__('Insufficient permissions.'), 'error');

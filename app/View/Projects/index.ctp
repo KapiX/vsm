@@ -1,7 +1,7 @@
 <?php $newline = true ?>
 <?php foreach($projects as $project): ?>
 <?php if($newline): ?><div class="row"><?php endif ?>
-    <div class="col s6">
+    <div class="col m6 s12">
         <div class="card blue-grey darken-1">
             <div class="card-content white-text">
                 <div class="card-title">[<?php echo $project['short_name'] ?>] <?php echo $project['name'] ?></div>
