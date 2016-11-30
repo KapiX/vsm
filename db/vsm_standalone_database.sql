@@ -67,13 +67,6 @@ CREATE TABLE IF NOT EXISTS `project_vsm_settings` (
   PRIMARY KEY (`id`)
 );
 
-DROP TABLE IF EXISTS `user_vsm_settings`;
-CREATE TABLE IF NOT EXISTS `user_vsm_settings` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-);
-
 DROP TABLE IF EXISTS `sprints`;
 CREATE TABLE IF NOT EXISTS `sprints` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
