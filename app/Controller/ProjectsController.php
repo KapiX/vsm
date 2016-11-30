@@ -36,6 +36,9 @@ class ProjectsController extends AppController {
         $lastDayOfMonth = CakeTime::format("last day of $date", '%d');
         $monthHeader = CakeTime::format($date, '%B %Y');
 
+        $project = $this->Project->findById($id)['Project'];
+
+        $this->set('project', $project);
         $this->set('weekdays', $localizedWeekdays);
         $this->set('firstWeekDay', $firstWeekDayOfMonth);
         $this->set('lastDay', $lastDayOfMonth);
