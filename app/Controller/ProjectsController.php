@@ -83,7 +83,7 @@ class ProjectsController extends AppController {
             ));
             $this->set('project', $row['Project']);
             $this->set('users', $row['User']);
-            $this->set('sprints', $row['Sprint']);
+            $this->set('sprints', array_reverse($row['Sprint']));
         } else {
             $this->redirect($this->referer());
         }

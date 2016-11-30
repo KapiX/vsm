@@ -48,7 +48,7 @@ $activeProjects = ($this->name == 'Projects') ? ' class="active"' : '';
               <i class="material-icons circle">add_alert</i>
               <span class="title"><?php echo $notification['Notification']['title'] ?></span>
               <p><?php echo $notification['Notification']['text'] ?></p>
-              <p class="time-text"><?php echo CakeTime::timeAgoInWords($notification['Notification']['created_time']) ?></p>
+              <p class="time-text"><?php echo $notification['Notification']['created_time'] ?></p>
           </a>
         <?php endforeach ?>
     </ul>

@@ -28,7 +28,7 @@
 <ul class="collapsible" data-collapsible="accordion">
 <?php foreach($sprints as $sprint): ?>
 <li>
-    <?php $past = $this->Time->isPast($sprint['end_date']) ?>
+    <?php $isPast = $this->Time->isPast($sprint['end_date']) ?>
     <div class="collapsible-header <?php echo ($isPast ? 'grey lighten-2' : '') ?>"><?php echo $sprint['name'] ?>
         <a href="#!" class="red-text secondary-content"><i class="material-icons">delete</i></a>
         <a href="#!" class="grey-text secondary-content text-darken-1"><?php echo $this->Time->format($sprint['start_date'], '%d %b') ?>-<?php echo $this->Time->format($sprint['end_date'], '%d %b') ?></a>

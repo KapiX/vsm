@@ -19,6 +19,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 App::uses('Controller', 'Controller');
+App::uses('CakeTime', 'Utility');
 
 /**
  * Application Controller
@@ -71,7 +72,11 @@ class AppController extends Controller {
             $this->set('username', $this->Auth->user('first_name'));
             $this->set('projects', $this->Project->find('all', array('recursive' => -1, 'fields' => 'id, short_name')));
             $this->set('myProjects', $this->User->find('first', array('contain' => 'Project', 'conditions' => array('User.id' => $this->Auth->user('id'))))['Project'] );
-            $this->set('myNotifications', $this->Notification->find('all', array('conditions' => array('Notification.user_id' => $this->Auth->user('id')))));
+            $notifications = $this->Notification->find('all', array('conditions' => array('Notification.user_id' => $this->Auth->user('id'))));
+            foreach($notifications as $key => $notification) {
+                $notifications[$key]['Notification']['created_time'] = CakeTime::timeAgoInWords($notification['Notification']['created_time']);
+            }
+            $this->set('myNotifications', $notifications);
             $this->set('newNotificationsCount', count($this->Notification->find('all', array('conditions' => array('Notification.user_id' => $this->Auth->user('id'), 'Notification.read' => 0)))));
         }
     }
