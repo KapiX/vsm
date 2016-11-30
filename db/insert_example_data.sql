@@ -48,14 +48,6 @@ INSERT INTO project_vsm_settings (id, project_id, report_overdue_notification_te
 INSERT INTO project_vsm_settings (id, project_id, report_overdue_notification_text, report_overdue_frequency_hours)
     VALUES (3,3,'???',5);
 
--- INSERT USER_VSM_SETTINGS
-INSERT INTO user_vsm_settings (id, user_id)
-    VALUES (1,1);
-INSERT INTO user_vsm_settings (id, user_id)
-    VALUES (2,2);
-INSERT INTO user_vsm_settings (id, user_id)
-    VALUES (3,3);
-
 -- INSERT SPRINTS
 INSERT INTO sprints (id, project_id, name, start_date, end_date, report_weekdays)
     VALUES (1,1, 'sprint 1', '2016-09-01 19:25:29', '2016-09-15 19:25:29', '1,3,5');
