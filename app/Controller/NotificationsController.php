@@ -8,7 +8,6 @@ class NotificationsController extends AppController {
 
     public function beforeFilter() {
         parent::beforeFilter();
-        $this->Auth->allow('read');
     }
     public function read() {
         $user_id = $this->Auth->user('id');

@@ -22,8 +22,8 @@ class ProjectsController extends AppController {
         $id = $this->request->params['id'];
         if(empty($id))
             $this->redirect($this->referer());
-        if(array_key_exists('month', $this->request->params)) $month = $this->request->params['month'];
-        if(array_key_exists('year', $this->request->params)) $year = $this->request->params['year'];
+        $month = $this->request->params['month'];
+        $year = $this->request->params['year'];
         if(empty($month)) $month = CakeTime::format('now', '%m');
         if(empty($year)) $year = CakeTime::format('now', '%Y');
 
