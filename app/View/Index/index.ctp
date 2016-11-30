@@ -9,7 +9,7 @@ $urlNext = $this->Html->url('/' . implode('/', array(
 ?>
 <div class="card-panel valign-wrapper">
     <a href="<?php echo $urlPrev ?>" class="btn-flat"><i class="material-icons valign">chevron_left</i></a>
-    <h3 class="header valign center-align" id="month-year"><?php echo $header ?></h3>
+    <h5 class="header valign center-align" id="month-year"><?php echo $header ?></h5>
     <a href="<?php echo $urlNext ?>" class="btn-flat"><i class="material-icons valign">chevron_right</i></a>
 </div>
 <div class="row">
