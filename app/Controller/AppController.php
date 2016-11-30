@@ -76,7 +76,7 @@ class AppController extends Controller {
             foreach($notifications as $key => $notification) {
                 $notifications[$key]['Notification']['created_time'] = CakeTime::timeAgoInWords($notification['Notification']['created_time']);
             }
-            $this->set('myNotifications', $notifications);
+            $this->set('myNotifications', array_reverse($notifications));
             $this->set('newNotificationsCount', count($this->Notification->find('all', array('conditions' => array('Notification.user_id' => $this->Auth->user('id'), 'Notification.read' => 0)))));
         }
     }
