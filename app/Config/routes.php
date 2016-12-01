@@ -80,7 +80,7 @@
 		array('controller' => 'projects', 'action' => 'change_owner'),
 		array('id' => '[0-9]+')
 	);
-	Router::connect('/notification/:id',
+	Router::connect('/notification/read/:id',
 		array('controller' => 'notifications', 'action' => 'read'),
 		array('id' => '[0-9]+')
 	);

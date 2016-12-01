@@ -43,7 +43,7 @@ $activeProjects = ($this->name == 'Projects') ? ' class="active"' : '';
     <h5>Notifications</h5><a href="#" >View all reports</a>
     <ul class="dropdown-list collection">
         <?php foreach($myNotifications as $notification): ?>
-          <?php $link = "/vsm/notification/".$notification['Notification']['id'] ?>
+          <?php $link = $this->Html->url(array('controller' => 'notifications', 'action' => 'read', 'id' => $notification['Notification']['id'])); ?>
           <a href="<?php echo $link ?>" class="collection-item avatar <?php if(!$notification['Notification']['read']) echo "dropdown-element-new" ?>">
               <i class="material-icons circle">add_alert</i>
               <span class="title"><?php echo $notification['Notification']['title'] ?></span>
