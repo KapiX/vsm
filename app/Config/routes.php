@@ -58,6 +58,11 @@
 		array('controller' => 'projects', 'action' => 'settings'),
 		array('id' => '[0-9]+')
 	);
+	Router::connect('/project/:id/save_sprint/:sprint_id',
+		array('controller' => 'projects', 'action' => 'save_sprint'),
+		array('id' => '[0-9]+',
+			  'sprint_id' => '[0-9]+')
+	);
 	Router::connect('/project/:id/add_user',
 		array('controller' => 'projects', 'action' => 'add_user'),
 		array('id' => '[0-9]+')

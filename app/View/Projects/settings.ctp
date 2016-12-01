@@ -18,8 +18,11 @@
 
     $('.datepicker').pickadate({
         selectMonths: true,
-        selectYears: 15
-    })
+        selectYears: 15,
+        format: 'yyyy-mm-dd'
+    });
+
+    $('select').material_select();
   });
 </script>
 <h3>[<?php echo $project['short_name'] ?>] <?php echo $project['name'] ?> settings</h3>
@@ -33,7 +36,39 @@
         <a href="#!" class="red-text secondary-content"><i class="material-icons">delete</i></a>
         <a href="#!" class="grey-text secondary-content text-darken-1"><?php echo $this->Time->format($sprint['start_date'], '%d %b') ?>-<?php echo $this->Time->format($sprint['end_date'], '%d %b') ?></a>
     </div>
-    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+    <div class="collapsible-body">
+        <?php echo $this->Form->create('Sprint', array('url' => array('controller' => 'projects', 'action' => 'save_sprint', 'id' => $project['id'], 'sprint_id' => $sprint['id']))) ?>
+        <div class="row">
+            <?php echo $this->Form->input('start_date', ['type' => 'date', 'class' => 'datepicker', 'div' => 'col s6', 'default' => $sprint['start_date']]) ?>
+            <?php echo $this->Form->input('end_date', ['type' => 'date', 'class' => 'datepicker', 'div' => 'col s6', 'default' => $sprint['end_date']]) ?>
+        </div>
+        <div class="row">
+            <?php
+            $weekdays = array_combine(range(1, 7), array_map(function($v) { return CakeTime::format("last sunday +$v day", '%A'); }, range(1, 7)));
+            echo $this->Form->input('report_weekdays', array(
+                'options' => $weekdays,
+                'empty' => __('Select weekdays'),
+                'multiple' => true,
+                'disabled' => array(''),
+                'div' => 'col s6',
+                'default' => $sprint['report_weekdays']
+            ));
+            foreach($users as $user)
+                $project_members[$user['id']] = $user['first_name'] . ' ' . $user['last_name'];
+            foreach($sprint['User'] as $member)
+                $sprint_members[] = $member['id'];
+            echo $this->Form->input('sprint_members', array(
+                'options' => $project_members,
+                'empty' => __('Select members'),
+                'multiple' => true,
+                'disabled' => array(''),
+                'div' => 'col s6',
+                'default' => $sprint_members,
+            ));
+            ?>
+        </div>
+        <?php echo $this->Form->end(['label' => __('Save'), 'class' => 'btn col s12', 'div' => 'row']); ?>
+    </div>
 </li>
 <?php endforeach ?>
 </ul>

@@ -81,7 +81,7 @@ class ProjectsController extends AppController {
         if($this->Project->userCanEdit($id, $this->Auth->user('id'))) {
             $row = $this->Project->find('first', array(
                 'contain' => array('User', 'Sprint'),
-                'recursive' => 1,
+                'recursive' => 2,
                 'conditions' => array('Project.id' => $id),
             ));
             $this->set('project', $row['Project']);
@@ -90,6 +90,27 @@ class ProjectsController extends AppController {
         } else {
             $this->redirect($this->referer());
         }
+    }
+
+    public function save_sprint() {
+        $project_id = $this->request->params['id'];
+        $sprint_id = $this->request->params['sprint_id'];
+        if(empty($project_id) || empty($sprint_id) || !$this->Project->userCanEdit($project_id, $this->Auth->user('id'))) {
+            return $this->redirect($this->referer());
+        }
+        $sprint_data = $this->request->data['Sprint'];
+        $this->loadModel('Sprint');
+        $dataSource = $this->Sprint->getDataSource();
+        $dataSource->begin();
+        $this->Sprint->id = $sprint_id;
+        if($this->Sprint->save($sprint_data) && $this->Sprint->setMembers($sprint_id, $sprint_data['sprint_members'])) {
+            $dataSource->commit();
+            $this->Session->setFlash(__('Sprint settings has been saved.'), 'success');
+            return $this->redirect($this->referer());
+        }
+        $dataSource->rollback();
+        $this->Session->setFlash(__('Sprint settings could not be saved.'), 'error');
+        $this->redirect($this->referer());
     }
 
     public function add_user() {

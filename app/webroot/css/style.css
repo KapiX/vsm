@@ -52,6 +52,11 @@ h5#month-year {
     margin: 0 0 0 1rem;
 }
 
+.collapsible-body div.row {
+    margin:2rem;
+    padding: 0;
+}
+
 .dropdown-content {
   background-color: #FFFFFF;
   margin: 0;
