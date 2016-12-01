@@ -55,6 +55,7 @@
             ));
             foreach($users as $user)
                 $project_members[$user['id']] = $user['first_name'] . ' ' . $user['last_name'];
+            $sprint_members = array();
             foreach($sprint['User'] as $member)
                 $sprint_members[] = $member['id'];
             echo $this->Form->input('sprint_members', array(
