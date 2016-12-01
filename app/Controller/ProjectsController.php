@@ -132,7 +132,8 @@ class ProjectsController extends AppController {
                             'user_id' => $user['id']
                         );
                         if($this->ProjectsUsers->save($data)) {
-                            $this->addUserToProjectNotification($project_id, $user['id']);
+                            $this->loadModel('Notification');
+                            $this->Notification->addUserToProjectNotification($project_id, $user['id'], $this->Auth->User('first_name'));
                             $this->Session->setFlash(__('User added to project.'), 'success');
                         } else {
                             $this->Session->setFlash(__('Could not save.'), 'error');
@@ -264,7 +265,8 @@ class ProjectsController extends AppController {
                             $this->ScrumReport->save(array('sprint_id' => $this->Sprints->id, 'deadline_date' => $start_date));
                             $start_date = date('Y-m-d', strtotime($start_date . ' +1 day'));
                         }
-                        $this->addNewSprintNotification($project_id, $this->Sprints->id);
+                        $this->loadModel('Notification');
+                        $this->Notification->addNewSprintNotification($project_id, $this->Sprints->id, $this->Auth->User('first_name'));
                         $this->Session->setFlash(__('Sprint added to project.'), 'success');
                     } else {
                         $this->Session->setFlash(__('Could not save.'), 'error');
@@ -297,23 +299,5 @@ class ProjectsController extends AppController {
             }
         }
         $this->redirect($this->referer());
-    }
-
-    private function addNewSprintNotification($project_id, $sprint_id) {
-        $this->loadModel('SprintsUser');
-        $this->loadModel('Notification');
-        $sprint_users = $this->SprintsUser->find('all', array(
-            'conditions' => array('SprintsUser.sprint_id' => $sprint_id)
-        ));
-        $username = $this->Auth->user('first_name');
-        foreach ($sprint_users as $sprint_user) {
-            $this->Notification->addNotification("project/$project_id", "$username added new sprint.", $sprint_user['SprintsUser']['user_id'], "New Sprint");
-        }
-    }
-
-    private function addUserToProjectNotification($project_id, $user_id) {
-        $this->loadModel('Notification');
-        $username = $this->Auth->user('first_name');
-        $this->Notification->addNotification("project/$project_id", "$username added you to project.", $user_id, "Project");
     }
 }
