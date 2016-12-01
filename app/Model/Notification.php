@@ -40,4 +40,8 @@ class Notification extends AppModel {
             $this->addNotification("project/$project_id", "$creator_name added new sprint.", $sprint_user['SprintsUser']['user_id'], "New Sprint");
         }
     }
+
+    public function newReportNotification($sprint_id, $user_id, $creator_name) {
+        $this->addNotification("sprint/$sprint_id", "$creator_name added new report.", $user_id, "New report");
+    }
 }

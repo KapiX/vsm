@@ -84,6 +84,14 @@
 		array('controller' => 'notifications', 'action' => 'read'),
 		array('id' => '[0-9]+')
 	);
+	Router::connect('/sprint/:id',
+		array('controller' => 'sprints', 'action' => 'index'),
+		array('id' => '[0-9]+')
+	);
+	Router::connect('/sprint/:id/add_report',
+		array('controller' => 'sprints', 'action' => 'add_report'),
+		array('id' => '[0-9]+')
+	);
 /**
  * Load all plugin routes. See the CakePlugin documentation on
  * how to customize the loading of plugin routes.

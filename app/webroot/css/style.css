@@ -128,3 +128,21 @@ nav i.material-icons {
     padding: 6px;
     margin-left: 4px;
 }
+
+.report-item > div > p {
+    padding: 20px 20px 0 20px;
+}
+.report-item > div > p:last-child {
+    padding-bottom: 20px;
+}
+.missing-report-item > a {
+    color: black;
+}
+.report-item-read {
+    background: #98fb98;
+}
+.report-time {
+    float: right;
+    color: #7e838c;
+    font-size: 0.9;
+}
