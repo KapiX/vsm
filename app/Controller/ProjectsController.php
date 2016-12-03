@@ -20,8 +20,10 @@ class ProjectsController extends AppController {
 
     public function view() {
         $id = $this->request->params['id'];
-        if(empty($id))
+        $this->loadModel('ProjectsUsers');
+        if(empty($id) || !$this->ProjectsUsers->userInProject($this->Auth->User('id'), $id))
             $this->redirect($this->referer());
+
         $month = $this->request->params['month'];
         $year = $this->request->params['year'];
         if(empty($month)) $month = CakeTime::format('now', '%m');
