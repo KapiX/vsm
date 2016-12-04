@@ -41,6 +41,7 @@ $activeProjects = ($this->name == 'Projects') ? ' class="active"' : '';
         </ul>
     </div>
 </nav>
+<?php if(isset($user)): ?>
 <div id="notification-dropdown" class="dropdown-content">
     <h5>Notifications</h5><a href="<?php echo $allNotificationsUrl ?>" ><?php echo __('View all reports') ?></a>
     <ul class="dropdown-list collection">
@@ -55,3 +56,4 @@ $activeProjects = ($this->name == 'Projects') ? ' class="active"' : '';
         <?php endforeach ?>
     </ul>
 </div>
+<?php endif ?>
