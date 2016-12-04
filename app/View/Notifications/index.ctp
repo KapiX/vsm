@@ -1,5 +1,5 @@
 <div>
-    <h3>Notifications</h3>
+    <h3><?php echo __('Notifications') ?></h3>
     <ul class="collection">
         <?php foreach($myNotifications as $notification): ?>
           <?php $link = $this->Html->url(array('controller' => 'notifications', 'action' => 'read', 'id' => $notification['Notification']['id'])); ?>

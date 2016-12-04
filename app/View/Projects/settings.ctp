@@ -25,7 +25,7 @@
     $('select').material_select();
   });
 </script>
-<h3>[<?php echo $project['short_name'] ?>] <?php echo $project['name'] ?> settings</h3>
+<h3>[<?php echo $project['short_name'] ?>] <?php echo $project['name'] . __(' settings')?></h3>
 <h4 class="header"><i class="material-icons" style="font-size:1.5rem;">directions_run</i><?php echo __('Sprints') ?></h4>
 
 <ul class="collapsible" data-collapsible="accordion">
@@ -126,7 +126,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"><?php echo __('Close') ?></a>
     </div>
 </div>
 
@@ -148,7 +148,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"><?php echo __('Close') ?></a>
     </div>
 </div>
 
@@ -167,7 +167,7 @@
                         <?php endif ?>
                     <?php endforeach ?>
                 </select>
-                <label>Choose new owner</label>
+                <label><?php echo __('Choose new owner') ?></label>
             </div>
         </div>
         <div class="row">
@@ -175,6 +175,6 @@
         </div>
     </div>
     <div class="modal-footer">
-        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"><?php echo __('Close') ?></a>
     </div>
 </div>
