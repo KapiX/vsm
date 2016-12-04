@@ -164,3 +164,6 @@ nav i.material-icons {
     margin:1px;
     float:right;
 }
+div > a.sprint-link {
+    color: white;
+}
