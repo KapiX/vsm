@@ -76,6 +76,7 @@ class ProjectsController extends AppController {
                 __('The project could not be created. Please, try again.'), 'error'
             );
         }
+        $this->redirect($this->referer());
     }
 
     public function settings() {
