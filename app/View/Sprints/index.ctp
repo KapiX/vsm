@@ -1,6 +1,6 @@
 <script type="text/javascript">
 $(document).ready(function(){
-    $('.modal-trigger').leanModal();
+    $('.modal').modal();
 });
 </script>
 
@@ -8,7 +8,7 @@ $(document).ready(function(){
 <ul class="collection">
     <?php foreach($missingUserScrumReports as $missingReport): ?>
         <li class="collapsible-header missing-report-item" >
-            <a class="modal-trigger" href="#<?php echo $missingReport['ScrumReport']['id']?>"><div><i class="material-icons">playlist_add</i><?php echo $missingReport['ScrumReport']['deadline_date'] ?></div></a>
+            <a href="#<?php echo $missingReport['ScrumReport']['id']?>"><div><i class="material-icons">playlist_add</i><?php echo $missingReport['ScrumReport']['deadline_date'] ?></div></a>
         </li>
         <div id="<?php echo $missingReport['ScrumReport']['id']?>" class="modal modal-fixed-footer">
           <div class="modal-content">
