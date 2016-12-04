@@ -22,17 +22,17 @@
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<title><?php echo $title_for_layout; ?></title>
-        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css"  media="screen,projection"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<?php
 		echo $this->Html->meta('icon');
+                echo $this->Html->css('material-icons');
+                echo $this->Html->css('materialize.min', ['media' => 'screen,projection']);
                 echo $this->Html->css('style');
+                echo $this->Html->meta('viewport', 'width=device-width, initial-scale=1.0');
+                echo $this->Html->script('jquery-2.1.1.min');
+                echo $this->Html->script('materialize.min');
 	?>
 </head>
 <body>
-        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
         <?php echo $this->Session->flash(); ?>
         <?php echo $this->element('nav_bar'); ?>
 	<div class="container">
