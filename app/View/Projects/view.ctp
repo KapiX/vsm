@@ -115,7 +115,9 @@ foreach($sprints as $sprint) {
     $last_date = DateTime::createFromFormat('d F Y', "$lastDay $header");
     if($start_date > $last_date || $end_date < $first_date) continue;
     echo '<div class="chip ' . $colors[$sprint_color[$sprint['id']]] . '">';
-    echo $sprint['name'] ? '<a class="sprint-link" href="'.$this->Html->url(array('controller' => 'sprint', 'action' => $sprint['id'])).'">'.$sprint['name'].'</a>' : '&nbsp;';
+    echo '<a class="sprint-link" href="'.$this->Html->url(array('controller' => 'sprint', 'action' => $sprint['id'])).'">';
+    echo $sprint['name'] ? $sprint['name'] : '&nbsp;';
+    echo '</a>';
     echo '</div>';
 }
 ?>

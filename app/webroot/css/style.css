@@ -165,5 +165,6 @@ nav i.material-icons {
     float:right;
 }
 div > a.sprint-link {
-    color: white;
+    color:inherit;
+    text-decoration:underline;
 }
