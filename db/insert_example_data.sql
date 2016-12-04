@@ -25,14 +25,14 @@ INSERT INTO projects_users (id, project_id, user_id) VALUES (7,3,3);
 
 -- INSERT SCRUM_REPORTS
 -- p1
-INSERT INTO scrum_reports (id, sprint_id, deadline_date) VALUES (1,1,'2016-09-06 19:25:29');
-INSERT INTO scrum_reports (id, sprint_id, deadline_date) VALUES (2,1,'2016-09-13 19:25:29');
-INSERT INTO scrum_reports (id, sprint_id, deadline_date) VALUES (3,1,'2016-09-20 19:25:29');
-INSERT INTO scrum_reports (id, sprint_id, deadline_date) VALUES (4,1,'2016-09-27 19:25:29');
+INSERT INTO scrum_reports (id, sprint_id, deadline_date) VALUES (1,1,'2016-09-06');
+INSERT INTO scrum_reports (id, sprint_id, deadline_date) VALUES (2,1,'2016-09-13');
+INSERT INTO scrum_reports (id, sprint_id, deadline_date) VALUES (3,1,'2016-09-20');
+INSERT INTO scrum_reports (id, sprint_id, deadline_date) VALUES (4,1,'2016-09-27');
 -- p2
-INSERT INTO scrum_reports (id, sprint_id, deadline_date) VALUES (5,2,'2016-09-26 19:25:29');
+INSERT INTO scrum_reports (id, sprint_id, deadline_date) VALUES (5,2,'2016-09-26');
 -- p3
-INSERT INTO scrum_reports (id, sprint_id, deadline_date) VALUES (6,3,'2016-09-14 19:25:29');
+INSERT INTO scrum_reports (id, sprint_id, deadline_date) VALUES (6,3,'2016-09-14');
 
 -- INSERT USER_SCRUM_REPORTS
 INSERT INTO user_scrum_reports (id, scrum_report_id, user_id, created, modified, q1_ans, q2_ans, q3_ans)

@@ -32,7 +32,7 @@ DROP TABLE IF EXISTS `scrum_reports`;
 CREATE TABLE IF NOT EXISTS `scrum_reports` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `sprint_id` int(11) NOT NULL,
-  `deadline_date` datetime,
+  `deadline_date` date,
   PRIMARY KEY (`id`)
 );
 
@@ -117,6 +117,6 @@ CREATE TABLE IF NOT EXISTS `notifications` (
   `created_time` datetime NOT NULL,
   `read` boolean DEFAULT 0,
   `text` varchar(300) NOT NULL,
-  `title` varchar(30) NOT NULL,  
+  `title` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
 );
