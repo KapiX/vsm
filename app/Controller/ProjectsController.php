@@ -293,6 +293,7 @@ class ProjectsController extends AppController {
                 $data = array('id' => $project_id, 'owner_id' => $new_owner_id);
                 if($this->Project->save($data)) {
                     $this->Session->setFlash(__('The owner has been changed.'), 'success');
+                    $this->redirect(array('action' => 'view', 'id' => $project_id));
                 } else {
                     $this->Session->setFlash(__('Could not change.'), 'error');
                 }

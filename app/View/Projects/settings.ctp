@@ -159,10 +159,11 @@
         <div class="row">
             <div class="input-field col s12">
                 <select name="new_owner">
-                    <option value="" disabled selected>Select owner</option>
                     <?php foreach($users as $user): ?>
                         <?php if($user['id'] != $project['owner_id']): ?>
                             <option value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></option>
+                        <?php else: ?>
+                            <option selected value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></option>
                         <?php endif ?>
                     <?php endforeach ?>
                 </select>
