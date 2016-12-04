@@ -223,6 +223,7 @@ class UsersController extends AppController {
                 $this->set('errors', $errors);
             }
         }
+        $this->redirect($this->referer());
     }
 
     public function profile() {
