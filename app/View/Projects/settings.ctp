@@ -159,14 +159,14 @@
         <div class="row">
             <div class="input-field col s12">
                 <select name="new_owner">
-                    <option value="" disabled selected>Choose user</option>
+                    <option value="" disabled selected>Select owner</option>
                     <?php foreach($users as $user): ?>
                         <?php if($user['id'] != $project['owner_id']): ?>
                             <option value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></option>
                         <?php endif ?>
                     <?php endforeach ?>
                 </select>
-                <label>Materialize Select</label>
+                <label>Choose new owner</label>
             </div>
         </div>
         <div class="row">
