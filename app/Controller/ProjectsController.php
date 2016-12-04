@@ -67,13 +67,13 @@ class ProjectsController extends AppController {
                 if($this->ProjectsUsers->save())
                 {
                     $dataSource->commit();
-                    $this->Session->setFlash(__('The project  has been created'));
+                    $this->Session->setFlash(__('The project has been created.'), 'success');
                     return $this->redirect($this->referer());
                 }
             }
             $dataSource->rollback();
             $this->Session->setFlash(
-                __('The project could not be created. Please, try again.')
+                __('The project could not be created. Please, try again.'), 'error'
             );
         }
     }

@@ -85,7 +85,7 @@
 <?php endforeach ?>
 </ul>
 
-<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+<div class="fixed-action-btn">
 <a class="btn-floating btn-large red">
     <i class="large material-icons">add</i>
 </a>
