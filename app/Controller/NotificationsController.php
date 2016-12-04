@@ -20,4 +20,8 @@ class NotificationsController extends AppController {
         }
         return $this->redirect($this->referer());
     }
+
+    public function index() {
+
+    }
 }

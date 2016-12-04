@@ -6,7 +6,7 @@ $(document).ready(function(){
 
 </script>
 <div class="row">
-    <div class="col s12 m6 offset-m3">
+    <div class="col s12 m8 offset-m2">
         <div class="card">
             <ul class="tabs hide-on-med-and-down">
                 <li class="tab col s6"><a target="_self" href="profile"><i class="material-icons" style="font-size:1.5rem;">supervisor_account</i><?php echo __(' My Profile') ?></a></li>
