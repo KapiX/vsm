@@ -146,3 +146,21 @@ nav i.material-icons {
     color: #7e838c;
     font-size: 0.9;
 }
+
+.day-wrapper {
+    position:relative;
+    min-height:100%;
+}
+
+.sprint-marks {
+    position:absolute;
+    bottom:0;
+    min-width:100%;
+}
+
+.sprint-mark {
+    width:10px;
+    height:10px;
+    margin:1px;
+    float:right;
+}

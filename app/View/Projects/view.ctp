@@ -10,6 +10,8 @@ $urlNext = $this->Html->url('/' . implode('/', array(
 $sprint_color = array();
 $day_sprint = array();
 $i = 0;
+for($day = 0; $day < $lastDay; ++$day)
+    $day_sprint[$day] = array();
 foreach($sprints as $sprint) {
     $sprint_color[$sprint['id']] = $i;
     $i++;
@@ -27,8 +29,9 @@ foreach($sprints as $sprint) {
     if($end_date > $last_date) {
         $end = $lastDay;
     }
-    for(;$start <= $end; $start++)
-        $day_sprint[$start] = $sprint['id'];
+    for(;$start <= $end; $start++) {
+        $day_sprint[$start][] = $sprint['id'];
+    }
 }
 ?>
 <h3 class="header center-align"><?php echo $project['name'] ?></h3>
@@ -49,9 +52,17 @@ foreach($sprints as $sprint) {
             echo '<tr>';
             for($i = 0; $i < 7; ++$i) {
                 $lastPrintedDay = $i - $firstWeekDay + 1;
-                echo '<td class="' . $colors[$sprint_color[$day_sprint[$lastPrintedDay]]] . '">';
-                if($i >= $firstWeekDay)
+                echo '<td>';
+                if($i >= $firstWeekDay) {
+                    echo '<div class="day-wrapper">';
                     echo $lastPrintedDay;
+                    echo '<div class="sprint-marks">';
+                    foreach($day_sprint[$lastPrintedDay] as $id) {
+                        echo '<div class="sprint-mark ' . $colors[$sprint_color[$id]] . '"></div>';
+                    }
+                    echo '</div>';
+                    echo '</div>';
+                }
                 echo '</td>';
             }
             echo '</tr>';
@@ -60,8 +71,15 @@ foreach($sprints as $sprint) {
                 echo '<tr>';
                 for($i = 0; $i < 7; ++$i) {
                     $lastPrintedDay++;
-                    echo '<td class="' . $colors[$sprint_color[$day_sprint[$lastPrintedDay]]] . '">';
+                    echo '<td>';
+                    echo '<div class="day-wrapper">';
                     echo $lastPrintedDay;
+                    echo '<div class="sprint-marks">';
+                    foreach($day_sprint[$lastPrintedDay] as $id) {
+                        echo '<div class="sprint-mark ' . $colors[$sprint_color[$id]] . '"></div>';
+                    }
+                    echo '</div>';
+                    echo '</div>';
                     echo '</td>';
                 }
                 echo '</tr>';
@@ -69,9 +87,17 @@ foreach($sprints as $sprint) {
             // ostatni tydzień
             echo '<tr>';
             for($i = 0; $i < 7; ++$i) {
-                echo '<td class="' . $colors[$sprint_color[$day_sprint[$lastPrintedDay + 1]]] . '">';
-                if($lastPrintedDay < $lastDay)
+                echo '<td>';
+                if($lastPrintedDay < $lastDay) {
+                    echo '<div class="day-wrapper">';
                     echo ++$lastPrintedDay;
+                    echo '<div class="sprint-marks">';
+                    foreach($day_sprint[$lastPrintedDay] as $id) {
+                        echo '<div class="sprint-mark ' . $colors[$sprint_color[$id]] . '"></div>';
+                    }
+                    echo '</div>';
+                    echo '</div>';
+                }
                 echo '</td>';
             }
             echo '</tr>';
