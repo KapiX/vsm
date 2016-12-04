@@ -23,7 +23,7 @@ class NotificationsController extends AppController {
 
     public function index() {
         $this->Notification->recursive = 0;
-        $this->paginate = array( 'limit' => 5, 'conditions' => array('Notification.user_id' => $this->Auth->User('id')) );
+        $this->paginate = array('order' => array('Notification.created_time' => 'desc'), 'limit' => 5, 'conditions' => array('Notification.user_id' => $this->Auth->User('id')) );
         $this->set('paginatedNotifications', $this->paginate());
     }
 }
