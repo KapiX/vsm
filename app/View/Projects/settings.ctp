@@ -1,7 +1,6 @@
 <script type="text/javascript">
  $(document).ready(function(){
-    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-    $('.modal-trigger').modal();
+    $('.modal').modal();
     $('select').material_select();
 
     $.ajax({
@@ -21,8 +20,6 @@
         selectYears: 15,
         format: 'yyyy-mm-dd'
     });
-
-    $('select').material_select();
   });
 </script>
 <h3>[<?php echo $project['short_name'] ?>] <?php echo $project['name'] . __(' settings')?></h3>
@@ -82,7 +79,7 @@
         <?php $url = $this->Html->url(array('controller' => 'projects', 'action' => 'remove_user', 'id' => $project['id'], 'user_id' => $user['id'])); ?>
         <a href="<?php echo $url ?>" class="red-text secondary-content"><i class="material-icons">remove_circle_outline</i></a>
     <?php else: ?>
-        <a href="#change-owner" class="modal-trigger yellow-text secondary-content text-darken-2" title="<?php echo __('Change Project Owner') ?>"><i class="material-icons">grade</i></a>
+        <a href="#change-owner" class="red-text secondary-content" title="<?php echo __('Change owner') ?>"><i class="material-icons">cancel</i></a><span class="yellow-text secondary-content text-darken-2" title="<?php echo __('Owner') ?>"><i class="material-icons">grade</i></span>
     <?php endif ?>
     </div></li>
 <?php endforeach ?>
@@ -93,8 +90,8 @@
     <i class="large material-icons">add</i>
 </a>
 <ul>
-    <li><a class="btn-floating modal-trigger" href="#add-sprint"><i class="material-icons">directions_run</i></a></li>
-    <li><a class="btn-floating modal-trigger" href="#add-user"><i class="material-icons">person</i></a></li>
+    <li><a class="btn-floating" href="#add-sprint"><i class="material-icons">directions_run</i></a></li>
+    <li><a class="btn-floating" href="#add-user"><i class="material-icons">person</i></a></li>
 </ul>
 </div>
 
