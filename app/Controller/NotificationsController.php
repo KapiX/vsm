@@ -10,7 +10,7 @@ class NotificationsController extends AppController {
         parent::beforeFilter();
     }
     public function read() {
-        $user_id = $this->Auth->user('id');
+        $user_id = $this->Auth->User('id');
         $notificationId = $this->request->params['id'];
         $notification = $this->Notification->find('first', array('conditions' => array('Notification.user_id' => $user_id, 'Notification.id' => $notificationId)))['Notification'];
         if($notification != null) {
@@ -22,6 +22,8 @@ class NotificationsController extends AppController {
     }
 
     public function index() {
-
+        $this->Notification->recursive = 0;
+        $this->paginate = array( 'limit' => 5, 'conditions' => array('Notification.user_id' => $this->Auth->User('id')) );
+        $this->set('paginatedNotifications', $this->paginate());
     }
 }
