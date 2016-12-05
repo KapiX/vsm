@@ -299,6 +299,24 @@ class ProjectsController extends AppController {
         $this->redirect($this->referer());
     }
 
+    public function remove_sprint() {
+        $sprint_id = $this->request->params['sprint_id'];
+        if(!empty($sprint_id)) {
+            $this->loadModel('Sprint');
+            $sprint = $this->Sprint->findById($sprint_id);
+            if($this->Project->userCanEdit($sprint['Project']['id'], $this->Auth->user('id'))) {
+                if($this->Sprint->delete($sprint_id, true)) {
+                    $this->Session->setFlash(__('Sprint has been removed.'), 'success');
+                } else {
+                    $this->Session->setFlash(__('Could not delete sprint.'), 'error');
+                }
+            } else {
+                $this->Session->setFlash(__('Insufficient permissions.'), 'error');
+            }
+        }
+        $this->redirect($this->referer());
+    }
+
     public function change_owner() {
         $project_id = $this->request->params['id'];
         if($this->request->is('post') && !empty($project_id)) {

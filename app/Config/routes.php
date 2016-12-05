@@ -72,6 +72,10 @@
 		array('id' => '[0-9]+',
 			  'user_id' => '[0-9]+')
 	);
+	Router::connect('/project/remove_user/:sprint_id',
+		array('controller' => 'projects', 'action' => 'remove_sprint'),
+		array('sprint_id' => '[0-9]+')
+	);
 	Router::connect('/project/:id/add_sprint',
 		array('controller' => 'projects', 'action' => 'add_sprint'),
 		array('id' => '[0-9]+')

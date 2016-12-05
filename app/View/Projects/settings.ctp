@@ -2,6 +2,9 @@
  $(document).ready(function(){
     $('.modal').modal();
     $('select').material_select();
+    $('.collapsible-header').find('.dont-collapse').on('click.collapse', function(e) {
+             e.stopPropagation();
+         });
 
     $.ajax({
         url: "<?php echo $this->Html->url(array('controller' => 'users', 'action' => 'get_users')) ?>",
@@ -20,6 +23,7 @@
         selectYears: 15,
         format: 'yyyy-mm-dd'
     });
+
   });
 </script>
 <h3>[<?php echo $project['short_name'] ?>] <?php echo $project['name'] . __(' settings')?></h3>
@@ -30,8 +34,8 @@
 <li>
     <?php $isPast = $this->Time->isPast($sprint['end_date']) ?>
     <div class="collapsible-header <?php echo ($isPast ? 'grey lighten-2' : '') ?>"><?php echo $sprint['name'] ?>
-        <a href="#!" class="red-text secondary-content"><i class="material-icons">delete</i></a>
         <a href="#!" class="grey-text secondary-content text-darken-1"><?php echo $this->Time->format($sprint['start_date'], '%d %b') ?>-<?php echo $this->Time->format($sprint['end_date'], '%d %b') ?></a>
+        <?php echo $this->Html->link('<i class="material-icons">delete</i>', array('controller' => 'projects', 'action' => 'remove_sprint', 'sprint_id' => $sprint['id']), array('escape' => false, 'class' => 'dont-collapse red-text secondary-content', 'confirm' => __('Are you sure you want to delete this sprint?'))); ?>
     </div>
     <div class="collapsible-body">
         <?php echo $this->Form->create('Sprint', array('url' => array('controller' => 'projects', 'action' => 'save_sprint', 'id' => $project['id'], 'sprint_id' => $sprint['id']))) ?>
