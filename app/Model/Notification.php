@@ -1,7 +1,7 @@
 <?php
 
 App::uses('AppModel', 'Model');
-App::uses('SprintsUser', 'Model');
+App::uses('SprintsUsers', 'Model');
 
 class Notification extends AppModel {
     public $primaryKey = 'id';
@@ -32,12 +32,12 @@ class Notification extends AppModel {
     }
 
     public function addNewSprintNotification($project_id, $sprint_id, $creator_name) {
-        $SprintsUser = new SprintsUser();
-        $sprint_users = $SprintsUser->find('all', array(
-            'conditions' => array('SprintsUser.sprint_id' => $sprint_id)
+        $SprintsUsers = new SprintsUsers();
+        $sprint_users = $SprintsUsers->find('all', array(
+            'conditions' => array('SprintsUsers.sprint_id' => $sprint_id)
         ));
         foreach ($sprint_users as $sprint_user) {
-            $this->addNotification("project/$project_id", "$creator_name added new sprint.", $sprint_user['SprintsUser']['user_id'], "New Sprint");
+            $this->addNotification("project/$project_id", "$creator_name added new sprint.", $sprint_user['SprintsUsers']['user_id'], "New Sprint");
         }
     }
 

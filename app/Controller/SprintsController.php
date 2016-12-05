@@ -11,20 +11,26 @@ class SprintsController extends AppController {
         if(!empty($sprint_id)) {
             $sprint = $this->Sprint->findById($sprint_id);
             if(!empty($sprint)) {
+                $this->loadModel('SprintsUsers');
                 $user_id = $this->Auth->User('id');
-                $userCompletedReports = $this->UserScrumReport->find('all', array(
-                    'conditions' => array('user_id' => $user_id, 'sprint_id' => $sprint_id)
-                ));
-                $completedReportsIds = array();
-                if($userCompletedReports != null)
-                    foreach ($userCompletedReports as $value) {
-                        array_push($completedReportsIds, $value['UserScrumReport']['scrum_report_id']);
-                    }
-                $missingUserScrumReports = $this->ScrumReport->find('all', array(
-                    'conditions' => array('sprint_id' => $sprint_id, 'NOT' => array( 'ScrumReport.id' => $completedReportsIds ))
-                ));
-                $this->set('missingUserScrumReports', $missingUserScrumReports);
-                $this->set('allUserScrumReport', $this->UserScrumReport->find('all', array('order' => array('UserScrumReport.id' => 'desc'), 'conditions' => array('sprint_id' => $sprint_id))));
+                if($this->SprintsUsers->userInSprint($user_id, $sprint_id)) {
+                    $userCompletedReports = $this->UserScrumReport->find('all', array(
+                        'conditions' => array('user_id' => $user_id, 'sprint_id' => $sprint_id)
+                    ));
+                    $completedReportsIds = array();
+                    if($userCompletedReports != null)
+                        foreach ($userCompletedReports as $value) {
+                            array_push($completedReportsIds, $value['UserScrumReport']['scrum_report_id']);
+                        }
+                    $missingUserScrumReports = $this->ScrumReport->find('all', array(
+                        'conditions' => array('sprint_id' => $sprint_id, 'NOT' => array( 'ScrumReport.id' => $completedReportsIds ))
+                    ));
+                    $this->set('missingUserScrumReports', $missingUserScrumReports);
+                    $this->set('allUserScrumReport', $this->UserScrumReport->find('all', array('order' => array('UserScrumReport.id' => 'desc'), 'conditions' => array('sprint_id' => $sprint_id))));
+                } else {
+                    $this->Session->setFlash(__('You are not assigned to this sprint.'), 'error');
+                    $this->redirect($this->referer());
+                }
             } else {
                 $this->Session->setFlash(__('Sprint does not exists.'), 'error');
                 $this->redirect($this->referer());
@@ -50,9 +56,9 @@ class SprintsController extends AppController {
             );
             $this->loadModel('UserScrumReport');
             if($this->UserScrumReport->save($data)) {
-                $this->loadModel('SprintsUser');
+                $this->loadModel('SprintsUsers');
                 $this->loadModel('UserUserScrumReport');
-                $sprintUsers = $this->SprintsUser->find('all', array(
+                $sprintUsers = $this->SprintsUsers->find('all', array(
                     'conditions' => array(
                         'sprint_id' => $sprint_id,
                         'NOT' => array( 'user_id' => $user_id)
@@ -62,10 +68,10 @@ class SprintsController extends AppController {
                     $this->UserUserScrumReport->create();
                     $this->UserUserScrumReport->save(array(
                         'user_scrum_report_id' => $this->UserScrumReport->id,
-                        'user_id' => $sprintUser['SprintsUser']['user_id']
+                        'user_id' => $sprintUser['SprintsUsers']['user_id']
                     ));
                     $this->loadModel('Notification');
-                    $this->Notification->newReportNotification($sprint_id, $sprintUser['SprintsUser']['user_id'], $this->Auth->User('first_name'));
+                    $this->Notification->newReportNotification($sprint_id, $sprintUser['SprintsUsers']['user_id'], $this->Auth->User('first_name'));
                 }
                 $this->Session->setFlash(__('Report added.'), 'success');
             } else {

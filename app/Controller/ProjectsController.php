@@ -268,13 +268,13 @@ class ProjectsController extends AppController {
                     );
                     if($this->Sprints->save($data)) {
                         $this->loadModel('ProjectsUsers');
-                        $this->loadModel('SprintsUser');
+                        $this->loadModel('SprintsUsers');
                         $projects_users = $this->ProjectsUsers->find('all', array(
                             'conditions' => array('ProjectsUsers.project_id' => $project_id)
                         ));
                         foreach ($projects_users as $project_user) {
-                            $this->SprintsUser->create();
-                            $this->SprintsUser->save(array('sprint_id' => $this->Sprints->id, 'user_id' => $project_user['ProjectsUsers']['user_id']));
+                            $this->SprintsUsers->create();
+                            $this->SprintsUsers->save(array('sprint_id' => $this->Sprints->id, 'user_id' => $project_user['ProjectsUsers']['user_id']));
                         }
                         $this->loadModel('ScrumReport');
                         while($start_date <= $end_date) {

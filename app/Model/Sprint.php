@@ -19,6 +19,8 @@ class Sprint extends AppModel {
         )
     );
 
+    public $hasMany = array('SprintsUsers');
+
     function beforeSave($options = array()) {
         $data = $this->data['Sprint'];
         if (is_array( $data['report_weekdays']) && count($data['report_weekdays']) > 0 ) {
@@ -42,10 +44,10 @@ class Sprint extends AppModel {
     }
 
     public function setMembers($sprint_id, $user_ids) {
-        $this->SprintsUser->deleteAll(array('sprint_id' => $sprint_id));
+        $this->SprintsUsers->deleteAll(array('sprint_id' => $sprint_id));
         foreach($user_ids as $id) {
-            $this->SprintsUser->create();
-            if(!$this->SprintsUser->save(array('sprint_id' => $sprint_id, 'user_id' => $id))) {
+            $this->SprintsUsers->create();
+            if(!$this->SprintsUsers->save(array('sprint_id' => $sprint_id, 'user_id' => $id))) {
                 return false;
             }
         }
