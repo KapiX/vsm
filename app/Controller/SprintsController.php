@@ -4,24 +4,34 @@ App::uses('AppController', 'Controller');
 
 class SprintsController extends AppController {
 
-    var $uses = array('UserScrumReport', 'ScrumReport');
+    var $uses = array('UserScrumReport', 'ScrumReport', 'Sprint');
 
     public function index() {
-        $user_id = $this->Auth->User('id');
         $sprint_id = $this->request->params['id'];
-        $userCompletedReports = $this->UserScrumReport->find('all', array(
-            'conditions' => array('user_id' => $user_id, 'sprint_id' => $sprint_id)
-        ));
-        $completedReportsIds = array();
-        if($userCompletedReports != null)
-            foreach ($userCompletedReports as $value) {
-                array_push($completedReportsIds, $value['UserScrumReport']['scrum_report_id']);
+        if(!empty($sprint_id)) {
+            $sprint = $this->Sprint->findById($sprint_id);
+            if(!empty($sprint)) {
+                $user_id = $this->Auth->User('id');
+                $userCompletedReports = $this->UserScrumReport->find('all', array(
+                    'conditions' => array('user_id' => $user_id, 'sprint_id' => $sprint_id)
+                ));
+                $completedReportsIds = array();
+                if($userCompletedReports != null)
+                    foreach ($userCompletedReports as $value) {
+                        array_push($completedReportsIds, $value['UserScrumReport']['scrum_report_id']);
+                    }
+                $missingUserScrumReports = $this->ScrumReport->find('all', array(
+                    'conditions' => array('sprint_id' => $sprint_id, 'NOT' => array( 'ScrumReport.id' => $completedReportsIds ))
+                ));
+                $this->set('missingUserScrumReports', $missingUserScrumReports);
+                $this->set('allUserScrumReport', $this->UserScrumReport->find('all', array('order' => array('UserScrumReport.id' => 'desc'), 'conditions' => array('sprint_id' => $sprint_id))));
+            } else {
+                $this->Session->setFlash(__('Sprint does not exists.'), 'error');
+                $this->redirect($this->referer());
             }
-        $missingUserScrumReports = $this->ScrumReport->find('all', array(
-            'conditions' => array('sprint_id' => $sprint_id, 'NOT' => array( 'ScrumReport.id' => $completedReportsIds ))
-        ));
-        $this->set('missingUserScrumReports', $missingUserScrumReports);
-        $this->set('allUserScrumReport', $this->UserScrumReport->find('all', array('order' => array('UserScrumReport.id' => 'desc'), 'conditions' => array('sprint_id' => $sprint_id))));
+        } else {
+            $this->redirect($this->referer());
+        }
     }
 
     public function add_report() {
