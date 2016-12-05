@@ -10,7 +10,7 @@ $urlNext = $this->Html->url('/' . implode('/', array(
 $sprint_color = array();
 $day_sprint = array();
 $i = 0;
-for($day = 0; $day < $lastDay; ++$day)
+for($day = 0; $day <= $lastDay; ++$day)
     $day_sprint[$day] = array();
 foreach($sprints as $sprint) {
     $sprint_color[$sprint['id']] = $i;
