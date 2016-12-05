@@ -35,7 +35,7 @@
     <?php $isPast = $this->Time->isPast($sprint['end_date']) ?>
     <div class="collapsible-header <?php echo ($isPast ? 'grey lighten-2' : '') ?>"><?php echo $sprint['name'] ?>
         <a href="#!" class="grey-text secondary-content text-darken-1"><?php echo $this->Time->format($sprint['start_date'], '%d %b') ?>-<?php echo $this->Time->format($sprint['end_date'], '%d %b') ?></a>
-        <?php echo $this->Html->link('<i class="material-icons">delete</i>', array('controller' => 'projects', 'action' => 'remove_sprint', 'sprint_id' => $sprint['id']), array('escape' => false, 'class' => 'dont-collapse red-text secondary-content', 'confirm' => __('Are you sure you want to delete this sprint?'))); ?>
+        <?php echo $this->Html->link('<i class="material-icons">delete</i>', array('controller' => 'projects', 'action' => 'remove_sprint', 'id' => $project['id'],'sprint_id' => $sprint['id']), array('escape' => false, 'class' => 'dont-collapse red-text secondary-content', 'confirm' => __('Are you sure you want to delete this sprint?'))); ?>
     </div>
     <div class="collapsible-body">
         <?php echo $this->Form->create('Sprint', array('url' => array('controller' => 'projects', 'action' => 'save_sprint', 'id' => $project['id'], 'sprint_id' => $sprint['id']))) ?>
