@@ -27,7 +27,7 @@
                 echo $this->Html->css('material-icons');
                 echo $this->Html->css('materialize.min', ['media' => 'screen,projection']);
                 echo $this->Html->css('style');
-                echo $this->Html->meta('viewport', 'width=device-width, initial-scale=1.0');
+                echo $this->Html->meta(array('name' => 'viewport', 'content' => 'width=device-width, initial-scale=1.0'));
                 echo $this->Html->script('jquery-2.1.1.min');
                 echo $this->Html->script('materialize.min');
 	?>
