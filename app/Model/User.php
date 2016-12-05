@@ -20,7 +20,18 @@ class User extends AppModel {
             'unique'                => false
         )
     );
-    public $hasMany = array('UserScrumReport', 'UserUserScrumReport');
+    public $hasMany = array(
+        'UserScrumReport' => array (
+            'className'             => 'UserScrumReport',
+            'foreignKey'            => 'user_id',
+            'dependent'             => true
+        ),
+        'UserUserScrumReport' => array (
+            'className'             => 'UserUserScrumReport',
+            'foreignKey'            => 'user_id',
+            'dependent'             => true
+        )
+    );
 
     public $validate = array(
         'email' => array(

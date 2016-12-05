@@ -19,7 +19,18 @@ class Sprint extends AppModel {
         )
     );
 
-    public $hasMany = array('SprintsUsers');
+    public $hasMany = array(
+        'SprintsUsers' => array(
+            'className' => 'SprintsUsers',
+            'foreignKey' => 'sprint_id',
+            'dependent' => true
+        ),
+        'ScrumReport' => array(
+            'className' => 'ScrumReport',
+            'foreignKey' => 'sprint_id',
+            'dependent' => true
+        )
+    );
 
     function beforeSave($options = array()) {
         $data = $this->data['Sprint'];
