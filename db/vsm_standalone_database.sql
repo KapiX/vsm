@@ -17,6 +17,8 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `name` varchar(100) NOT NULL,
   `short_name` varchar(10) NOT NULL,
   `owner_id` int(11) NOT NULL,
+  `report_overdue_notification_text` TEXT NOT NULL,
+  `report_overdue_frequency_hours` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -55,15 +57,6 @@ CREATE TABLE IF NOT EXISTS `user_user_scrum_reports` (
   `user_scrum_report_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `report_seen_date` datetime,
-  PRIMARY KEY (`id`)
-);
-
-DROP TABLE IF EXISTS `project_vsm_settings`;
-CREATE TABLE IF NOT EXISTS `project_vsm_settings` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `project_id` int(11) NOT NULL,
-  `report_overdue_notification_text` TEXT NOT NULL,
-  `report_overdue_frequency_hours` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
