@@ -4,7 +4,9 @@ $linkLogout = $this->Html->link(__('<i class="hide-on-large-only material-icons"
 if(isset($user)) $linkUser = $this->Html->link(__($username), ['controller' => 'users', 'action' => 'profile']);
 $linkProfile = $this->Html->link(__('<i class="hide-on-large-only material-icons">supervisor_account</i>Update Profile'), ['controller' => 'users', 'action' => 'profile'], array('escape' => false));
 $linkChangePassword = $this->Html->link(__('<i class="hide-on-large-only material-icons">vpn_key</i>Change Password'), ['controller' => 'users', 'action' => 'change_password'], array('escape' => false));
-$allNotificationsUrl = $this->Html->url(array('controller' => 'notifications', 'action' => 'index', ));
+$allNotificationsUrl = $this->Html->url(array('controller' => 'notifications', 'action' => 'index'));
+$markAllAsReadUrl = $this->Html->url(array('controller' => 'notifications', 'action' => 'readAll'));
+
 
 $urlHomepage = $this->Html->url('/');
 
@@ -43,7 +45,8 @@ $activeProjects = ($this->name == 'Projects') ? ' class="active"' : '';
 </nav>
 <?php if(isset($user)): ?>
 <div id="notification-dropdown" class="dropdown-content">
-    <h5>Notifications</h5><a href="<?php echo $allNotificationsUrl ?>" ><?php echo __('View all reports') ?></a>
+    <h5>Notifications</h5>
+    <a href="<?php echo $markAllAsReadUrl ?>" ><?php echo __('Mark all as read') ?></a>
     <ul class="dropdown-list collection">
         <?php foreach($myNotifications as $notification): ?>
           <?php $link = $this->Html->url(array('controller' => 'notifications', 'action' => 'read', 'id' => $notification['Notification']['id'])); ?>
@@ -55,5 +58,9 @@ $activeProjects = ($this->name == 'Projects') ? ' class="active"' : '';
           </a>
         <?php endforeach ?>
     </ul>
+    <div>
+      <a href="<?php echo $allNotificationsUrl ?>" class='center'><?php echo __('View all reports') ?></a>
+    </div>
+
 </div>
 <?php endif ?>

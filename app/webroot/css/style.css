@@ -74,7 +74,7 @@ h5#month-year {
 .dropdown-list {
   overflow-y: auto;
   min-width: 400px; /* Changed this to accomodate content width */
-  max-height: 300px;
+  max-height: 340px;
   margin: 0;
 }
 
@@ -116,6 +116,10 @@ nav i.material-icons {
     display: inline;
     color: #26a69a;
     float: right;
+}
+
+#notification-dropdown > div > a {
+    color: #26a69a;
 }
 
 #notification-dropdown > a:hover {

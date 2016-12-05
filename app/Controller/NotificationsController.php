@@ -21,6 +21,15 @@ class NotificationsController extends AppController {
         return $this->redirect($this->referer());
     }
 
+    public function readAll() {
+        $user_id = $this->Auth->User('id');
+        $this->Notification->updateAll(
+            array('Notification.read' => 1),
+            array('Notification.user_id' => $user_id, 'Notification.read' => 0)
+        );
+        return $this->redirect($this->referer());
+    }
+
     public function index() {
         $this->Notification->recursive = 0;
         $this->paginate = array('order' => array('Notification.created_time' => 'desc'), 'limit' => 5, 'conditions' => array('Notification.user_id' => $this->Auth->User('id')) );
