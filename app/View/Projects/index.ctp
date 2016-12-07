@@ -4,6 +4,10 @@
  });
 </script>
 
+<h3 class="header"><?php echo __('Projects') ?></h3>
+<?php if(empty($projects)): ?>
+    <h5><?php echo __('You are not assigned to any project.') ?></h5>
+<?php else: ?>
 <?php $newline = true ?>
 <?php foreach($projects as $project): ?>
 <?php if($newline): ?><div class="row"><?php endif ?>
@@ -22,6 +26,7 @@
 <?php if(!$newline): ?></div><?php endif ?>
 <?php $newline = !$newline ?>
 <?php endforeach ?>
+<?php endif ?>
 
 <div class="fixed-action-btn">
 <a class="btn-floating btn-large red" href="#add-project">
