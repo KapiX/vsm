@@ -148,7 +148,7 @@ nav i.material-icons {
 .report-time {
     float: right;
     color: #7e838c;
-    font-size: 0.9;
+    font-size: 0.9em;
 }
 
 .day-wrapper {
@@ -180,4 +180,9 @@ div > a.sprint-link {
 
 .report-not-read {
     background-color: #ffeb3b;
+}
+
+.report-read > .report-time, .report-not-read > .report-time {
+    color: black;
+    font-style: italic;
 }
