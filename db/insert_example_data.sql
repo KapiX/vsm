@@ -1,10 +1,10 @@
 -- INSERT USERS -- password: testtest
-INSERT INTO users (id, email, password, first_name, last_name, initials, created, modified, is_active)
-    VALUES (1, 'john_a@test.pl', '$2a$10$XJKTqybnWoF6.A5oR.UK6egP37m2yADkIslAk3wCmwZYyhM4XXVIa', 'John', 'A', 'JA', '2016-09-06 19:25:29', '2016-09-06 19:25:29', 1);
-INSERT INTO users (id, email, password, first_name, last_name, initials, created, modified, is_active)
-    VALUES (2, 'bob_b@test.pl', '$2a$10$XJKTqybnWoF6.A5oR.UK6egP37m2yADkIslAk3wCmwZYyhM4XXVIa', 'Bob', 'B', 'BB', '2016-09-06 19:25:29', '2016-09-06 19:25:29', 1);
-INSERT INTO users (id, email, password, first_name, last_name, initials, created, modified, is_active)
-    VALUES (3, 'thomas_c@test.pl', '$2a$10$XJKTqybnWoF6.A5oR.UK6egP37m2yADkIslAk3wCmwZYyhM4XXVIa', 'Thomas', 'C', 'TC', '2016-09-06 19:25:29', '2016-09-06 19:25:29', 1);
+INSERT INTO users (id, level, email, password, first_name, last_name, initials, created, modified, is_active)
+    VALUES (1, 2, 'john_a@test.pl', '$2a$10$XJKTqybnWoF6.A5oR.UK6egP37m2yADkIslAk3wCmwZYyhM4XXVIa', 'John', 'A', 'JA', '2016-09-06 19:25:29', '2016-09-06 19:25:29', 1);
+INSERT INTO users (id, level, email, password, first_name, last_name, initials, created, modified, is_active)
+    VALUES (2, 1, 'bob_b@test.pl', '$2a$10$XJKTqybnWoF6.A5oR.UK6egP37m2yADkIslAk3wCmwZYyhM4XXVIa', 'Bob', 'B', 'BB', '2016-09-06 19:25:29', '2016-09-06 19:25:29', 1);
+INSERT INTO users (id, level, email, password, first_name, last_name, initials, created, modified, is_active)
+    VALUES (3, 0, 'thomas_c@test.pl', '$2a$10$XJKTqybnWoF6.A5oR.UK6egP37m2yADkIslAk3wCmwZYyhM4XXVIa', 'Thomas', 'C', 'TC', '2016-09-06 19:25:29', '2016-09-06 19:25:29', 1);
 
 -- INSERT PROJECTS
 INSERT INTO projects (id, name, short_name, owner_id, report_overdue_notification_text, report_overdue_frequency_hours) VALUES (1,'Project 1','p1',1,'???',5);

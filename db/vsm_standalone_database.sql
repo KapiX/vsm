@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users`(
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `level` int(1) NOT NULL DEFAULT 0,
   `email` varchar(150) NOT NULL,
   `password` varchar(64) DEFAULT NULL,
   `first_name` varchar(150) NOT NULL,
@@ -8,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `users`(
   `initials` varchar(8) DEFAULT NULL,
   `created` datetime,
   `modified` datetime,
-  `is_active` boolean DEFAULT 0,
+  `is_active` boolean NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`));
 
 DROP TABLE IF EXISTS `projects`;
