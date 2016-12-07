@@ -168,7 +168,16 @@ nav i.material-icons {
     margin:1px;
     float:right;
 }
+
 div > a.sprint-link {
     color:inherit;
     text-decoration:underline;
+}
+
+.report-read {
+    background-color: #4caf50;
+}
+
+.report-not-read {
+    background-color: #ffeb3b;
 }

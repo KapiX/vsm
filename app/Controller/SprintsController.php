@@ -4,7 +4,7 @@ App::uses('AppController', 'Controller');
 
 class SprintsController extends AppController {
 
-    var $uses = array('UserScrumReport', 'ScrumReport', 'Sprint');
+    var $uses = array('UserUserScrumReport', 'UserScrumReport', 'ScrumReport', 'Sprint');
 
     public function index() {
         $sprint_id = $this->request->params['id'];
@@ -25,8 +25,27 @@ class SprintsController extends AppController {
                     $missingUserScrumReports = $this->ScrumReport->find('all', array(
                         'conditions' => array('sprint_id' => $sprint_id, 'NOT' => array( 'ScrumReport.id' => $completedReportsIds ))
                     ));
+                    $allUserScrumReports = $this->UserScrumReport->find('all', array('order' => array('UserScrumReport.id' => 'desc'), 'conditions' => array('sprint_id' => $sprint_id)));
+                    for ($i = 0; $i < count($allUserScrumReports); $i++) {
+                        if($allUserScrumReports[$i]['UserScrumReport']['user_id'] != $user_id) {
+                            $completedReport = $this->UserUserScrumReport->find('first', array(
+                                'conditions' => array(
+                                    'UserUserScrumReport.user_id' => $user_id,
+                                    'UserUserScrumReport.user_scrum_report_id' => $allUserScrumReports[$i]['UserScrumReport']['id'],
+                                    'not' => array('report_seen_date' => null)
+                                )
+                            ));
+                            if(!$completedReport) {
+                                $allUserScrumReports[$i]['UserScrumReport']['readed'] = false;
+                            } else {
+                                $allUserScrumReports[$i]['UserScrumReport']['readed'] = true;
+                            }
+                        } else {
+                            $allUserScrumReports[$i]['UserScrumReport']['readed'] = true;
+                        }
+                    }
                     $this->set('missingUserScrumReports', $missingUserScrumReports);
-                    $this->set('allUserScrumReport', $this->UserScrumReport->find('all', array('order' => array('UserScrumReport.id' => 'desc'), 'conditions' => array('sprint_id' => $sprint_id))));
+                    $this->set('allUserScrumReports', $allUserScrumReports);
                 } else {
                     $this->Session->setFlash(__('You are not assigned to this sprint.'), 'error');
                     $this->redirect($this->referer());
@@ -79,5 +98,25 @@ class SprintsController extends AppController {
             }
         }
         $this->redirect($this->referer());
+    }
+
+    public function read_report() {
+        if($this->RequestHandler->isAjax()) {
+            $id = $this->request->data['id'];
+            if(!empty($id)) {
+                $user_id = $this->Auth->User('id');
+                $fields = array('UserUserScrumReport.report_seen_date' => 'NOW()');
+                $conditions = array('UserUserScrumReport.user_id' => $user_id, 'UserUserScrumReport.user_scrum_report_id' => $id);
+                if($this->UserUserScrumReport->updateAll($fields, $conditions)) {
+                    return new CakeResponse(array('body'=> json_encode('Report has been read'),'status'=>200));
+                } else {
+                    return new CakeResponse(array('body'=> json_encode('Could not read report'),'status'=>500));
+                }
+            } else {
+                return new CakeResponse(array('body'=> json_encode('Missing id param'),'status'=>500));
+            }
+        } else {
+            $this->redirect($this->referer());
+        }
     }
 }
