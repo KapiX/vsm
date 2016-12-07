@@ -186,3 +186,8 @@ div > a.sprint-link {
     color: black;
     font-style: italic;
 }
+
+.dashboard-notifications {
+    overflow-y: auto;
+    max-height: 150px;
+}

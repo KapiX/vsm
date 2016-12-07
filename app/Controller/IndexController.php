@@ -19,6 +19,8 @@ class IndexController extends AppController {
         $lastDayOfMonth = CakeTime::format("last day of $date", '%d');
         $monthHeader = CakeTime::format($date, '%B %Y');
 
+        $this->loadModel('Notification');
+        $this->set('newNotifications', $this->Notification->find('all', array('order' => array('Notification.created_time' => 'desc'), 'conditions' => array('Notification.user_id' => $this->Auth->user('id'), 'Notification.read' => 0))));
         $this->set('weekdays', $localizedWeekdays);
         $this->set('firstWeekDay', $firstWeekDayOfMonth);
         $this->set('lastDay', $lastDayOfMonth);

@@ -7,6 +7,22 @@ $urlNext = $this->Html->url('/' . implode('/', array(
     'calendar', $this->Time->format("$current + 1 month", '%Y/%m')
 )));
 ?>
+<?php if(count($newNotifications) > 0): ?>
+<div class="row">
+    <ul class="collection with-header">
+        <li class="collection-header"><strong>Recent Activities</strong></li>
+        <div class="dashboard-notifications">
+            <?php foreach($newNotifications as $notification): ?>
+                <?php $link = $this->Html->url(array('controller' => 'notifications', 'action' => 'read', 'id' => $notification['Notification']['id'])); ?>
+                <li class="collection-item">
+                    <a href="<?php echo $link ?>"><?php echo $notification['Notification']['text'] ?></a>
+                    <span class="time-text right"><?php echo $notification['Notification']['created_time'] ?></span>
+                </li>
+            <?php endforeach ?>
+        </div>
+    </ul>
+</div>
+<?php endif ?>
 <div class="card-panel valign-wrapper">
     <a href="<?php echo $urlPrev ?>" class="btn-flat"><i class="material-icons valign">chevron_left</i></a>
     <h5 class="header valign center-align" id="month-year"><?php echo $header ?></h5>
