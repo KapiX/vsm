@@ -23,7 +23,8 @@ $(document).ready(function(){
 
 </script>
 
-<h4 class="header"><?php echo __('Add reports') ?></h4>
+<h3><?php echo $sprint['Sprint']['name'] ?></h3>
+<h4 class="header"><i class="material-icons" style="font-size:1.5rem;">mode_edit</i><?php echo __('Add reports') ?></h4>
 <ul class="collection">
     <?php foreach($missingUserScrumReports as $missingReport): ?>
         <li class="collapsible-header missing-report-item" >
@@ -50,7 +51,7 @@ $(document).ready(function(){
         </div>
     <?php endforeach ?>
 </ul>
-<h4 class="header"><?php echo __('Read reports') ?></h4>
+<h4 class="header"><i class="material-icons" style="font-size:1.5rem;">view_headline</i><?php echo __('Read reports') ?></h4>
 <ul class="collapsible" data-collapsible="accordion">
     <?php foreach($allUserScrumReports as $report): ?>
         <li class="report-item" >

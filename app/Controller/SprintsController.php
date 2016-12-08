@@ -46,6 +46,7 @@ class SprintsController extends AppController {
                     }
                     $this->set('missingUserScrumReports', $missingUserScrumReports);
                     $this->set('allUserScrumReports', $allUserScrumReports);
+                    $this->set('sprint', $sprint);
                 } else {
                     $this->Session->setFlash(__('You are not assigned to this sprint.'), 'error');
                     $this->redirect($this->referer());
