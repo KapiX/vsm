@@ -31,8 +31,11 @@ $urlNext = $this->Html->url('/' . implode('/', array(
 <div class="row">
 <div class="col s12">
     <table id="calendar">
-        <thead>
+        <thead class="hide-on-med-and-down">
             <tr><?php foreach($weekdays as $day) echo "<th>$day</th>" ?></tr>
+        </thead>
+        <thead class="hide-on-large-only">
+            <tr><?php foreach($weekdays as $day) echo "<th>".substr($day, 0, 3)."</th>" ?></tr>
         </thead>
         <tbody>
             <?php

@@ -3,7 +3,6 @@ $linkProjects = $this->html->link(__('<i class="hide-on-large-only material-icon
 $linkLogout = $this->Html->link(__('<i class="hide-on-large-only material-icons">power_settings_new</i>Logout'), ['controller' => 'users', 'action' => 'logout'], array('escape' => false));
 if(isset($user)) $linkUser = $this->Html->link(__($username), ['controller' => 'users', 'action' => 'profile']);
 $linkProfile = $this->Html->link(__('<i class="hide-on-large-only material-icons">supervisor_account</i>Update Profile'), ['controller' => 'users', 'action' => 'profile'], array('escape' => false));
-$linkChangePassword = $this->Html->link(__('<i class="hide-on-large-only material-icons">vpn_key</i>Change Password'), ['controller' => 'users', 'action' => 'change_password'], array('escape' => false));
 $allNotificationsUrl = $this->Html->url(array('controller' => 'notifications', 'action' => 'index'));
 $markAllAsReadUrl = $this->Html->url(array('controller' => 'notifications', 'action' => 'readAll'));
 
@@ -20,7 +19,8 @@ $activeProjects = ($this->name == 'Projects') ? ' class="active"' : '';
 </script>
 <nav>
     <div class="nav-wrapper">
-        <a href="<?php echo $urlHomepage ?>" class="brand-logo">Virtual Scrum Meetings</a>
+        <a href="<?php echo $urlHomepage ?>" class="brand-logo hide-on-small-only">Virtual Scrum Meetings</a>
+        <a href="<?php echo $urlHomepage ?>" class="brand-logo hide-on-med-and-up">VSM</a>
         <?php if(isset($user)): ?>
             <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
         <?php endif ?>
@@ -37,7 +37,6 @@ $activeProjects = ($this->name == 'Projects') ? ' class="active"' : '';
             <li<?php echo $activeProjects ?>><?php echo $linkProjects ?></li>
             <li><a href="<?php echo $allNotificationsUrl ?>" ><i class="material-icons">announcement</i><?php echo __('Notifications') ?><span class="nav-badge"><?php echo $newNotificationsCount ? $newNotificationsCount : 0 ?></span></a></li>
             <li><?php echo $linkProfile ?></li>
-            <li><?php echo $linkChangePassword ?></li>
             <li><?php echo $linkLogout ?></li>
         <?php endif ?>
         </ul>

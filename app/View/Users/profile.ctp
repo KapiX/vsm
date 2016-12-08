@@ -6,9 +6,9 @@
             <?php echo $this->Form->input('email', ['label' => 'E-mail', 'class' => 'validate', 'div' => 'col s12', 'value' => $email]); ?>
         </div>
         <div class="row">
-            <?php echo $this->Form->input('first_name', ['div' => 'col s5', 'value' => $first_name]); ?>
-            <?php echo $this->Form->input('last_name', ['div' => 'col s5', 'value' => $last_name]); ?>
-            <?php echo $this->Form->input('initials', ['div' => 'col s2', 'value' => $initials]); ?>
+            <?php echo $this->Form->input('first_name', ['div' => 'col m5 s12', 'value' => $first_name]); ?>
+            <?php echo $this->Form->input('last_name', ['div' => 'col m5 s12', 'value' => $last_name]); ?>
+            <?php echo $this->Form->input('initials', ['div' => 'col m2 s12', 'value' => $initials]); ?>
         </div>
         <div class="row">
             <?php echo $this->Form->end(['label' => __('Update'), 'class' => 'btn col s12', 'div' => false]); ?>

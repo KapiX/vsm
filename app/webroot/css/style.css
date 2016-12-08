@@ -16,13 +16,11 @@ h5#month-year {
 }
 
 #calendar td {
-    padding: 15px;
     border-style: solid;
     border-color: #d0d0d0;
     border-width: 0 1px 1px 0;
     border-radius:0px;
     display: inline-block;
-    height: 80px;
     width: calc(100% / 7);
 }
 
@@ -32,6 +30,18 @@ h5#month-year {
 
 #calendar tbody tr:first-child td {
     border-top-width: 1px;
+}
+@media screen and (min-width: 993px) {
+  #calendar td {
+      height: 80px;
+      padding: 15px;
+  }
+}
+@media screen and (max-width: 992px) {
+  #calendar td {
+      height: 50px;
+      padding: 5px;
+  }
 }
 
 .width-100 {
