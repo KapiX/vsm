@@ -317,6 +317,23 @@ class ProjectsController extends AppController {
         $this->redirect($this->referer());
     }
 
+    public function remove_project() {
+        $project_id = $this->request->params['id'];
+        if(!empty($project_id)) {
+            if($this->Project->userCanEdit($project_id, $this->Auth->user('id'))) {
+                $this->Project->findById($project_id);
+                if($this->Project->delete($project_id, true)) {
+                    $this->Session->setFlash(__('Project has been removed.'), 'success');
+                } else {
+                    $this->Session->setFlash(__('Could not delete project.'), 'error');
+                }
+            } else {
+                $this->Session->setFlash(__('Insufficient permissions.'), 'error');
+            }
+        }
+        $this->redirect($this->referer());
+    }
+
     public function change_owner() {
         $project_id = $this->request->params['id'];
         if($this->request->is('post') && !empty($project_id)) {

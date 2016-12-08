@@ -20,6 +20,7 @@
             <div class="card-action">
                 <?php echo $this->Html->link(__('Open'), array('controller' => 'projects', 'action' => 'view', 'id' => $project['id'])); ?>
                 <?php if($project['userCanEdit']) echo $this->Html->link(__('Settings'), array('controller' => 'projects', 'action' => 'settings', 'id' => $project['id'])) ?>
+                <?php if($project['userCanEdit']) echo $this->Html->link('<i class="material-icons">delete</i>', array('controller' => 'projects', 'action' => 'remove_project', 'id' => $project['id']), array('escape' => false, 'class' => 'dont-collapse secondary-content', 'confirm' => __('Are you sure you want to delete this project?'))); ?>
             </div>
         </div>
     </div>

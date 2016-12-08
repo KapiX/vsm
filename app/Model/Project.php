@@ -18,7 +18,13 @@ class Project extends AppModel {
             'foreignKey'            => 'project_id',
             'associationForeignKey' => 'id',
             'order'                 => array('start_date ASC, end_date ASC'),
-            'unique'                => false
+            'unique'                => false,
+            'dependent' => true
+        ),
+        'ProjectsUsers' => array(
+            'className'             => 'ProjectsUsers',
+            'foreignKey'            => 'project_id',
+            'dependent' => true
         )
     );
 
