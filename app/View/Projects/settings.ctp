@@ -1,22 +1,27 @@
 <script type="text/javascript">
- $(document).ready(function(){
+$(document).ready(function(){
     $('.modal').modal();
+    $('select#user').prop('disabled', 'disabled');
     $('select').material_select();
     $('.collapsible-header').find('.dont-collapse').on('click.collapse', function(e) {
-             e.stopPropagation();
-         });
-
-    $.ajax({
-        url: "<?php echo $this->Html->url(array('controller' => 'users', 'action' => 'get_users')) ?>",
-        cache: false,
-        type: 'GET',
-        dataType: 'json',
-        success: function (usersData) {
-            $('input#search').autocomplete({
-                data: usersData
-            });
-        }
+        e.stopPropagation();
     });
+
+    (function($, window) {
+        $.fn.replaceOptions = function(options) {
+            var self, $option;
+
+            $(this).children('option:gt(0)').remove();
+            self = this;
+
+            $.each(options, function(index, option) {
+            $option = $("<option></option>")
+                .attr("value", option)
+                .text(index);
+            self.append($option);
+            });
+        };
+    })(jQuery, window);
 
     $('.datepicker').pickadate({
         selectMonths: true,
@@ -24,11 +29,35 @@
         format: 'yyyy-mm-dd'
     });
 
-  });
+    $('input#search').on('input', function(e) {
+        $.ajax({
+            url: "<?php echo $this->Html->url(array('controller' => 'users', 'action' => 'get_users')) ?>",
+            cache: false,
+            type: 'POST',
+            data: {
+                'filter': $('input#search').val()
+            },
+            dataType: 'json',
+            success: function (usersData) {
+                $('select#user').material_select('destroy');
+                if($.isEmptyObject(usersData)) {
+                    $('select#user').prop('disabled', 'disabled');
+                } else {
+                    $('select#user').prop('disabled', false);
+                }
+                $('select#user').replaceOptions(usersData);
+                $('select#user').material_select();
+            }
+        });
+    });
+});
 </script>
 <h3>[<?php echo $project['short_name'] ?>] <?php echo $project['name'] . __(' settings')?></h3>
 <h4 class="header"><i class="material-icons" style="font-size:1.5rem;">directions_run</i><?php echo __('Sprints') ?></h4>
 
+<?php if(empty($sprints)): ?>
+<h5><?php echo __('No sprints have been defined for this project.') ?>
+<?php else: ?>
 <ul class="collapsible" data-collapsible="accordion">
 <?php foreach($sprints as $sprint): ?>
 <li>
@@ -74,6 +103,7 @@
 </li>
 <?php endforeach ?>
 </ul>
+<?php endif ?>
 
 <h4 class="header"><i class="material-icons" style="font-size:1.5rem;">person</i><?php echo __('Users') ?></h4>
 <ul class="collection">
@@ -107,6 +137,9 @@
                 <?php echo $this->Form->create(false, array('url' => array('action' => 'add_user', 'id' => $project['id']))); ?>
                 <div class="row">
                     <?php echo $this->Form->input('search', ['div' => 'col s12', 'before' => '<i class="material-icons prefix">search</i>']) ?>
+                </div>
+                <div class="row">
+                    <?php echo $this->Form->input('user', ['empty' => __('Select user'), 'options' => array(), 'disabled' => array(''), 'default' => array(), 'div' => 'col s12', 'before' => '<i class="material-icons prefix">person</i>']) ?>
                 </div>
                 <div class="row">
                     <?php echo $this->Form->end(array('label' => 'add', 'class' => 'col s12 btn large')); ?>

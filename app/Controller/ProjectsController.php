@@ -133,12 +133,12 @@ class ProjectsController extends AppController {
     public function add_user() {
         $project_id = $this->request->params['id'];
         if($this->request->is('post') && !empty($project_id)) {
-            $email = $this->request->data['search'];
+            $user_id = $this->request->data['user'];
             $this->loadModel('User');
             $this->loadModel('ProjectsUsers');
             if($this->Project->userCanEdit($project_id, $this->Auth->user('id'))) {
                 $user = $this->User->find('first', array(
-                    'conditions' => array('email' => $email),
+                    'conditions' => array('id' => $user_id),
                     'recursive' => -1
                 ))['User'];
                 if($user) {

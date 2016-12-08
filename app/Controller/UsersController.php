@@ -191,12 +191,32 @@ class UsersController extends AppController {
 
     public function get_users() {
         if($this->RequestHandler->isAjax()) {
-            $users = $this->User->find('list', array(
-                'fields' => array('id', 'email'),
-                'recursive' => 0,
-            ));
-            $users = array_fill_keys($users, null);
-            $this->set('users', $users);
+            $filter = $this->request->data['filter'];
+            if(!empty($filter)) {
+                $users = $this->User->find('all', array(
+                    'contains' => array('User'),
+                    'fields' => array('id', 'email', 'first_name', 'last_name', 'initials', 'is_active'),
+                    'recursive' => 1,
+                    'conditions' => array(
+                        'OR' => array(
+                            'email LIKE' => '%' . $filter . '%',
+                            'first_name LIKE' => '%' . $filter . '%',
+                            'last_name LIKE' => '%' . $filter . '%',
+                            'initials LIKE' => '%' . $filter . '%',
+                            'CONCAT(first_name, " ", last_name) LIKE' => '%' . $filter . '%'
+                        ),
+                    )
+                ));
+            }
+            $filtered_users = array();
+            if(!empty($users)) {
+                foreach($users as $user) {
+                    $u = $user['User'];
+                    $key = '[' . $u['initials'] . '] ' . $u['first_name'] . ' ' . $u['last_name'] . ' (' . $u['email'] . ')';
+                    $filtered_users[$key] = $u['id'];
+                }
+            }
+            $this->set('users', $filtered_users);
             $this->render('get_users', 'ajax');
         } else {
             $this->redirect($this->referer());
