@@ -11,6 +11,7 @@ class SprintsController extends AppController {
         if(!empty($sprint_id)) {
             $sprint = $this->Sprint->findById($sprint_id);
             if(!empty($sprint)) {
+                $this->set('title_for_layout', $sprint['Sprint']['name']);
                 $this->loadModel('SprintsUsers');
                 $user_id = $this->Auth->User('id');
                 if($this->SprintsUsers->userInSprint($user_id, $sprint_id)) {

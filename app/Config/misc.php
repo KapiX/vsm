@@ -34,3 +34,22 @@ $config['colors'] = array(
     'pink lighten-4',
     'blue-grey'
 );
+$config['titles'] = array(
+    'app_settings' => array(
+        'index' => 'App Settings'
+    ),
+    'notifications' => array(
+        'index' => 'My Notifications'
+    ),
+    'projects' => array(
+        'index' => 'My Projects',
+    ),
+    'users' => array(
+        'forgot_password' => 'Forgot Password',
+        'login' => 'Log in - VSM',
+        'profile' => 'My Profile',
+        'register' => 'Sign Up for VSM',
+        'reset' => 'Reset Password'
+    )
+);
+$config['default-title'] = 'VSM';

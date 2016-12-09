@@ -67,6 +67,11 @@ class AppController extends Controller {
 
     public function beforeFilter() {
         parent::beforeFilter();
+        Configure::load('misc');
+        $title = Configure::read('titles')[$this->params['controller']][$this->params['action']];
+        if(empty($title))
+          $title = Configure::read('default-title');
+        $this->set('title_for_layout', $title);
         if (!empty($this->Auth->user('id'))) {
             $this->set('user', $this->Auth->user());
             $this->set('username', $this->Auth->user('first_name'));

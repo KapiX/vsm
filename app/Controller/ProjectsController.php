@@ -24,6 +24,7 @@ class ProjectsController extends AppController {
         if(!empty($id)) {
             $project = $this->Project->findById($id);
             if(!empty($project)) {
+                $this->set('title_for_layout', $project['Project']['name']);
                 if($this->ProjectsUsers->userInProject($this->Auth->User('id'), $id)) {
                     $month = $this->request->params['month'];
                     $year = $this->request->params['year'];
@@ -101,6 +102,7 @@ class ProjectsController extends AppController {
                 'recursive' => 2,
                 'conditions' => array('Project.id' => $id),
             ));
+            $this->set('title_for_layout', $row['Project']['name']." | Settings");
             $this->set('project', $row['Project']);
             $this->set('users', $row['User']);
             $this->set('sprints', array_reverse($row['Sprint']));
