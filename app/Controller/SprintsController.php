@@ -27,6 +27,7 @@ class SprintsController extends AppController {
                         'conditions' => array('sprint_id' => $sprint_id, 'NOT' => array( 'ScrumReport.id' => $completedReportsIds ))
                     ));
                     $allUserScrumReports = $this->UserScrumReport->find('all', array('order' => array('UserScrumReport.id' => 'desc'), 'conditions' => array('sprint_id' => $sprint_id)));
+                    $lastUserScrumReport = $this->UserScrumReport->find('first', array('order' => array('UserScrumReport.id' => 'desc'), 'conditions' => array('sprint_id' => $sprint_id, 'user_id' => $user_id)));
                     for ($i = 0; $i < count($allUserScrumReports); $i++) {
                         if($allUserScrumReports[$i]['UserScrumReport']['user_id'] != $user_id) {
                             $completedReport = $this->UserUserScrumReport->find('first', array(
@@ -45,6 +46,7 @@ class SprintsController extends AppController {
                             $allUserScrumReports[$i]['UserScrumReport']['readed'] = true;
                         }
                     }
+                    $this->set('lastUserScrumReport', $lastUserScrumReport);
                     $this->set('missingUserScrumReports', $missingUserScrumReports);
                     $this->set('allUserScrumReports', $allUserScrumReports);
                     $this->set('sprint', $sprint);

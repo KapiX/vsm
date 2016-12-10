@@ -201,3 +201,7 @@ div > a.sprint-link {
     overflow-y: auto;
     max-height: 150px;
 }
+
+.add-report p{
+    padding-left: 20px;
+}

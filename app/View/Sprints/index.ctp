@@ -30,11 +30,16 @@ $(document).ready(function(){
         <li class="collapsible-header missing-report-item" >
             <a href="#<?php echo $missingReport['ScrumReport']['id']?>"><div><i class="material-icons">playlist_add</i><?php echo $missingReport['ScrumReport']['deadline_date'] ?></div></a>
         </li>
-        <div id="<?php echo $missingReport['ScrumReport']['id']?>" class="modal modal-fixed-footer">
+        <div id="<?php echo $missingReport['ScrumReport']['id']?>" class="modal modal-fixed-footer add-report">
           <div class="modal-content">
             <h4><?php echo __('Add report') ?></h4>
             <?php echo $this->Form->create(false, array('url' => array('action' => 'add_report', 'id' => $missingReport['ScrumReport']['sprint_id']))); ?>
             <?php echo $this->Form->hidden('scrum_report_id', array('value'=> $missingReport['ScrumReport']['id'])); ?>
+            <?php if(!empty($lastUserScrumReport)): ?>
+            <div class="row col s12">
+              <p><strong><?php echo __('What I had to do?') ?></strong></p><p><?php echo $lastUserScrumReport['UserScrumReport']['q2_ans'] ?></p>
+            </div>
+            <?php endif ?>
             <div class="row">
                 <?php echo $this->Form->input('q1_ans', ['div' => 'col s12', 'label' => __('What did I accomplish since last report?')]) ?>
             </div>
