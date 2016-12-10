@@ -100,4 +100,10 @@ class User extends AppModel {
         return $passwordHasher->check($current_password['current_password'], $password);
     }
 
+    public function canSetPermissions($level) {
+        if($level == 2)
+            return true;
+        return false;
+    }
+
 }

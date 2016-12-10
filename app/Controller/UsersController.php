@@ -173,7 +173,7 @@ class UsersController extends AppController {
             );
             if($this->User->save($data)) {
                 $this->AccountToken->delete($token['token']);
-                $this->Session->setFlash(__('Your account has been activated. You can login now'), 'success');
+                $this->Session->setFlash(__('Your account has been activated. You can login now.'), 'success');
                 $this->redirect(array('action' => 'login'));
             } else {
                 $errors = '';
@@ -272,6 +272,25 @@ class UsersController extends AppController {
       $this->set('first_name', $this->Auth->user('first_name'));
       $this->set('last_name', $this->Auth->user('last_name'));
       $this->set('initials', $this->Auth->user('initials'));
+    }
 
+    public function edit() {
+        if(!$this->Auth->loggedIn()) {
+            $this->redirect('/');
+        }
+        if ($this->request->is('post') && isset($this->request->params['id'])) {
+            if($this->User->canSetPermissions($this->Auth->user('level'))) {
+                $user_id = $this->request->params['id'];
+                $this->User->id = $user_id;
+                if($this->User->save($this->request->data)) {
+                    $this->Session->setFlash(__('Permission level has been changed.'), 'success');
+                } else {
+                    $this->Session->setFlash(__('Permissions could not be changed.'), 'error');
+                }
+            } else {
+                $this->Session->setFlash(__('Insufficient permission level.'), 'error');
+            }
+        }
+        $this->redirect($this->referer());
     }
 }
