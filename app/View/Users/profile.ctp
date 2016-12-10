@@ -2,6 +2,7 @@
 <div class="row">
     <div class="col s12">
         <?php echo $this->Form->create('User', array('action' => 'profile')); ?>
+        <?php echo $this->Form->hidden('action', array('value' => 'update_profile')); ?>
         <div class="row">
             <?php echo $this->Form->input('email', ['label' => 'E-mail', 'class' => 'validate', 'div' => 'col s12', 'value' => $email]); ?>
         </div>
@@ -17,7 +18,8 @@
 </div>
 <div class="row">
     <div class="col s12">
-        <?php echo $this->Form->create('User', array('action' => 'change_password')); ?>
+        <?php echo $this->Form->create('User', array('action' => 'profile')); ?>
+        <?php echo $this->Form->hidden('action', array('value' => 'change_password')); ?>
         <div class="row">
             <?php echo $this->Form->input('current_password', ['type' => 'password', 'div' => 'col s12']); ?>
         </div>
