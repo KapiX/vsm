@@ -103,8 +103,8 @@
  * to the roles you defined in the roles configuration.
  */
 $config['map'] = array(
-	'User' => 'User/username',
-	'Role' => 'User/group_id',
+	'User' => 'User/email',
+	'Role' => 'User/level',
 );
 
 /**
@@ -112,14 +112,18 @@ $config['map'] = array(
  * the roles defined in your role configuration.
  */
 $config['alias'] = array(
-	'Role/4' => 'Role/editor',
+	'Role/2' => 'Role/admin',
+	'Role/1' => 'Role/pm',
+	'Role/0' => 'Role/user'
 );
 
 /**
  * role configuration
  */
 $config['roles'] = array(
-	'Role/admin' => null,
+	'Role/admin' => 'Role/pm',
+	'Role/pm' => 'Role/user',
+	'Role/user' => null
 );
 
 /**
@@ -127,7 +131,13 @@ $config['roles'] = array(
  */
 $config['rules'] = array(
 	'allow' => array(
-		'*' => 'Role/admin',
+		'controllers/*' => 'Role/admin',
+		'controllers/projects/*' => 'Role/pm',
+		'controllers/index/*' => 'Role/user',
+		'controllers/projects/(index|view)' => 'Role/user',
+		'controllers/notifications/*' => 'Role/user',
+		'controllers/sprints/*' => 'Role/user',
+		'controllers/users/(change_password|profile|logout)' => 'Role/user'
 	),
 	'deny' => array(),
 );

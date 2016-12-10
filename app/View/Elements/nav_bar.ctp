@@ -31,7 +31,9 @@ $activeAppSettings = ($this->name == 'AppSettings') ? ' class="active"' : '';
             <li><?php echo $linkUser ?></li>
             <li><a class='dropdown-button' href='#' data-activates='notification-dropdown' data-alignment="right" data-beloworigin="true" data-constrainwidth="false"><?php echo __('Notifications') ?><span class="nav-badge"><?php echo $newNotificationsCount ? $newNotificationsCount : 0 ?></span></a></li>
             <li<?php echo $activeProjects ?>><?php echo $linkProjects ?></li>
+            <?php if($showSettings): ?>
             <li<?php echo $activeAppSettings ?>><?php echo $linkSettings ?></li>
+            <?php endif ?>
             <li><?php echo $linkLogout ?></li>
         <?php endif ?>
         </ul>
@@ -40,7 +42,9 @@ $activeAppSettings = ($this->name == 'AppSettings') ? ' class="active"' : '';
             <li<?php echo $activeProjects ?>><?php echo $linkProjects ?></li>
             <li><a href="<?php echo $allNotificationsUrl ?>" ><i class="material-icons">announcement</i><?php echo __('Notifications') ?><span class="nav-badge"><?php echo $newNotificationsCount ? $newNotificationsCount : 0 ?></span></a></li>
             <li><?php echo $linkProfile ?></li>
+            <?php if($showSettings): ?>
             <li<?php echo $activeAppSettings ?>><?php echo $linkSettings ?></li>
+            <?php endif ?>
             <li><?php echo $linkLogout ?></li>
         <?php endif ?>
         </ul>

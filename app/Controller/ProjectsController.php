@@ -16,6 +16,7 @@ class ProjectsController extends AppController {
             $projects[$key]['userCanEdit'] = $this->Project->userCanEdit($project['id'], $this->Auth->user('id'));
         }
         $this->set('projects', $projects);
+        $this->set('canAdd', $this->Acl->check(array('User' => array('email' => $this->Auth->user('email'), 'level' => $this->Auth->user('level'))), 'controllers/projects', 'add'));
     }
 
     public function view() {

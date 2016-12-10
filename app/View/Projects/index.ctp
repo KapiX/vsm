@@ -29,6 +29,7 @@
 <?php endforeach ?>
 <?php endif ?>
 
+<?php if($canAdd): ?>
 <div class="fixed-action-btn">
 <a class="btn-floating btn-large red" href="#add-project">
     <i class="large material-icons">add</i>
@@ -57,3 +58,4 @@
         <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"><?php echo __('Close') ?></a>
     </div>
 </div>
+<?php endif ?>

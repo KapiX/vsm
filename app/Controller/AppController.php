@@ -32,6 +32,7 @@ App::uses('CakeTime', 'Utility');
  */
 class AppController extends Controller {
     public $components = array(
+        'Acl',
         'Session',
         'Auth' => array(
             'loginRedirect' => '/',
@@ -48,6 +49,9 @@ class AppController extends Controller {
                     'passwordHasher' => 'Blowfish',
                     'fields' => array('username' => 'email')
                 )
+            ),
+            'authorize' => array(
+                'Actions' => array('actionPath' => 'controllers')
             )
         ),
         'RequestHandler'
@@ -75,6 +79,7 @@ class AppController extends Controller {
         if (!empty($this->Auth->user('id'))) {
             $this->set('user', $this->Auth->user());
             $this->set('username', $this->Auth->user('first_name'));
+            $this->set('showSettings', $this->Acl->check(array('User' => array('email' => $this->Auth->user('email'), 'level' => $this->Auth->user('level'))), 'controllers/app_settings'));
             $this->set('projects', $this->Project->find('all', array('recursive' => -1, 'fields' => 'id, short_name')));
             $this->set('myProjects', $this->User->find('first', array('contain' => 'Project', 'conditions' => array('User.id' => $this->Auth->user('id'))))['Project'] );
             $notifications = $this->Notification->find('all', array('order' => array('Notification.created_time' => 'desc'), 'limit' => 10, 'conditions' => array('Notification.user_id' => $this->Auth->user('id'))));

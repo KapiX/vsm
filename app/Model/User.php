@@ -78,6 +78,10 @@ class User extends AppModel {
         )
     );
 
+    public function parentNode() {
+        return null;
+    }
+
     public function beforeSave($options = array()) {
         if (isset($this->data[$this->alias]['password'])) {
             $passwordHasher = new BlowfishPasswordHasher();
