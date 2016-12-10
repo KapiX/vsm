@@ -16,7 +16,7 @@ $urlNext = $this->Html->url('/' . implode('/', array(
                 <?php $link = $this->Html->url(array('controller' => 'notifications', 'action' => 'read', 'id' => $notification['Notification']['id'])); ?>
                 <li class="collection-item">
                     <a href="<?php echo $link ?>"><?php echo $notification['Notification']['text'] ?></a>
-                    <span class="time-text right"><?php echo $notification['Notification']['created_time'] ?></span>
+                    <span class="time-text right"><?php echo $this->Time->timeAgoInWords($notification['Notification']['created_time']) ?></span>
                 </li>
             <?php endforeach ?>
         </div>
