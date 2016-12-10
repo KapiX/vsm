@@ -1,3 +1,4 @@
+<?php $weekdays = array_combine(range(1, 7), array_map(function($v) { return CakeTime::format("last sunday +$v day", '%A'); }, range(1, 7))); ?>
 <script type="text/javascript">
 $(document).ready(function(){
     $('.modal').modal();
@@ -26,7 +27,8 @@ $(document).ready(function(){
     $('.datepicker').pickadate({
         selectMonths: true,
         selectYears: 15,
-        format: 'yyyy-mm-dd'
+        format: 'yyyy-mm-dd',
+        firstDay: 1
     });
 
     $('input#search').on('input', function(e) {
@@ -74,10 +76,10 @@ $(document).ready(function(){
         </div>
         <div class="row">
             <?php
-            $weekdays = array_combine(range(1, 7), array_map(function($v) { return CakeTime::format("last sunday +$v day", '%A'); }, range(1, 7)));
             echo $this->Form->input('report_weekdays', array(
+                'label' => __('Work days'),
                 'options' => $weekdays,
-                'empty' => __('Select weekdays'),
+                'empty' => __('Select work days'),
                 'multiple' => true,
                 'disabled' => array(''),
                 'div' => 'col s6',
@@ -169,20 +171,24 @@ $(document).ready(function(){
         <h4><?php echo __('Add sprint') ?></h4>
         <?php echo $this->Form->create('Sprint', array('url' => array('controller' => 'projects', 'action' => 'add_sprint', 'id' => $project['id']))); ?>
         <div class="row">
-            <?php echo $this->Form->input('name', ['div' => 'col s12']) ?>
+            <?php echo $this->Form->input('name', ['div' => 'col s6']) ?>
+            <?php echo $this->Form->input('report_weekdays', array(
+                'label' => __('Work days'),
+                'options' => $weekdays,
+                'empty' => __('Select work days'),
+                'multiple' => true,
+                'disabled' => array(''),
+                'div' => 'col s6',
+                'default' => $sprint['report_weekdays']
+            )); ?>
         </div>
         <div class="row">
-            <?php echo $this->Form->input('start_date', ['type' => 'date', 'class' => 'datepicker', 'div' => 'col s12']) ?>
-        </div>
-        <div class="row">
-            <?php echo $this->Form->input('end_date', ['type' => 'date', 'class' => 'datepicker', 'div' => 'col s12']) ?>
-        </div>
-        <div class="row">
-            <?php echo $this->Form->end(array('label' => 'add', 'class' => 'col s12 btn large')); ?>
+            <?php echo $this->Form->input('start_date', ['type' => 'date', 'class' => 'datepicker', 'div' => 'col s6']) ?>
+            <?php echo $this->Form->input('end_date', ['type' => 'date', 'class' => 'datepicker', 'div' => 'col s6']) ?>
         </div>
     </div>
     <div class="modal-footer">
-        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"><?php echo __('Close') ?></a>
+        <?php echo $this->Form->end(array('label' => 'Add', 'class' => 'btn large')); ?> <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"><?php echo __('Close') ?></a>
     </div>
 </div>
 

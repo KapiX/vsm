@@ -256,20 +256,24 @@ class ProjectsController extends AppController {
     public function add_sprint() {
         $project_id = $this->request->params['id'];
         if($this->request->is('post') && !empty($project_id)) {
-            $this->loadModel('Sprints');
+            $this->loadModel('Sprint');
             if($this->Project->userCanEdit($project_id, $this->Auth->user('id'))) {
-                $this->Sprints->create();
+                $dataSource = $this->Sprint->getDataSource();
+                $dataSource->begin();
+                $this->Sprint->create();
                 $start_date = CakeTime::format($this->request->data['Sprint']['start_date'], '%Y-%m-%d');
                 $end_date = CakeTime::format($this->request->data['Sprint']['end_date'], '%Y-%m-%d');
-                if($start_date < $end_date) {
+                $start_cmp = new DateTime($start_date);
+                $end_cmp = new DateTime($end_date);
+                if($start_cmp < $end_cmp) {
                     $data = array(
                         'project_id' => $project_id,
                         'name' => $this->request->data['Sprint']['name'],
                         'start_date' => $start_date,
                         'end_date' => $end_date,
-                        'report_weekdays' => ''
+                        'report_weekdays' => $this->request->data['Sprint']['report_weekdays']
                     );
-                    if($this->Sprints->save($data)) {
+                    if($this->Sprint->save($data)) {
                         $this->loadModel('ProjectsUsers');
                         $this->loadModel('SprintsUsers');
                         $projects_users = $this->ProjectsUsers->find('all', array(
@@ -277,23 +281,31 @@ class ProjectsController extends AppController {
                         ));
                         foreach ($projects_users as $project_user) {
                             $this->SprintsUsers->create();
-                            $this->SprintsUsers->save(array('sprint_id' => $this->Sprints->id, 'user_id' => $project_user['ProjectsUsers']['user_id']));
+                            $this->SprintsUsers->save(array('sprint_id' => $this->Sprint->id, 'user_id' => $project_user['ProjectsUsers']['user_id']));
                         }
                         $this->loadModel('ScrumReport');
-                        while($start_date <= $end_date) {
+                        while($start_cmp <= $end_cmp) {
+                            if(!in_array(CakeTime::format($start_date, '%u'), $this->request->data['Sprint']['report_weekdays'])) {
+                                $start_date = date('Y-m-d', strtotime($start_date . ' +1 day'));
+                                $start_cmp = new DateTime($start_date);
+                                continue;
+                            }
                             $this->ScrumReport->create();
-                            $this->ScrumReport->save(array('sprint_id' => $this->Sprints->id, 'deadline_date' => $start_date));
+                            $this->ScrumReport->save(array('sprint_id' => $this->Sprint->id, 'deadline_date' => $start_date));
                             $start_date = date('Y-m-d', strtotime($start_date . ' +1 day'));
+                            $start_cmp = new DateTime($start_date);
                         }
                         $this->loadModel('Notification');
-                        $this->Notification->addNewSprintNotification($project_id, $this->Sprints->id, $this->Auth->User('first_name'));
+                        $this->Notification->addNewSprintNotification($project_id, $this->Sprint->id, $this->Auth->User('first_name'));
                         $this->Session->setFlash(__('Sprint added to project.'), 'success');
+                        $dataSource->commit();
                     } else {
                         $this->Session->setFlash(__('Could not save.'), 'error');
                     }
                 } else {
                     $this->Session->setFlash(__('Invalid sprint date.'), 'error');
                 }
+                $dataSource->rollback();
             } else {
                 $this->Session->setFlash(__('Insufficient permissions.'), 'error');
             }
