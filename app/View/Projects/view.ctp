@@ -194,5 +194,3 @@ foreach($sprints as $sprint) {
 </div>
 <?php endif ?>
 <?php endforeach ?>
-
-<?php echo $this->element('sql_dump'); ?>
