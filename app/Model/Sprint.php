@@ -64,4 +64,40 @@ class Sprint extends AppModel {
         }
         return true;
     }
+
+    public function setWorkDays($sprint_id, $workdays) {
+        $dataSource = $this->getDataSource();
+        $dataSource->begin();
+        $sprint = $this->find('first', array('conditions' => array('id' => $sprint_id), 'recursive' => -1))['Sprint'];
+        if(!$sprint) {
+            $dataSource->rollback();
+            return false;
+        }
+        $subQuery = $dataSource->buildStatement(array(
+            'fields' => array('reports.scrum_report_id'),
+            'table'  => 'user_scrum_reports',
+            'alias'  => 'reports',
+        ), $this->Sprint);
+        $subQuery = ' ScrumReport.id NOT IN (' . $subQuery . ') ';
+        $subQueryExpression = $dataSource->expression($subQuery);
+        $this->ScrumReport->deleteAll(array('sprint_id' => $sprint_id, $subQueryExpression));
+        $last_date = $this->ScrumReport->find('first', array(
+            'conditions' => array(
+                'sprint_id' => $sprint_id
+            ),
+            'order' => array(
+                'deadline_date DESC'
+            ),
+            'fields' => array('deadline_date'),
+            'recursive' => -1
+        ))['ScrumReport'];
+        if($last_date) {
+            $last_date = date('Y-m-d', strtotime($last_date['deadline_date'] . ' +1 day'));
+            $this->ScrumReport->addReportsForDays($sprint_id, $workdays, $last_date, $sprint['end_date']);
+        } else {
+            $this->ScrumReport->addReportsForDays($sprint_id, $workdays, $sprint['start_date'], $sprint['end_date']);
+        }
+        $dataSource->commit();
+        return true;
+    }
 }

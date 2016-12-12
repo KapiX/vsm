@@ -123,7 +123,9 @@ class ProjectsController extends AppController {
         $dataSource = $this->Sprint->getDataSource();
         $dataSource->begin();
         $this->Sprint->id = $sprint_id;
-        if($this->Sprint->save($sprint_data) && $this->Sprint->setMembers($sprint_id, $sprint_data['sprint_members'])) {
+        if($this->Sprint->save($sprint_data) &&
+           $this->Sprint->setMembers($sprint_id, $sprint_data['sprint_members']) &&
+           $this->Sprint->setWorkDays($sprint_id, $sprint_data['report_weekdays'], $sprint_data['start_date'], $sprint_data['end_date'])) {
             $dataSource->commit();
             $this->Session->setFlash(__('Sprint settings has been saved.'), 'success');
             return $this->redirect($this->referer());
