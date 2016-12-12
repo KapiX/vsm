@@ -13,20 +13,30 @@ class NotificationsController extends AppController {
         $user_id = $this->Auth->User('id');
         $notificationId = $this->request->params['id'];
         $notification = $this->Notification->find('first', array('conditions' => array('Notification.user_id' => $user_id, 'Notification.id' => $notificationId)))['Notification'];
+        $dataSource = $this->Notification->getDataSource();
+        $dataSource->begin();
         if($notification != null) {
             $notification['read'] = 1;
-            $this->Notification->save($notification);
-            $this->redirect(Router::url('/', true).$notification['href']);
+            if($this->Notification->save($notification)) {
+                $dataSource->commit();
+                $this->redirect(Router::url('/', true).$notification['href']);
+            }
         }
+        $dataSource->rollback();
         return $this->redirect($this->referer());
     }
 
     public function readAll() {
         $user_id = $this->Auth->User('id');
-        $this->Notification->updateAll(
-            array('Notification.read' => 1),
-            array('Notification.user_id' => $user_id, 'Notification.read' => 0)
-        );
+        $dataSource = $this->Notification->getDataSource();
+        $dataSource->begin();
+        $fields = array('Notification.read' => 1);
+        $conditions = array('Notification.user_id' => $user_id, 'Notification.read' => 0);
+        if($this->Notification->updateAll($fields, $conditions)) {
+            $dataSource->commit();
+        } else {
+            $dataSource->rollback();
+        }
         return $this->redirect($this->referer());
     }
 

@@ -83,6 +83,8 @@ class SprintsController extends AppController {
               'modified' => $created
             );
             $this->loadModel('UserScrumReport');
+            $dataSource = $this->UserScrumReport->getDataSource();
+            $dataSource->begin();
             if($this->UserScrumReport->save($data)) {
                 $this->loadModel('SprintsUsers');
                 $this->loadModel('UserUserScrumReport');
@@ -101,8 +103,10 @@ class SprintsController extends AppController {
                     $this->loadModel('Notification');
                     $this->Notification->newReportNotification($sprint_id, $sprintUser['SprintsUsers']['user_id'], $this->Auth->User('first_name'));
                 }
+                $dataSource->commit();
                 $this->Session->setFlash(__('Report added.'), 'success');
             } else {
+                $dataSource->rollback();
                 $this->Session->setFlash(__('Could not save.'), 'error');
             }
         }
