@@ -166,6 +166,8 @@ class ProjectsController extends AppController {
                 ))['User'];
                 if($user) {
                     if(!$this->ProjectsUsers->userInProject($user['id'], $project_id)) {
+                        $dataSource = $this->ProjectsUsers->getDataSource();
+                        $dataSource->begin();
                         $this->ProjectsUsers->create();
                         $data = array(
                             'project_id' => $project_id,
@@ -174,8 +176,10 @@ class ProjectsController extends AppController {
                         if($this->ProjectsUsers->save($data)) {
                             $this->loadModel('Notification');
                             $this->Notification->addUserToProjectNotification($project_id, $user['id'], $this->Auth->User('first_name'));
+                            $dataSource->commit();
                             $this->Session->setFlash(__('User added to project.'), 'success');
                         } else {
+                            $dataSource->rollback();
                             $this->Session->setFlash(__('Could not save.'), 'error');
                         }
                     } else {
@@ -234,6 +238,8 @@ class ProjectsController extends AppController {
                     'email' => $new_user_email,
                     'password' => $new_user_password
                 );
+                $dataSource = $this->User->getDataSource();
+                $dataSource->begin();
                 if ($this->User->save($user_data)) {
                     Configure::load('misc');
                     $token = $this->AccountToken->createToken($new_user_email);
@@ -246,26 +252,27 @@ class ProjectsController extends AppController {
                                     'user_id' => $userId
                                 )
                         );
-                        $this->ProjectsUsers->save($data);
-                        $Email = new CakeEmail();
-                        $emailValues = array('new_user_email' => $new_user_email,
-                                             'inviter_email' => $this->Auth->user('email'),
-                                             'password' => $new_user_password,
-                                             'token' => $token['AccountToken']['token']);
-                        $Email->config(Configure::read('mail.transport'))
-                           ->template('invitation')
-                           ->emailFormat('html')
-                           ->to($new_user_email)
-                           ->from(Configure::read('mail.from'))
-                           ->viewVars($emailValues)
-                           ->send();
-                        $this->Session->setFlash(__('Invitation has been sent.'), 'success');
-                    } else {
-                        $this->Session->setFlash(__('An error has occurred.'), 'error');
+                        if($this->ProjectsUsers->save($data)) {
+                            $Email = new CakeEmail();
+                            $emailValues = array('new_user_email' => $new_user_email,
+                                                 'inviter_email' => $this->Auth->user('email'),
+                                                 'password' => $new_user_password,
+                                                 'token' => $token['AccountToken']['token']);
+                            $Email->config(Configure::read('mail.transport'))
+                               ->template('invitation')
+                               ->emailFormat('html')
+                               ->to($new_user_email)
+                               ->from(Configure::read('mail.from'))
+                               ->viewVars($emailValues)
+                               ->send();
+                            $dataSource->commit();
+                            $this->Session->setFlash(__('Invitation has been sent.'), 'success');
+                            return $this->redirect($this->referer());
+                        }
                     }
-                } else {
-                    $this->Session->setFlash(__('Account could not be created. Please, try again.'), 'error');
                 }
+                $dataSource->rollback();
+                $this->Session->setFlash(__('Account could not be created. Please, try again.'), 'error');
             } else {
                 $this->Session->setFlash(__('You are now allowed to invite new users.'), 'error');
             }
@@ -375,13 +382,24 @@ class ProjectsController extends AppController {
             $new_owner_id = $this->request->data['new_owner'];
             $this->loadModel('Project');
             if($this->Project->userCanEdit($project_id, $this->Auth->user('id'))) {
+                $dataSource = $this->Project->getDataSource();
+                $dataSource->begin();
                 $data = array('id' => $project_id, 'owner_id' => $new_owner_id);
                 if($this->Project->save($data)) {
-                    $this->Session->setFlash(__('The owner has been changed.'), 'success');
-                    $this->redirect(array('action' => 'view', 'id' => $project_id));
+                    $this->loadModel('User');
+                    $user = $this->User->findById($new_owner_id);
+                    $data = array('id' => $new_owner_id, 'level' => max(1, $user['User']['level']));
+                    if($this->User->save($data)) {
+                        $dataSource->commit();
+                        $this->Session->setFlash(__('The owner has been changed.'), 'success');
+                        $this->redirect(array('action' => 'view', 'id' => $project_id));
+                    } else {
+                        $this->Session->setFlash(__('Could not change.'), 'error');
+                    }
                 } else {
                     $this->Session->setFlash(__('Could not change.'), 'error');
                 }
+                $dataSource->rollback();
             } else {
                 $this->Session->setFlash(__('Insufficient permissions.'), 'error');
             }
