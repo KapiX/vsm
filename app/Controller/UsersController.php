@@ -55,6 +55,8 @@ class UsersController extends AppController {
         }
         Configure::load('misc');
         if ($this->request->is('post')) {
+            $dataSource = $this->User->getDataSource();
+            $dataSource->begin();
             $this->User->create();
             $data = $this->request->data['User'];
             if ($this->User->save($this->request->data)) {
@@ -69,15 +71,18 @@ class UsersController extends AppController {
                         ->from(Configure::read('mail.from'))
                         ->viewVars($emailValues)
                         ->send();
+                    $dataSource->commit();
                     $this->Session->setFlash(
                         __('Account has been successfully created. An activation email has been sent.'), 'success'
                     );
                     return $this->redirect(array('action' => 'login'));
                 } else {
+                    $dataSource->rollback();
                     $this->Session->setFlash(__('An error has occurred.'), 'error');
                     return $this->redirect(array('action' => 'register'));
                 }
             }
+            $dataSource->rollback();
             if ($this->User->hasAny(array('User.email' => $data['email']))) {
                 $token = $this->PasswordToken->createToken($data['email']);
                 if($token != false) {
@@ -107,7 +112,7 @@ class UsersController extends AppController {
             $this->redirect('/');
         }
         Configure::load('misc');
-        if($this->request->is('post') && array_key_exists('email', $data)) {
+        if($this->request->is('post') && array_key_exists('email', $this->request->data['User'])) {
             $data = $this->request->data['User'];
             $token = $this->PasswordToken->createToken($data['email']);
             if($token != false) {
@@ -133,12 +138,15 @@ class UsersController extends AppController {
         $token = $this->PasswordToken->read(array(), $this->request->params['token'])['PasswordToken'];
         if(strtotime($token['expires']) >= time()) {
             if($this->request->is('post')) {
+                $dataSource = $this->User->getDataSource();
+                $dataSource->begin();
                 $data = $this->request->data;
                 $data['User']['id'] = $token['user_id'];
                 $data['User']['modified'] = date('Y-m-d H:i:s');
                 $data['User']['password'] = $data['User']['new_password'];
                 if($this->User->save($data)) {
                     $this->PasswordToken->delete($token['token']);
+                    $dataSource->commit();
                     $this->Session->setFlash(__('Password has been changed.'), 'success');
                     $this->redirect(array('action' => 'login'));
                 } else {
@@ -148,6 +156,7 @@ class UsersController extends AppController {
                     }
                     $this->set('errors', $errors);
                 }
+                $dataSource->rollback();
             }
             $user = $this->User->read(array(), $token['user_id'])['User'];
             $this->set('account', $user['first_name'] . ' ' . $user['last_name']);
@@ -164,6 +173,8 @@ class UsersController extends AppController {
         }
         $token = $this->AccountToken->read(array(), $this->request->params['token'])['AccountToken'];
         if(strtotime($token['expires']) >= time()) {
+            $dataSource = $this->User->getDataSource();
+            $dataSource->begin();
             $id = $token['user_id'];
             $data = array(
                     'User' => array(
@@ -173,6 +184,7 @@ class UsersController extends AppController {
             );
             if($this->User->save($data)) {
                 $this->AccountToken->delete($token['token']);
+                $dataSource->commit();
                 $this->Session->setFlash(__('Your account has been activated. You can login now.'), 'success');
                 $this->redirect(array('action' => 'login'));
             } else {
@@ -182,6 +194,7 @@ class UsersController extends AppController {
                 }
                 $this->set('errors', $errors);
             }
+            $dataSource->rollback();
         } else {
             $this->Session->setFlash(__('This token has expired.'), 'error');
             $this->redirect(array('action' => 'login'));
@@ -227,6 +240,9 @@ class UsersController extends AppController {
       if ($this->request->is('post')) {
           $action = $this->request->data['User']['action'];
           if ($action == 'update_profile') {
+              $dataSource = $this->User->getDataSource();
+              $dataSource->begin();
+
               $user_id = $this->Auth->user('id');
               $first_name = $this->request->data['User']['first_name'];
               $last_name = $this->request->data['User']['last_name'];
@@ -236,12 +252,17 @@ class UsersController extends AppController {
 
               if($this->User->save($data)) {
                   $this->Session->write('Auth', $this->User->read(null, $this->Auth->User('id')));
+                  $dataSource->commit();
                   $this->Session->setFlash(__('User profile has been updated.'), 'success');
                   $this->redirect($this->referer());
               } else {
+                  $dataSource->rollback();
                   $this->Session->setFlash(__('Could not update profile.'), 'error');
               }
           } else if ($action == 'change_password') {
+              $dataSource = $this->User->getDataSource();
+              $dataSource->begin();
+
               $user_id = $this->Auth->user('id');
               $new_password = $this->request->data['User']['new_password'];
               $confirm_new_password = $this->request->data['User']['confirm_new_password'];
@@ -249,9 +270,11 @@ class UsersController extends AppController {
               $data = array('id' => $user_id, 'password' => $new_password, 'current_password' => $current_password, 'new_password' => $new_password, 'confirm_new_password' => $confirm_new_password);
 
               if($this->User->save($data)) {
+                  $dataSource->commit();
                   $this->Session->setFlash(__('Password has been changed.'), 'success');
                   $this->redirect($this->referer());
               } else {
+                  $dataSource->rollback();
                   $this->Session->setFlash(__('Could not change password.'), 'error');
               }
           }
@@ -268,11 +291,15 @@ class UsersController extends AppController {
         }
         if ($this->request->is('post') && isset($this->request->params['id'])) {
             if($this->User->canSetPermissions($this->Auth->user('level'))) {
+                $dataSource = $this->User->getDataSource();
+                $dataSource->begin();
                 $user_id = $this->request->params['id'];
                 $this->User->id = $user_id;
                 if($this->User->save($this->request->data)) {
+                    $dataSource->commit();
                     $this->Session->setFlash(__('Permission level has been changed.'), 'success');
                 } else {
+                    $dataSource->rollback();
                     $this->Session->setFlash(__('Permissions could not be changed.'), 'error');
                 }
             } else {
