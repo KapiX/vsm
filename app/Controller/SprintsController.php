@@ -26,9 +26,11 @@ class SprintsController extends AppController {
                     $missingUserScrumReports = $this->ScrumReport->find('all', array(
                         'conditions' => array('sprint_id' => $sprint_id, 'NOT' => array( 'ScrumReport.id' => $completedReportsIds ))
                     ));
-                    $allUserScrumReports = $this->UserScrumReport->find('all', array('order' => array('UserScrumReport.id' => 'desc'), 'conditions' => array('sprint_id' => $sprint_id)));
+                    $allUserScrumReports = $this->UserScrumReport->find('all', array('order' => array('UserScrumReport.id' => 'desc'), 'conditions' => array('sprint_id' => $sprint_id), 'group' => 'ScrumReport.deadline_date'));
+                    $dateMap = array();
                     $lastUserScrumReport = $this->UserScrumReport->find('first', array('order' => array('UserScrumReport.id' => 'desc'), 'conditions' => array('sprint_id' => $sprint_id, 'user_id' => $user_id)));
                     for ($i = 0; $i < count($allUserScrumReports); $i++) {
+                        $dateMap[$allUserScrumReports[$i]['ScrumReport']['deadline_date']][] = $i;
                         if($allUserScrumReports[$i]['UserScrumReport']['user_id'] != $user_id) {
                             $completedReport = $this->UserUserScrumReport->find('first', array(
                                 'conditions' => array(
@@ -46,10 +48,13 @@ class SprintsController extends AppController {
                             $allUserScrumReports[$i]['UserScrumReport']['readed'] = true;
                         }
                     }
+                    // sortuj według dat
+                    uksort($dateMap, function($a, $b) { $ad = new DateTime($a); $bd = new DateTime($b); if($ad == $bd) return 0; return ($ad < $bd) ? -1 : 1; });
                     $this->set('lastUserScrumReport', $lastUserScrumReport);
                     $this->set('missingUserScrumReports', $missingUserScrumReports);
                     $this->set('allUserScrumReports', $allUserScrumReports);
                     $this->set('sprint', $sprint);
+                    $this->set('dateMap', $dateMap);
                 } else {
                     $this->Session->setFlash(__('You are not assigned to this sprint.'), 'error');
                     $this->redirect($this->referer());

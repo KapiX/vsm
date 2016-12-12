@@ -57,8 +57,11 @@ $(document).ready(function(){
     <?php endforeach ?>
 </ul>
 <h4 class="header"><i class="material-icons" style="font-size:1.5rem;">view_headline</i><?php echo __('Read reports') ?></h4>
+<?php foreach($dateMap as $date => $reports): ?>
+<h5><?php echo $date ?></h5>
 <ul class="collapsible" data-collapsible="accordion">
-    <?php foreach($allUserScrumReports as $report): ?>
+    <?php foreach($reports as $i): ?>
+        <?php $report = $allUserScrumReports[$i]; ?>
         <li class="report-item" >
             <div id="<?php echo $report['UserScrumReport']['id'] ?>" class="collapsible-header <?php echo $report['UserScrumReport']['readed'] ? 'report-read' : 'report-not-read'?>">
                 <i class="material-icons"><?php echo $report['UserScrumReport']['readed'] ? 'done' : 'announcement' ?></i>
@@ -71,3 +74,4 @@ $(document).ready(function(){
         </li>
     <?php endforeach ?>
 </ul>
+<?php endforeach ?>
