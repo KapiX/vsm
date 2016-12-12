@@ -23,53 +23,23 @@ $urlNext = $this->Html->url('/' . implode('/', array(
     </ul>
 </div>
 <?php endif ?>
-<div class="card-panel valign-wrapper">
-    <a href="<?php echo $urlPrev ?>" class="btn-flat"><i class="material-icons valign">chevron_left</i></a>
-    <h5 class="header valign center-align" id="month-year"><?php echo $header ?></h5>
-    <a href="<?php echo $urlNext ?>" class="btn-flat"><i class="material-icons valign">chevron_right</i></a>
-</div>
-<div class="row">
-<div class="col s12">
-    <table id="calendar">
-        <thead class="hide-on-med-and-down">
-            <tr><?php foreach($weekdays as $day) echo "<th>$day</th>" ?></tr>
-        </thead>
-        <thead class="hide-on-large-only">
-            <tr><?php foreach($weekdays as $day) echo "<th>".substr($day, 0, 3)."</th>" ?></tr>
-        </thead>
-        <tbody>
-            <?php
-            // pierwszy tydzień
-            echo '<tr>';
-            for($i = 0; $i < 7; ++$i) {
-                echo '<td>';
-                $lastPrintedDay = $i - $firstWeekDay + 1;
-                if($i >= $firstWeekDay)
-                    echo $lastPrintedDay;
-                echo '</td>';
-            }
-            echo '</tr>';
-            // tygodnie środkowe
-            while($lastDay - $lastPrintedDay > 7) {
-                echo '<tr>';
-                for($i = 0; $i < 7; ++$i) {
-                    echo '<td>';
-                    echo ++$lastPrintedDay;
-                    echo '</td>';
-                }
-                echo '</tr>';
-            }
-            // ostatni tydzień
-            echo '<tr>';
-            for($i = 0; $i < 7; ++$i) {
-                echo '<td>';
-                if($lastPrintedDay < $lastDay)
-                    echo ++$lastPrintedDay;
-                echo '</td>';
-            }
-            echo '</tr>';
-            ?>
-        </tbody>
-    </table>
-</div>
-</div>
+<h3 class="header"><i class="material-icons" style="font-size:2rem;">view_headline</i><?php echo __('Upcoming reports') ?></h3>
+<?php foreach($upComingReports as $projectReports): ?>
+  <h5><?php echo $projectReports['Project']['name'] ?></h5>
+  <ul class="collection" id="upcoming-reports">
+  <?php if(empty($projectReports['reports'])): ?>
+      <li class="collection-item"><div><?php echo __("No upcoming reports for this project") ?>
+  <?php else: ?>
+      <?php foreach($projectReports['reports'] as $report): ?>
+          <?php $url = $this->Html->url(array('controller' => 'sprints', 'action' => 'index', 'id' => $report['Sprint']['id']));?>
+          <?php $deadline = $report['ScrumReport']['deadline_date'] ?>
+          <a href="<?php echo $url ?>"><li class="collapsible-header missing-report-item <?php if(CakeTime::isPast($deadline)) echo "report-deadline-reached"; else if(CakeTime::isTomorrow($deadline)) echo "report-deadline-today" ?>">
+                  <i class="material-icons"><?php echo CakeTime::isPast($deadline) || CakeTime::isTomorrow($deadline)? 'announcement' : 'playlist_add' ?></i>
+                  <?php echo $report['Sprint']['name'] ?>
+                  <span class="report-time"><?php echo $deadline ?></span>
+          </li></a>
+      <?php endforeach ?>
+  <?php endif ?>
+  </ul>
+
+<?php endforeach ?>
