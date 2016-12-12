@@ -116,11 +116,6 @@ class Sprint extends AppModel {
             $dataSource->rollback();
             return false;
         }
-        // w tym dniu nie ma potrzeby wypełniania raportu
-        if(!in_array(CakeTime::format($date, '%u'), $sprint['Sprint']['report_weekdays'])) {
-            $dataSource->rollback();
-            return false;
-        }
 
         $users = $sprint['User'];
         $report = $this->ScrumReport->find('first', array(
@@ -129,6 +124,10 @@ class Sprint extends AppModel {
                 'sprint_id' => $sprint_id,
             ), 'recursive' => 1)
         );
+        if(!$report) {
+            $dataSource->rollback();
+            return false;
+        }
 
         $reports_array = array();
         foreach($users as $user) {
