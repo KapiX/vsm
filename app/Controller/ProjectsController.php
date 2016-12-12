@@ -41,11 +41,29 @@ class ProjectsController extends AppController {
                     $lastDayOfMonth = CakeTime::format("last day of $date", '%d');
                     $monthHeader = CakeTime::format($date, '%B %Y');
 
+                    $days_read = array();
+                    $this->loadModel('Sprint');
+                    for($i = 0; $i < $lastDayOfMonth; ++$i) {
+                        $days_read[$i] = array();
+                        foreach($project['Sprint'] as $sprint) {
+                            $d = "$year-$month-$i";
+                            if(new DateTime($d) < new DateTime($sprint['start_date']) || new DateTime($d) > new DateTime($sprint['end_date'])) continue;
+                            $report_status = $this->Sprint->getReportsStatus($sprint['id'], $d);
+                            if($report_status)
+                                $days_read[$i][$sprint['name']] = $report_status;
+                        }
+                    }
+                    $users_map = array();
+                    foreach($project['User'] as $user) {
+                        $users_map[$user['id']] = $user['first_name'] . ' ' . $user['last_name'];
+                    }
 
                     Configure::load('misc');
                     $this->set('colors', Configure::read('colors'));
                     $this->set('project', $project['Project']);
                     $this->set('sprints', $project['Sprint']);
+                    $this->set('usersMap', $users_map);
+                    $this->set('readReports', $days_read);
                     $this->set('weekdays', $localizedWeekdays);
                     $this->set('firstWeekDay', $firstWeekDayOfMonth);
                     $this->set('lastDay', $lastDayOfMonth);

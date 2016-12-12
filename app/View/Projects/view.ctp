@@ -1,3 +1,8 @@
+<script type="text/javascript">
+$(document).ready(function(){
+    $('.modal').modal();
+});
+</script>
 <?php
 $lastPrintedDay = 0;
 $urlPrev = $this->Html->url('/' . implode('/', array(
@@ -58,7 +63,13 @@ foreach($sprints as $sprint) {
                 echo '<td>';
                 if($i >= $firstWeekDay) {
                     echo '<div class="day-wrapper">';
-                    echo $lastPrintedDay;
+                    if(!empty($readReports[$lastPrintedDay])) {
+                        echo '<a href="#day-' . $lastPrintedDay . '">';
+                        echo $lastPrintedDay;
+                        echo '</a>';
+                    } else {
+                        echo $lastPrintedDay;
+                    }
                     echo '<div class="sprint-marks">';
                     foreach($day_sprint[$lastPrintedDay] as $id) {
                         echo '<div class="sprint-mark ' . $colors[$sprint_color[$id]] . '"></div>';
@@ -76,7 +87,13 @@ foreach($sprints as $sprint) {
                     $lastPrintedDay++;
                     echo '<td>';
                     echo '<div class="day-wrapper">';
-                    echo $lastPrintedDay;
+                    if(!empty($readReports[$lastPrintedDay])) {
+                        echo '<a href="#day-' . $lastPrintedDay . '">';
+                        echo $lastPrintedDay;
+                        echo '</a>';
+                    } else {
+                        echo $lastPrintedDay;
+                    }
                     echo '<div class="sprint-marks">';
                     foreach($day_sprint[$lastPrintedDay] as $id) {
                         echo '<div class="sprint-mark ' . $colors[$sprint_color[$id]] . '"></div>';
@@ -93,7 +110,14 @@ foreach($sprints as $sprint) {
                 echo '<td>';
                 if($lastPrintedDay < $lastDay) {
                     echo '<div class="day-wrapper">';
-                    echo ++$lastPrintedDay;
+                    ++$lastPrintedDay;
+                    if(!empty($readReports[$lastPrintedDay])) {
+                        echo '<a href="#day-' . $lastPrintedDay . '">';
+                        echo $lastPrintedDay;
+                        echo '</a>';
+                    } else {
+                        echo $lastPrintedDay;
+                    }
                     echo '<div class="sprint-marks">';
                     foreach($day_sprint[$lastPrintedDay] as $id) {
                         echo '<div class="sprint-mark ' . $colors[$sprint_color[$id]] . '"></div>';
@@ -124,3 +148,51 @@ foreach($sprints as $sprint) {
     echo '</div>';
 }
 ?>
+
+<?php foreach($readReports as $day => $reports): ?>
+<?php if(!empty($reports)): ?>
+<div id="day-<?php echo $day ?>" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <h4><?php echo $day ?></h4>
+      <?php foreach($reports as $sprint => $users): ?>
+        <h5><?php echo $sprint ?></h5>
+        <?php $order = array(); ?>
+        <table class="highlight">
+            <thead><tr>
+                <th></th>
+                <?php foreach($users as $user => $seen): ?>
+                    <th><?php echo $usersMap[$user] ?></th>
+                    <?php $order[] = $user; ?>
+                <?php endforeach ?>
+            </tr></thead>
+            <tbody>
+                <?php foreach($users as $user => $seen): ?>
+                    <tr>
+                        <td><?php echo $usersMap[$user] ?></td>
+                        <?php if($seen === null): ?>
+                            <td class="center" colspan="<?php echo count($users) ?>"><?php echo __('Did not send report yet.') ?></td>
+                        <?php else: ?>
+                            <?php foreach($order as $user): ?>
+                                <?php if(in_array($user, array_keys($seen))): ?>
+                                    <td><?php echo ($seen[$user] ? 'x' : ' ') ?>
+                                <?php else: ?>
+                                    <td>N/A</td>
+                                <?php endif ?>
+                            <?php endforeach ?>
+                            <td></td>
+                            <td></td>
+                        <?php endif ?>
+                    <tr>
+                <?php endforeach ?>
+            </tbody>
+        </table>
+      <?php endforeach ?>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"><?php echo __('Close') ?></a>
+    </div>
+</div>
+<?php endif ?>
+<?php endforeach ?>
+
+<?php echo $this->element('sql_dump'); ?>

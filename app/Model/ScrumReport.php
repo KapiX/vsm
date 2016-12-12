@@ -41,4 +41,25 @@ class ScrumReport extends AppModel {
         $dataSource->commit();
     }
 
+    public function whoHasRead($user_report_id) {
+        $report = $this->UserScrumReport->find('first', array(
+            'conditions' => array(
+                'UserScrumReport.id' => $user_report_id
+            ),
+            'recursive' => 1,
+        ));
+        if(!$report) {
+            return false;
+        }
+        $has_seen = array();
+        foreach($report['UserUserScrumReport'] as $seen) {
+            if($seen['report_seen_date'] !== null) {
+                $has_seen[$seen['user_id']] = true;
+            } else {
+                $has_seen[$seen['user_id']] = false;
+            }
+        }
+        return $has_seen;
+    }
+
 }

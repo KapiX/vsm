@@ -100,4 +100,47 @@ class Sprint extends AppModel {
         $dataSource->commit();
         return true;
     }
+
+    public function getReportsStatus($sprint_id, $date) {
+        $dataSource = $this->getDataSource();
+        $dataSource->begin();
+        $sprint = $this->find('first', array('conditions' => array('Sprint.id' => $sprint_id), 'recursive' => 1));
+        if(!$sprint) {
+            $dataSource->rollback();
+            return false;
+        }
+        $start_cmp = new DateTime($sprint['Sprint']['start_date']);
+        $end_cmp = new DateTime($sprint['Sprint']['end_date']);
+        $date_cmp = new DateTime(CakeTime::format($date, '%Y-%m-%d'));
+        if($date_cmp < $start_cmp || $date_cmp > $end_cmp) {
+            $dataSource->rollback();
+            return false;
+        }
+        // w tym dniu nie ma potrzeby wypełniania raportu
+        if(!in_array(CakeTime::format($date, '%u'), $sprint['Sprint']['report_weekdays'])) {
+            $dataSource->rollback();
+            return false;
+        }
+
+        $users = $sprint['User'];
+        $report = $this->ScrumReport->find('first', array(
+            'conditions' => array(
+                'deadline_date' => CakeTime::format($date, '%Y-%m-%d'),
+                'sprint_id' => $sprint_id,
+            ), 'recursive' => 1)
+        );
+
+        $reports_array = array();
+        foreach($users as $user) {
+            $reports_array[$user['id']] = null;
+            foreach($report['UserScrumReport'] as $userReport) {
+                if($userReport['user_id'] == $user['id']) {
+                    $reports_array[$user['id']] = $this->ScrumReport->whoHasRead($userReport['id']);
+                }
+            }
+        }
+
+        $dataSource->commit();
+        return $reports_array;
+    }
 }
