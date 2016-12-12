@@ -53,6 +53,7 @@ $config['rules'] = array(
 	'allow' => array(
 		'controllers/*' => 'Role/admin',
 		'controllers/projects/*' => 'Role/pm',
+		'controllers/users/*' => 'Role/pm',
 		'controllers/index/*' => 'Role/user',
 		'controllers/projects/(index|view)' => 'Role/user',
 		'controllers/notifications/*' => 'Role/user',
