@@ -114,3 +114,7 @@ CREATE TABLE IF NOT EXISTS `notifications` (
   `title` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
 );
+
+-- INSERT INTO app_settings
+INSERT INTO app_settings (name, value)
+    VALUES ('allow_registration', 'True');
