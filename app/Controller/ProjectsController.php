@@ -55,7 +55,7 @@ class ProjectsController extends AppController {
                     }
                     $users_map = array();
                     foreach($project['User'] as $user) {
-                        $users_map[$user['id']] = $user['first_name'] . ' ' . $user['last_name'];
+                        $users_map[$user['id']] = $user;
                     }
 
                     Configure::load('misc');

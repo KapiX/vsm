@@ -221,3 +221,7 @@ div > a.sprint-link {
 #upcoming-reports a {
     color: black;
 }
+
+table.highlight > tbody> tr > td {
+    border-radius: 0px;
+}

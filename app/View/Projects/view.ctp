@@ -161,22 +161,24 @@ foreach($sprints as $sprint) {
             <thead><tr>
                 <th></th>
                 <?php foreach($users as $user => $seen): ?>
-                    <th><?php echo $usersMap[$user] ?></th>
+                    <th class="center"><?php echo $usersMap[$user]['initials'] ?></th>
                     <?php $order[] = $user; ?>
                 <?php endforeach ?>
             </tr></thead>
             <tbody>
                 <?php foreach($users as $user => $seen): ?>
                     <tr>
-                        <td><?php echo $usersMap[$user] ?></td>
+                        <td><?php echo $usersMap[$user]['first_name']." ".$usersMap[$user]['last_name'] ?></td>
                         <?php if($seen === null): ?>
-                            <td class="center" colspan="<?php echo count($users) ?>"><?php echo __('Did not send report yet.') ?></td>
+                            <td class="center red accent-4" colspan="<?php echo count($users) ?>"><?php echo __('Did not send report yet.') ?></td>
                         <?php else: ?>
                             <?php foreach($order as $user): ?>
                                 <?php if(in_array($user, array_keys($seen))): ?>
-                                    <td><?php echo ($seen[$user] ? 'x' : ' ') ?>
+                                    <td class="center <?php echo ($seen[$user] ? 'light-green accent-3' : 'red accent-4')?>">
+                                      <i class="material-icons valign"><?php echo ($seen[$user] ? 'done' : 'close') ?></i>
+                                    </td>
                                 <?php else: ?>
-                                    <td>N/A</td>
+                                    <td class="center light-green accent-3">N/A</td>
                                 <?php endif ?>
                             <?php endforeach ?>
                             <td></td>
